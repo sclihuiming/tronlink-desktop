@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
-import TronWeb from 'tronweb';
-import { privateKey as priKey } from '../../constants/index';
-// import { injectPromise } from '../../utils/index';
+const TronWeb = require('tronweb');
+
+const priKey =
+  '0c6e219d4c53649a14c2613c3a123a7b084d7c8caf67325ed8e2fb137fbcc943';
 
 let tronWeb;
 
@@ -18,11 +19,11 @@ function createTronWeb() {
   return tronWebIns;
 }
 
-export function sign(
+function sign(
   transaction,
   privateKey = priKey,
   useTronHeader = true,
-  callback: any
+  callback
 ) {
   if (Object.prototype.toString.call(privateKey).slice(8, -1) === 'Function') {
     callback = privateKey;
@@ -40,7 +41,7 @@ export function sign(
   return tronWebIns.trx.sign(transaction, privateKey, useTronHeader, callback);
 }
 
-export function createTronWebInstance() {
+function createTronWebInstance() {
   if (!(tronWeb instanceof TronWeb)) {
     tronWeb = createTronWeb();
 
@@ -56,3 +57,7 @@ export function createTronWebInstance() {
 
   return tronWeb;
 }
+
+module.exports = {
+  createTronWebInstance,
+};

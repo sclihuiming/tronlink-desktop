@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import icon from '../../../../assets/icon.svg';
 
 export default function Hello() {
+  const [text, changeText] = useState('init');
+  window.electron.ipcRenderer.on('ipc-example', (args: any) => {
+    console.log('example', args);
+    changeText(String(args));
+  });
+  // useEffect(() => {
+
+  // }, []);
+
   return (
     <div>
       <div className="Hello">
@@ -18,7 +27,7 @@ export default function Hello() {
             <span role="img" aria-label="books">
               📚
             </span>
-            Read our docs
+            Read our docs {text}
           </button>
         </a>
         <a

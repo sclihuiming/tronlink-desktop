@@ -16,6 +16,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from '../utils';
+import { getDBInstance } from './store';
 
 export default class AppUpdater {
   constructor() {
@@ -81,12 +82,16 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: path.join(__dirname, './preload/preload.common.js'),
-      // contextIsolation: false,
+      contextIsolation: false,
     },
   });
 
   // console.log('resolveHtmlPath:', resolveHtmlPath('index.html'));
   mainWindow.loadURL(resolveHtmlPath('index.html'));
+
+  // load init Data
+  const db = await getDBInstance();
+  console.log(db.get('accounts').value());
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/main/docs/api/browser-window.md#using-ready-to-show-event
