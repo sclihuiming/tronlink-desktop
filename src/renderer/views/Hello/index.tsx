@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { ipcRenderer } from 'electron';
 import icon from '../../../../assets/icon.svg';
 
 export default function Hello() {
   const [text, changeText] = useState('init');
-  window.electron.ipcRenderer.on('ipc-example', (args: any) => {
-    console.log('example', args);
-    changeText(String(args));
-  });
-  // useEffect(() => {
 
-  // }, []);
+  useEffect(() => {
+    ipcRenderer.on('ipc-example', (event: any, args: any) => {
+      console.log('example####', args);
+      changeText(String(args));
+    });
+    ipcRenderer.send('ipc-example', 'ping');
+  }, []);
 
   return (
     <div>

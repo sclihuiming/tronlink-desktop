@@ -25,13 +25,7 @@ window.electron = {
       }
     },
   },
-  // dbInstance: getDBInstance(),
 };
-
-// window.electron.ipcRenderer.on('ipc-example', (arg) => {
-//   // eslint-disable-next-line no-console
-//   console.log('ipcRenderer', arg);
-// });
 
 window.tronWeb = createTronWebInstance();
 
