@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ipcRenderer } from 'electron';
+import { renderApi } from '../../../MessageDuplex';
 import icon from '../../../../assets/icon.svg';
 
 export default function Hello() {
   const [text, changeText] = useState('init');
 
   useEffect(() => {
-    ipcRenderer.on('ipc-example', (event: any, args: any) => {
-      console.log('example####', args);
-      changeText(String(args));
-    });
-    ipcRenderer.send('ipc-example', 'ping');
+    renderApi.ipcExample('renderApi.ipcExample#####&&&--------');
   }, []);
 
   return (
