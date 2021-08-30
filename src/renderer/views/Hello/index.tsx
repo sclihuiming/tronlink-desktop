@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { RootState } from 'renderer/store';
 import { renderApi } from '../../../MessageDuplex';
 import icon from '../../../../assets/icon.svg';
 
-export default function Hello() {
+function Hello(props: JSON) {
+  console.log('Hello:', props);
   const [text, changeText] = useState('init');
 
   useEffect(() => {
@@ -44,3 +47,9 @@ export default function Hello() {
     </div>
   );
 }
+
+export default connect((state: RootState, ownProps) => {
+  return {
+    test: state.app.test,
+  };
+})(Hello);
