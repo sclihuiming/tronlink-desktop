@@ -1,0 +1,23 @@
+.logo {
+  // width: 120px;
+  height: 28px;
+  margin: 16px 24px 16px 25px;
+  background-image: url('../../assets/images/logo.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  &.collapsed {
+    background-image: url('../../assets/images/logo2.svg');
+    // width: 31px;
+    // height: 31px;
+    border-radius: 10px;
+  }
+}
+
+.ant-layout-content {
+  background: #fff;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
