@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import {
   UserOutlined,
@@ -11,21 +12,24 @@ import {
 import { RootState } from 'renderer/store';
 import './Home.global.scss';
 
+import Hello from '../Hello';
+
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
 
 function Home(props: JSON) {
+  const match = useRouteMatch();
   const [collapsed, onCollapse] = useState(false);
 
   useEffect(() => {}, []);
-  console.log('teseeeeee');
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
         <div className={`logo ${collapsed ? 'collapsed' : ''}`} />
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
           <Menu.Item key="1" icon={<PieChartOutlined />}>
-            Option 1
+            <Link to={`${match.url}/hello`}>Option 1</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<DesktopOutlined />}>
             Option 2
@@ -57,7 +61,10 @@ function Home(props: JSON) {
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}
           >
-            Bill is a cat.
+            <Switch>
+              <Route path={`${match.path}/hello`} component={Hello} />
+              <Route path={`${match.path}`}> 测试 </Route>
+            </Switch>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
