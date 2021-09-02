@@ -29,6 +29,10 @@ export function getAccount(address: string) {
   return sendOrInvoke('getAccount', address, true);
 }
 
+export function getAccounts() {
+  return sendOrInvoke('getAccounts', null, true);
+}
+
 export function addAccount(params: JSON) {
   return sendOrInvoke('addAccount', params, true);
 }

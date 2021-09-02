@@ -13,12 +13,16 @@ function dispatchInvokeEvent(event: any, args: any) {
   switch (method) {
     case 'getAccount':
       return null;
+    case 'getAccounts':
+      return {
+        code: 200,
+        data: [],
+      };
     case 'ipc-example':
-      event.reply(simplexMessageEntryType.main2Render, {
-        method: 'ipc-example',
-        params: msgTemplate(params),
-      });
-      return null;
+      return {
+        code: 200,
+        data: msgTemplate(params),
+      };
     default:
       return null;
   }
@@ -34,7 +38,7 @@ function dispatchCommonEvent(event: any, args: any) {
       console.log('dispatchCommonEvent########%%%%%0000', args);
       event.reply(simplexMessageEntryType.main2Render, {
         method: 'ipc-example',
-        params: msgTemplate(params),
+        data: msgTemplate(params),
       });
       return null;
     default:

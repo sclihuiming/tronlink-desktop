@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom';
-import Hello from './views/Hello';
+import Hello from './views/Overview';
 import Home from './views/Home';
 
 export default function Routes() {
