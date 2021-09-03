@@ -14,4 +14,19 @@ type LocalData1 = {
   posts: string[]; // Expect posts to be an array of strings
 };
 
-export { LocalData, LocalData1 };
+type AddAccountParams = {
+  importType: 'privateKey' | 'mnemonic';
+  user: {
+    name: string;
+    privateKey?: string;
+    mnemonic?: string;
+  };
+};
+
+type Response = {
+  code: number;
+  msg?: string;
+  data: JSON | undefined | string;
+};
+
+export { LocalData, LocalData1, AddAccountParams, Response };

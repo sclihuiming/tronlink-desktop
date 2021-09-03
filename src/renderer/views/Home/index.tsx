@@ -14,6 +14,7 @@ import { RootState } from 'renderer/store';
 import './Home.global.scss';
 
 import Overview from '../Overview';
+import AddAccount from '../AddAccount';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
@@ -106,7 +107,10 @@ function Home(props: any) {
           >
             <Switch>
               <Route path={`${match.path}/overview`} component={Overview} />
-              <Route path={`${match.path}/add-accounts`}> 增加账户 </Route>
+              <Route
+                path={`${match.path}/add-accounts`}
+                component={AddAccount}
+              />
               <Route path={`${match.path}`} component={Overview} />
             </Switch>
           </div>

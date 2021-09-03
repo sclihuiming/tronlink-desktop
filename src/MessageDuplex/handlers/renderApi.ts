@@ -1,4 +1,5 @@
 import { ipcRenderer } from 'electron';
+import { AddAccountParams } from 'types';
 import {
   simplexMessageEntryType,
   duplexMessageEntryType,
@@ -33,7 +34,7 @@ export function getAccounts() {
   return sendOrInvoke('getAccounts', null, true);
 }
 
-export function addAccount(params: JSON) {
+export function addAccount(params: AddAccountParams) {
   return sendOrInvoke('addAccount', params, true);
 }
 
