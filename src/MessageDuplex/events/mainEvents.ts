@@ -16,10 +16,7 @@ function dispatchInvokeEvent(event: any, args: any) {
     case 'getAccount':
       return null;
     case 'getAccounts':
-      return {
-        code: 200,
-        data: [],
-      };
+      return accountController.getAccounts();
     case 'addAccount':
       return accountController.addAccount(params);
     case 'ipc-example':

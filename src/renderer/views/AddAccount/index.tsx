@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Radio, message } from 'antd';
 import { connect } from 'react-redux';
 import { InfoCircleOutlined } from '@ant-design/icons';
@@ -14,6 +14,7 @@ message.config({
 const AddAccount = () => {
   const [form] = Form.useForm();
   const [type, setImportType] = useState<string>('privateKey');
+  const [accounts, setAccounts] = useState([]);
 
   const onRequiredTypeChange = (
     _: any,
@@ -38,11 +39,25 @@ const AddAccount = () => {
   const key = 'updatable';
   const onFinish = async (values: AddAccountParams) => {
     message.loading({ content: '正在保存...', key });
-    await renderApi.addAccount(values);
-    setTimeout(() => {
-      message.success({ content: '保存成功!', key, duration: 2 });
-    }, 1000);
+    const res = await renderApi.addAccount(values);
+    if (res.code === 200) {
+      setTimeout(() => {
+        message.success({ content: res.msg, key, duration: 2 });
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        message.error({ content: res.msg, key, duration: 2 });
+      }, 1000);
+    }
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      const newAccounts = await renderApi.getAccounts();
+      console.log('newAccounts:', newAccounts);
+    }
+    fetchData();
+  }, [accounts]);
 
   return (
     <Form
