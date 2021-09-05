@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { AnyAction, configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import App from './App';
-import { renderEvents } from '../MessageDuplex';
+import * as renderEvents from '../MessageDuplex/events/renderEvents';
 import store from './store';
 
 class Entry {

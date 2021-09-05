@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Radio, message } from 'antd';
 import { connect } from 'react-redux';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { renderApi } from 'MessageDuplex';
+import * as renderApi from 'MessageDuplex/handlers/renderApi';
 import { AddAccountParams } from 'types';
 
 message.config({

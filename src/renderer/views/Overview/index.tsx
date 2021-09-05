@@ -4,7 +4,7 @@ import { RootState } from 'renderer/store';
 import { get, size } from 'lodash';
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import { CheckCircleTwoTone } from '@ant-design/icons';
-import { renderApi } from '../../../MessageDuplex';
+import * as renderApi from '../../../MessageDuplex/handlers/renderApi';
 import './Overview.global.scss';
 
 function renderAccount(accountItem: JSON) {

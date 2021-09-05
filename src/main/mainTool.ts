@@ -1,5 +1,5 @@
 import { accountController } from './controller';
-import { mainEvents } from '../MessageDuplex';
+import * as mainEvents from '../MessageDuplex/events/mainEvents';
 
 async function initialData() {
   await accountController.refreshAccountsData();
