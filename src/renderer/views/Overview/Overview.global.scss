@@ -1,6 +1,39 @@
 .overview {
   .accountsWrap {
     display: flex;
+    flex-flow: wrap;
+    padding: 10px;
+
+    .accountItem {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin: 0 10px 20px 0;
+
+      box-shadow: 5px 5px 5px #f0f0f0;
+      border: 1px solid #f5f5f5;
+      padding: 20px;
+      cursor: pointer;
+
+      .checked {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+      }
+
+      .name {
+      }
+
+      .address {
+        color: gray;
+      }
+
+      .balance {
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
   }
 
   .empty {

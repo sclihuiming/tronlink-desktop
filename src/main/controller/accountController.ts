@@ -95,18 +95,22 @@ export async function getAccounts(): Promise<Response> {
 
   console.log('getAccounts', accounts);
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const account of accounts) {
-    const address = get(account, 'address');
-    // eslint-disable-next-line no-await-in-loop
-    const res = await tronwebInstance.trx.getUnconfirmedAccount(address);
-    const balance = new BigNumber(get(res, 'balance', 0))
-      .shiftedBy(-6)
-      .toFixed();
-    account.balance = balance;
-    console.log(account);
+  try {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const account of accounts) {
+      const address = get(account, 'address');
+      // eslint-disable-next-line no-await-in-loop
+      const res = await tronwebInstance.trx.getUnconfirmedAccount(address);
+      const balance = new BigNumber(get(res, 'balance', 0))
+        .shiftedBy(-6)
+        .toFixed();
+      account.balance = balance;
+      console.log(account);
+    }
+  } catch (e) {
+    console.error(e);
   }
-  // trx.getUnconfirmedAccount(address)
+
   return <Response>{
     code: 200,
     data: accounts,

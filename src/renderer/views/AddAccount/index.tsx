@@ -14,7 +14,6 @@ message.config({
 const AddAccount = () => {
   const [form] = Form.useForm();
   const [type, setImportType] = useState<string>('privateKey');
-  const [accounts, setAccounts] = useState([]);
 
   const onRequiredTypeChange = (
     _: any,
@@ -50,14 +49,6 @@ const AddAccount = () => {
       }, 1000);
     }
   };
-
-  useEffect(() => {
-    async function fetchData() {
-      const newAccounts = await renderApi.getAccounts();
-      console.log('newAccounts:', newAccounts);
-    }
-    fetchData();
-  }, [accounts]);
 
   return (
     <Form
