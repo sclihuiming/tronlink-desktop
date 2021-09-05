@@ -17,7 +17,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from '../utils';
 import { getDBInstance } from './store';
-import { mainEvents } from '../MessageDuplex';
+import * as mainTool from './mainTool';
 
 export default class AppUpdater {
   constructor() {
@@ -29,17 +29,7 @@ export default class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-mainEvents.bindEvents();
-// ipcMain.on('ipc-example', async (event, arg) => {
-//   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-//   console.log(msgTemplate(arg));
-//   event.reply('ipc-example', msgTemplate('pong'));
-// });
-
-// ipcMain.handle('invoke-example', async (event, arg) => {
-//   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-//   return msgTemplate('123123');
-// });
+mainTool.run();
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');

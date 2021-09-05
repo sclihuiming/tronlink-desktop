@@ -1,22 +1,12 @@
 import { AddAccountParams, Response } from 'types';
 import { get, omit, size } from 'lodash';
-import crypto from 'crypto';
 import TronWeb from 'tronweb';
 import { BigNumber } from 'bignumber.js';
+import * as mainApi from '../../MessageDuplex/handlers/mainApi';
+import { encrypt } from '../../utils';
+import { setAccountsCache } from '../service/cacheService';
 import { getDBInstance } from '../store/index';
 import { getTronwebInstance } from '../service/nodeService';
-
-const encryptionAlgorithm = 'aes-256-ctr';
-
-function encrypt(encodedStr: string, key: string) {
-  // const encoded = JSON.stringify(data);
-  const cipher = crypto.createCipher(encryptionAlgorithm, key);
-
-  let crypted = cipher.update(encodedStr, 'utf8', 'hex');
-  crypted += cipher.final('hex');
-
-  return crypted;
-}
 
 async function addAccountByPrivatekey(
   importType: string,
@@ -115,4 +105,31 @@ export async function getAccounts(): Promise<Response> {
     code: 200,
     data: accounts,
   };
+}
+
+export async function refreshAccountsData() {
+  const dbInstance = await getDBInstance();
+  const tronwebInstance = getTronwebInstance();
+  const accounts = dbInstance
+    .get('accounts', [])
+    .map((item: JSON) => omit(item, 'privateKey'))
+    .value();
+
+  try {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const account of accounts) {
+      const address = get(account, 'address');
+      // eslint-disable-next-line no-await-in-loop
+      const res = await tronwebInstance.trx.getUnconfirmedAccount(address);
+      const balance = new BigNumber(get(res, 'balance', 0))
+        .shiftedBy(-6)
+        .toFixed();
+      account.balance = balance;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  setAccountsCache(accounts);
+  mainApi.setAccounts(accounts);
+  return accounts;
 }

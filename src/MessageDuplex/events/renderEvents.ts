@@ -9,6 +9,9 @@ function dispatchEvents(event: any, args: any) {
     case 'ipc-example':
       console.log('dispatchEvents:', params);
       break;
+    case 'setAccounts':
+      console.log('setAccounts:', params);
+      break;
     default:
       break;
   }

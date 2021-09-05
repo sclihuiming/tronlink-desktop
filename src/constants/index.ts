@@ -15,3 +15,6 @@ export const duplexMessageEntryType = {
   main2Render: 'main2Render_duplex',
   render2Main: 'render2Main_duplex',
 };
+
+export const accountsCacheKey = 'accounts_cache';
+export const cacheTTL = 60000;
