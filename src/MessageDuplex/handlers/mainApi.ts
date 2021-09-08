@@ -1,9 +1,16 @@
-import { ipcMain } from 'electron';
+import { getAllWindow } from '../../main/store/windowManager';
 import { simplexMessageEntryType } from '../../constants';
 
-function send(...args: any[]) {
-  console.log('setAccounts', args);
-  ipcMain.emit(simplexMessageEntryType.main2Render, ...args);
+function send(method: string, params: any) {
+  const args = {
+    method,
+    params,
+  };
+  const wins = getAllWindow();
+  wins.forEach((win) => {
+    win.webContents.send(simplexMessageEntryType.main2Render, args);
+  });
+  // ipcMain.emit(simplexMessageEntryType.main2Render, ...args);
   return null;
 }
 

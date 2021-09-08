@@ -4,7 +4,6 @@ import { RootState } from 'renderer/store';
 import { get, size } from 'lodash';
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import { CheckCircleTwoTone } from '@ant-design/icons';
-import * as renderApi from '../../../MessageDuplex/handlers/renderApi';
 import './Overview.global.scss';
 
 function renderAccount(accountItem: JSON) {
@@ -28,19 +27,16 @@ function renderAccount(accountItem: JSON) {
   );
 }
 
-function Overview(props: JSON) {
+function Overview(props: any) {
+  const { accounts: propsAccounts } = props;
+  console.log(props);
   const match = useRouteMatch();
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await renderApi.getAccounts();
-      setAccounts(get(res, 'data', []));
-    };
-
-    fetchData();
+    setAccounts(props.accounts);
     // renderApi.ipcExample('renderApi.ipcExample#####&&&--------');
-  }, []);
+  }, [propsAccounts]);
 
   return (
     <div className="overview">
@@ -59,5 +55,6 @@ function Overview(props: JSON) {
 export default connect((state: RootState, ownProps) => {
   return {
     test: state.app.test,
+    accounts: state.app.accounts,
   };
 })(Overview);

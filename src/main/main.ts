@@ -18,6 +18,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from '../utils';
 import { getDBInstance } from './store';
 import * as mainTool from './mainTool';
+import { addWindow, deleteWindow } from './store/windowManager';
 
 export default class AppUpdater {
   constructor() {
@@ -105,7 +106,10 @@ const createWindow = async () => {
     }
   });
 
+  addWindow(mainWindow);
+
   mainWindow.on('closed', () => {
+    deleteWindow(<BrowserWindow>mainWindow);
     mainWindow = null;
   });
 

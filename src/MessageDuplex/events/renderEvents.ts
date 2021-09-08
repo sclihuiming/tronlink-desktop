@@ -1,6 +1,8 @@
 import { ipcRenderer } from 'electron';
 import { get } from 'lodash';
 import { simplexMessageEntryType } from '../../constants';
+import { setAccounts } from '../../renderer/reducers/appReducer';
+import store from '../../renderer/store/index';
 
 function dispatchEvents(event: any, args: any) {
   const method: string = get(args, 'method');
@@ -11,6 +13,7 @@ function dispatchEvents(event: any, args: any) {
       break;
     case 'setAccounts':
       console.log('setAccounts:', params);
+      store.dispatch(setAccounts(params));
       break;
     default:
       break;
@@ -18,9 +21,11 @@ function dispatchEvents(event: any, args: any) {
 }
 
 export function bindEvents(): void {
+  console.log('bindEvents');
   ipcRenderer.on(
     simplexMessageEntryType.main2Render,
     (event: any, args: any) => {
+      console.log('bindEvents', event, args);
       dispatchEvents(event, args);
     }
   );

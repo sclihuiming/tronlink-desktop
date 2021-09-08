@@ -4,7 +4,7 @@ import TronWeb from 'tronweb';
 import { BigNumber } from 'bignumber.js';
 import * as mainApi from '../../MessageDuplex/handlers/mainApi';
 import { encrypt } from '../../utils';
-import { setAccountsCache } from '../service/cacheService';
+import { getAccountsCache, setAccountsCache } from '../service/cacheService';
 import { getDBInstance } from '../store/index';
 import { getTronwebInstance } from '../service/nodeService';
 
@@ -75,7 +75,7 @@ export async function addAccount(params: AddAccountParams): Promise<Response> {
   };
 }
 
-export async function getAccounts(): Promise<Response> {
+export async function refreshAccountsData(isLoadByNetwork: boolean) {
   const dbInstance = await getDBInstance();
   const tronwebInstance = getTronwebInstance();
   const accounts = dbInstance
@@ -83,53 +83,36 @@ export async function getAccounts(): Promise<Response> {
     .map((item: JSON) => omit(item, 'privateKey'))
     .value();
 
-  console.log('getAccounts', accounts);
-
-  try {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const account of accounts) {
-      const address = get(account, 'address');
-      // eslint-disable-next-line no-await-in-loop
-      const res = await tronwebInstance.trx.getUnconfirmedAccount(address);
-      const balance = new BigNumber(get(res, 'balance', 0))
-        .shiftedBy(-6)
-        .toFixed();
-      account.balance = balance;
-      console.log(account);
+  if (isLoadByNetwork) {
+    try {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const account of accounts) {
+        const address = get(account, 'address');
+        // eslint-disable-next-line no-await-in-loop
+        const res = await tronwebInstance.trx.getUnconfirmedAccount(address);
+        const balance = new BigNumber(get(res, 'balance', 0))
+          .shiftedBy(-6)
+          .toFixed();
+        account.balance = balance;
+      }
+    } catch (e) {
+      console.error(e);
     }
-  } catch (e) {
-    console.error(e);
+  }
+
+  setAccountsCache(accounts);
+  mainApi.setAccounts(accounts);
+  return accounts;
+}
+
+export async function getAccounts(): Promise<Response> {
+  let accounts: any = await getAccountsCache();
+  if (size(accounts) === 0) {
+    accounts = await refreshAccountsData(true);
   }
 
   return <Response>{
     code: 200,
     data: accounts,
   };
-}
-
-export async function refreshAccountsData() {
-  const dbInstance = await getDBInstance();
-  const tronwebInstance = getTronwebInstance();
-  const accounts = dbInstance
-    .get('accounts', [])
-    .map((item: JSON) => omit(item, 'privateKey'))
-    .value();
-
-  try {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const account of accounts) {
-      const address = get(account, 'address');
-      // eslint-disable-next-line no-await-in-loop
-      const res = await tronwebInstance.trx.getUnconfirmedAccount(address);
-      const balance = new BigNumber(get(res, 'balance', 0))
-        .shiftedBy(-6)
-        .toFixed();
-      account.balance = balance;
-    }
-  } catch (e) {
-    console.error(e);
-  }
-  setAccountsCache(accounts);
-  mainApi.setAccounts(accounts);
-  return accounts;
 }
