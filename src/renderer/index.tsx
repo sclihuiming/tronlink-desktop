@@ -6,7 +6,7 @@ import { get } from 'lodash';
 import App from './App';
 import * as renderEvents from '../MessageDuplex/events/renderEvents';
 import * as renderApi from '../MessageDuplex/handlers/renderApi';
-import { setAccounts } from './reducers/appReducer';
+import { setAccounts, setSelectedAddress } from './reducers/appReducer';
 import store from './store';
 
 class Entry {
@@ -27,8 +27,13 @@ class Entry {
   }
 
   async getAppState() {
-    const res = await renderApi.getAccounts();
-    this.store.dispatch(setAccounts(get(res, 'data', [])));
+    const [accountsRes, selectedRes] = await Promise.all([
+      renderApi.getAccounts(),
+      renderApi.getSelectedAddress(),
+    ]);
+
+    this.store.dispatch(setAccounts(get(accountsRes, 'data', [])));
+    this.store.dispatch(setSelectedAddress(get(selectedRes, 'data', '')));
     // return this.store;
   }
 

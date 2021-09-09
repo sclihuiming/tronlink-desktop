@@ -41,3 +41,11 @@ export function addAccount(params: AddAccountParams) {
 export function ipcExample(ping: string) {
   return sendOrInvoke('ipc-example', ping, false);
 }
+
+export function setSelectedAddress(address: string) {
+  return sendOrInvoke('setSelectedAddress', address, true);
+}
+
+export function getSelectedAddress() {
+  return sendOrInvoke('getSelectedAddress', null, true);
+}

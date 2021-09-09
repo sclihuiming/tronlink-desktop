@@ -1,7 +1,10 @@
 import { ipcRenderer } from 'electron';
 import { get } from 'lodash';
 import { simplexMessageEntryType } from '../../constants';
-import { setAccounts } from '../../renderer/reducers/appReducer';
+import {
+  setAccounts,
+  setSelectedAddress,
+} from '../../renderer/reducers/appReducer';
 import store from '../../renderer/store/index';
 
 function dispatchEvents(event: any, args: any) {
@@ -14,6 +17,10 @@ function dispatchEvents(event: any, args: any) {
     case 'setAccounts':
       console.log('setAccounts:', params);
       store.dispatch(setAccounts(params));
+      break;
+    case 'setSelectedAddress':
+      console.log('setSelectedAddress:', params);
+      store.dispatch(setSelectedAddress(params));
       break;
     default:
       break;

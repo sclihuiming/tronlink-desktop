@@ -19,6 +19,10 @@ function dispatchInvokeEvent(event: any, args: any) {
       return accountController.getAccounts();
     case 'addAccount':
       return accountController.addAccount(params);
+    case 'setSelectedAddress':
+      return accountController.setSelectedAddress(params);
+    case 'getSelectedAddress':
+      return accountController.getSelectedAddress();
     case 'ipc-example':
       return {
         code: 200,
@@ -36,7 +40,6 @@ function dispatchCommonEvent(event: any, args: any) {
     case 'getAccount':
       return null;
     case 'ipc-example':
-      console.log('dispatchCommonEvent########%%%%%0000', args);
       event.reply(simplexMessageEntryType.main2Render, {
         method: 'ipc-example',
         data: msgTemplate(params),

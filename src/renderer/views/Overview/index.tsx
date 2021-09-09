@@ -5,19 +5,35 @@ import { get, size } from 'lodash';
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 import './Overview.global.scss';
+import { setSelectedAddress } from '../../../MessageDuplex/handlers/renderApi';
 
-function renderAccount(accountItem: JSON) {
+function renderAccount(accountItem: JSON, selectedAddress: string) {
   const name = get(accountItem, 'name');
   const address = get(accountItem, 'address');
   const balance = get(accountItem, 'balance', 0);
   const formatAddress = `${address.substring(0, 8)}...${address.substring(
     address.length - 8
   )}`;
+
+  const handleClick = () => {
+    setSelectedAddress(address);
+  };
   return (
     <div className="accountItem" key={address}>
-      <div className="checked">
-        <CheckCircleTwoTone />
-      </div>
+      {address === selectedAddress ? (
+        <div className="checked">
+          <CheckCircleTwoTone />
+        </div>
+      ) : (
+        <div
+          className="circle"
+          role="button"
+          onClick={handleClick}
+          onKeyDown={handleClick}
+          tabIndex={0}
+          aria-label="Mute volume"
+        />
+      )}
       <div className="name">{name}</div>
       <div className="address" title={address}>
         {formatAddress}
@@ -28,7 +44,7 @@ function renderAccount(accountItem: JSON) {
 }
 
 function Overview(props: any) {
-  const { accounts: propsAccounts } = props;
+  const { accounts: propsAccounts, selectedAddress } = props;
   console.log(props);
   const match = useRouteMatch();
   const [accounts, setAccounts] = useState([]);
@@ -41,7 +57,9 @@ function Overview(props: any) {
   return (
     <div className="overview">
       {size(accounts) > 0 && (
-        <div className="accountsWrap">{accounts.map(renderAccount)} </div>
+        <div className="accountsWrap">
+          {accounts.map((item) => renderAccount(item, selectedAddress))}{' '}
+        </div>
       )}
       {size(accounts) === 0 && (
         <div className="empty">
@@ -56,5 +74,6 @@ export default connect((state: RootState, ownProps) => {
   return {
     test: state.app.test,
     accounts: state.app.accounts,
+    selectedAddress: state.app.selectedAddress,
   };
 })(Overview);

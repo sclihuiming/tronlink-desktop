@@ -6,6 +6,7 @@ export const storeFileName = 'db.json';
 export const defaultLocalData = {
   accounts: [],
   certificate: [],
+  selectAccountAddress: '',
 };
 export const simplexMessageEntryType = {
   main2Render: 'main2Render_simplex',
@@ -17,4 +18,5 @@ export const duplexMessageEntryType = {
 };
 
 export const accountsCacheKey = 'accounts_cache';
-export const cacheTTL = 60000;
+export const accountsSelectedCacheKey = 'accounts_selected_cache';
+export const cacheTTL = 0;

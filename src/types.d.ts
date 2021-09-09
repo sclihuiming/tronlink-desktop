@@ -26,7 +26,7 @@ type AddAccountParams = {
 type Response = {
   code: number;
   msg?: string;
-  data: JSON | undefined | string;
+  data?: JSON | undefined | string;
 };
 
 export { LocalData, LocalData1, AddAccountParams, Response };

@@ -4,7 +4,12 @@ import TronWeb from 'tronweb';
 import { BigNumber } from 'bignumber.js';
 import * as mainApi from '../../MessageDuplex/handlers/mainApi';
 import { encrypt } from '../../utils';
-import { getAccountsCache, setAccountsCache } from '../service/cacheService';
+import {
+  getAccountsCache,
+  getSelectedAddressCache,
+  setAccountsCache,
+  setSelectedAddressCache,
+} from '../service/cacheService';
 import { getDBInstance } from '../store/index';
 import { getTronwebInstance } from '../service/nodeService';
 
@@ -75,31 +80,50 @@ export async function addAccount(params: AddAccountParams): Promise<Response> {
   };
 }
 
+export async function getSelectedAddress() {
+  const dbInstance = await getDBInstance();
+  let selectedAddress = getSelectedAddressCache();
+  if (!selectedAddress) {
+    await dbInstance.read();
+    const tmpAddress = dbInstance.get('accounts.0.address', '').value();
+    selectedAddress = dbInstance
+      .get('selectAccountAddress', tmpAddress)
+      .value();
+  }
+  return <Response>{
+    code: 200,
+    data: selectedAddress,
+  };
+}
+
 export async function refreshAccountsData(isLoadByNetwork: boolean) {
   const dbInstance = await getDBInstance();
   const tronwebInstance = getTronwebInstance();
+  await dbInstance.read();
   const accounts = dbInstance
     .get('accounts', [])
     .map((item: JSON) => omit(item, 'privateKey'))
     .value();
+  const selectAccountAddress = await getSelectedAddress();
 
-  if (isLoadByNetwork) {
-    try {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const account of accounts) {
-        const address = get(account, 'address');
+  // eslint-disable-next-line no-restricted-syntax
+  for (const account of accounts) {
+    const address = get(account, 'address');
+    if (isLoadByNetwork) {
+      try {
         // eslint-disable-next-line no-await-in-loop
         const res = await tronwebInstance.trx.getUnconfirmedAccount(address);
         const balance = new BigNumber(get(res, 'balance', 0))
           .shiftedBy(-6)
           .toFixed();
         account.balance = balance;
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      console.error(e);
     }
   }
 
+  dbInstance.set('accounts', accounts).write();
   setAccountsCache(accounts);
   mainApi.setAccounts(accounts);
   return accounts;
@@ -114,5 +138,16 @@ export async function getAccounts(): Promise<Response> {
   return <Response>{
     code: 200,
     data: accounts,
+  };
+}
+
+export async function setSelectedAddress(address: string) {
+  const dbInstance = await getDBInstance();
+  await dbInstance.set('selectAccountAddress', address).write();
+  setSelectedAddressCache(address);
+  mainApi.setSelectedAddress(address);
+  return <Response>{
+    code: 200,
+    data: address,
   };
 }

@@ -18,5 +18,6 @@ export function setAccounts(accounts: JSON[]) {
   return send('setAccounts', accounts);
 }
 
-export const seat = 1;
-export const seat1 = 1;
+export function setSelectedAddress(address: string) {
+  return send('setSelectedAddress', address);
+}
