@@ -12,14 +12,11 @@ function dispatchEvents(event: any, args: any) {
   const params = get(args, 'params');
   switch (method) {
     case 'ipc-example':
-      console.log('dispatchEvents:', params);
       break;
     case 'setAccounts':
-      console.log('setAccounts:', params);
       store.dispatch(setAccounts(params));
       break;
     case 'setSelectedAddress':
-      console.log('setSelectedAddress:', params);
       store.dispatch(setSelectedAddress(params));
       break;
     default:
@@ -28,11 +25,9 @@ function dispatchEvents(event: any, args: any) {
 }
 
 export function bindEvents(): void {
-  console.log('bindEvents');
   ipcRenderer.on(
     simplexMessageEntryType.main2Render,
     (event: any, args: any) => {
-      console.log('bindEvents', event, args);
       dispatchEvents(event, args);
     }
   );

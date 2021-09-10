@@ -5,7 +5,6 @@ import Home from './views/Home';
 
 export default function Routes() {
   const match = useRouteMatch();
-  console.log('Routes:', match);
   return (
     <Switch>
       <Route path={`${match.path}/hello`} component={Hello} />

@@ -19,7 +19,6 @@ const AddAccount = () => {
     _: any,
     { importType }: { importType: string }
   ) => {
-    console.log(importType);
     if (type !== importType) {
       setImportType(importType);
     }

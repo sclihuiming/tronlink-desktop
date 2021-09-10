@@ -45,7 +45,6 @@ function renderAccount(accountItem: JSON, selectedAddress: string) {
 
 function Overview(props: any) {
   const { accounts: propsAccounts, selectedAddress } = props;
-  console.log(props);
   const match = useRouteMatch();
   const [accounts, setAccounts] = useState([]);
 

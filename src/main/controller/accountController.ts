@@ -18,7 +18,6 @@ async function addAccountByPrivatekey(
   name: string,
   privateKey: string
 ): Promise<Response> {
-  console.log(importType, name, privateKey);
   const dbInstance = await getDBInstance();
   const address = TronWeb.address.fromPrivateKey(privateKey);
 
@@ -51,7 +50,6 @@ async function addAccountByMnemonic(
   name: string,
   mnemonic: string
 ): Promise<Response> {
-  console.log(importType, name, mnemonic);
   return <Response>{
     code: 200,
     msg: 'not support type',

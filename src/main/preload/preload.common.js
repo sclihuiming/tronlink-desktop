@@ -19,7 +19,6 @@ window.electron = {
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
         ipcRenderer.once(channel, (event, ...args) => {
-          console.log(event);
           return func(...args);
         });
       }

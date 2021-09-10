@@ -90,7 +90,6 @@ const createWindow = async () => {
 
   // load init Data
   const db = await getDBInstance();
-  console.log(db.get('accounts').value());
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/main/docs/api/browser-window.md#using-ready-to-show-event
