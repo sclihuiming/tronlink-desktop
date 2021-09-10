@@ -1,5 +1,11 @@
+.header {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 0;
+}
+
 .logo {
-  // width: 120px;
+  width: 160px;
   height: 28px;
   margin: 16px 24px 16px 25px;
   background-image: url('../../assets/images/logo.svg');
@@ -8,7 +14,7 @@
 
   &.collapsed {
     background-image: url('../../assets/images/logo2.svg');
-    // width: 31px;
+    width: 40px;
     // height: 31px;
     border-radius: 10px;
   }
