@@ -23,10 +23,16 @@ type AddAccountParams = {
   };
 };
 
+type DappData = {
+  name: string;
+  url: string;
+  logo: string;
+};
+
 type Response = {
   code: number;
   msg?: string;
-  data?: JSON | undefined | string;
+  data?: JSON | undefined | string | [];
 };
 
-export { LocalData, LocalData1, AddAccountParams, Response };
+export { LocalData, LocalData1, AddAccountParams, Response, DappData };

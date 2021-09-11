@@ -5,7 +5,7 @@ import {
   duplexMessageEntryType,
 } from '../../constants';
 
-import { accountController } from '../../main/controller/index';
+import { accountController, dappController } from '../../main/controller/index';
 
 const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
 
@@ -23,6 +23,10 @@ function dispatchInvokeEvent(event: any, args: any) {
       return accountController.setSelectedAddress(params);
     case 'getSelectedAddress':
       return accountController.getSelectedAddress();
+    case 'getDappList':
+      return dappController.getDappList();
+    case 'addDappData':
+      return dappController.addDappData(params);
     case 'ipc-example':
       return {
         code: 200,

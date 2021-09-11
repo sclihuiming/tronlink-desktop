@@ -15,6 +15,7 @@ import './Home.global.scss';
 
 import Overview from '../Overview';
 import AddAccount from '../AddAccount';
+import Dapp from '../Dapp';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
@@ -173,6 +174,7 @@ function Home(props: any) {
                   path={`${match.path}/add-accounts`}
                   component={AddAccount}
                 />
+                <Route path={`${match.path}/dapp`} component={Dapp} />
                 <Route path={`${match.path}`} component={Overview} />
               </Switch>
             </div>

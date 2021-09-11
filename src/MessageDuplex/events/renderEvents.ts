@@ -5,6 +5,7 @@ import {
   setAccounts,
   setSelectedAddress,
 } from '../../renderer/reducers/appReducer';
+import { setDappList } from '../../renderer/reducers/dappReducer';
 import store from '../../renderer/store/index';
 
 function dispatchEvents(event: any, args: any) {
@@ -18,6 +19,9 @@ function dispatchEvents(event: any, args: any) {
       break;
     case 'setSelectedAddress':
       store.dispatch(setSelectedAddress(params));
+      break;
+    case 'setDappList':
+      store.dispatch(setDappList(params));
       break;
     default:
       break;

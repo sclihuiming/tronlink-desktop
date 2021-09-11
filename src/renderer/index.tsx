@@ -7,6 +7,7 @@ import App from './App';
 import * as renderEvents from '../MessageDuplex/events/renderEvents';
 import * as renderApi from '../MessageDuplex/handlers/renderApi';
 import { setAccounts, setSelectedAddress } from './reducers/appReducer';
+import { setDappList } from './reducers/dappReducer';
 import store from './store';
 
 class Entry {
@@ -34,6 +35,10 @@ class Entry {
 
     this.store.dispatch(setAccounts(get(accountsRes, 'data', [])));
     this.store.dispatch(setSelectedAddress(get(selectedRes, 'data', '')));
+
+    renderApi.getDappList()?.then((res) => {
+      return this.store.dispatch(setDappList(get(res, 'data', [])));
+    });
     // return this.store;
   }
 

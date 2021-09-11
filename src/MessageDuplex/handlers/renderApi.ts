@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import { AddAccountParams } from 'types';
+import { AddAccountParams, DappData } from 'types';
 import {
   simplexMessageEntryType,
   duplexMessageEntryType,
@@ -48,4 +48,12 @@ export function setSelectedAddress(address: string) {
 
 export function getSelectedAddress() {
   return sendOrInvoke('getSelectedAddress', null, true);
+}
+
+export function getDappList() {
+  return sendOrInvoke('getDappList', null, true);
+}
+
+export function addDappData(data: DappData) {
+  return sendOrInvoke('addDappData', data, true);
 }
