@@ -177,7 +177,7 @@ function Home(props: any) {
               </Switch>
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
+          <Footer style={{ textAlign: 'center', padding: '0 50px 10px 50px' }}>
             TronLink Desktop ©2021 sclihuiming@163.com
           </Footer>
         </Layout>
