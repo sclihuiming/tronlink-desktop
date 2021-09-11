@@ -19,40 +19,93 @@ import AddAccount from '../AddAccount';
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
 
+type RouterData = {
+  title: string;
+  routerPath: string;
+  parentPath?: string;
+};
+
 const routerTree = [
   {
+    title: '概览',
+    routerPath: '/home',
+  },
+  {
+    title: '账户管理',
     routerPath: '/home/manager-accounts',
     parentPath: 'accountManager',
   },
   {
+    title: '增加账户',
     routerPath: '/home/add-accounts',
     parentPath: 'accountManager',
   },
   {
+    title: '增加ledger账户',
     routerPath: '/home/add-ledger-accounts',
     parentPath: 'accountManager',
   },
 ];
+
+const headerRouterTrees: RouterData[] = [
+  {
+    title: '功能',
+    routerPath: '/home',
+  },
+  {
+    title: 'DApp',
+    routerPath: '/home/dapp',
+  },
+  {
+    title: '关于',
+    routerPath: '/home/about',
+  },
+];
+
+function renderRouter(routerTrees: RouterData[]) {
+  return (
+    <>
+      {routerTrees.map((_routerInfo) => {
+        return (
+          <Menu.Item key={get(_routerInfo, 'routerPath')}>
+            <Link to={get(_routerInfo, 'routerPath')}>
+              {get(_routerInfo, 'title')}
+            </Link>
+          </Menu.Item>
+        );
+      })}
+    </>
+  );
+}
 
 function Home(props: any) {
   const match = useRouteMatch();
   const pathname = get(props, 'location.pathname', '');
   const [collapsed, onCollapse] = useState(false);
   const [selectedKey, setSelectedKey] = useState(pathname);
-  const [headerSelectedKey, setHeaderSelectedKey] = useState();
+  const [headerSelectedKey, setHeaderSelectedKey] = useState('/home');
   const [openKey, setOpenKey] = useState([] as string[]);
 
   useEffect(() => {}, []);
 
   useEffect(() => {
     const item = find(routerTree, (info) => pathname === info.routerPath);
-    const parentPath: string = get(item, 'parentPath', '');
-    if (size(parentPath) > 0) {
-      const parentPathArr: string[] = [];
-      parentPathArr.push(parentPath);
-      setOpenKey(parentPathArr);
+    if (item) {
+      const parentPath: string = get(item, 'parentPath', '');
+      if (size(parentPath) > 0) {
+        const parentPathArr: string[] = [];
+        parentPathArr.push(parentPath);
+        setOpenKey(parentPathArr);
+      }
+      setSelectedKey(pathname);
     }
-    setSelectedKey(pathname);
+    const headerItem = find(
+      headerRouterTrees,
+      (info) => pathname === info.routerPath
+    );
+    if (headerItem) {
+      setHeaderSelectedKey(pathname);
+    }
   }, [pathname]);
 
   const onOpenChange: any = (openKeys: string[]) => {
@@ -63,46 +116,51 @@ function Home(props: any) {
     <Layout style={{ minHeight: '100vh' }}>
       <Header className="header">
         <div className={`logo ${collapsed ? 'collapsed' : ''}`} />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1">功能</Menu.Item>
-          <Menu.Item key="2">DApp</Menu.Item>
-          <Menu.Item key="3">关于</Menu.Item>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={[headerSelectedKey]}
+          selectedKeys={[headerSelectedKey]}
+        >
+          {renderRouter(headerRouterTrees)}
         </Menu>
       </Header>
 
       <Layout className="site-layout">
-        <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-          <Menu
-            theme="dark"
-            defaultSelectedKeys={[selectedKey]}
-            selectedKeys={[selectedKey]}
-            openKeys={openKey}
-            mode="inline"
-            // onSelect={onSelect}
-            onOpenChange={onOpenChange}
-          >
-            <Menu.Item key="/home" icon={<PieChartOutlined />}>
-              <Link to={`${match.url}`}>概览</Link>
-            </Menu.Item>
-            <SubMenu
-              key="accountManager"
-              icon={<UserOutlined />}
-              title="账户管理"
+        {headerSelectedKey === '/home' && (
+          <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+            <Menu
+              theme="dark"
+              defaultSelectedKeys={[selectedKey]}
+              selectedKeys={[selectedKey]}
+              openKeys={openKey}
+              mode="inline"
+              // onSelect={onSelect}
+              onOpenChange={onOpenChange}
             >
-              <Menu.Item key="/home/manager-accounts">
-                <Link to={`${match.url}/manager-accounts`}>管理账户</Link>
+              <Menu.Item key="/home" icon={<PieChartOutlined />}>
+                <Link to={`${match.url}`}>概览</Link>
               </Menu.Item>
-              <Menu.Item key="/home/add-accounts">
-                <Link to={`${match.url}/add-accounts`}>增加账户</Link>
-              </Menu.Item>
-              <Menu.Item key="/home/add-ledger-accounts">
-                <Link to={`${match.url}/add-ledger-accounts`}>
-                  ledger添加账户
-                </Link>
-              </Menu.Item>
-            </SubMenu>
-          </Menu>
-        </Sider>
+              <SubMenu
+                key="accountManager"
+                icon={<UserOutlined />}
+                title="账户管理"
+              >
+                <Menu.Item key="/home/manager-accounts">
+                  <Link to={`${match.url}/manager-accounts`}>管理账户</Link>
+                </Menu.Item>
+                <Menu.Item key="/home/add-accounts">
+                  <Link to={`${match.url}/add-accounts`}>增加账户</Link>
+                </Menu.Item>
+                <Menu.Item key="/home/add-ledger-accounts">
+                  <Link to={`${match.url}/add-ledger-accounts`}>
+                    ledger添加账户
+                  </Link>
+                </Menu.Item>
+              </SubMenu>
+            </Menu>
+          </Sider>
+        )}
         <Layout>
           <Content style={{ margin: '10px' }}>
             <div
