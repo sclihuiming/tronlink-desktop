@@ -43,3 +43,13 @@
     }
   }
 }
+
+.webviewContainer {
+  margin: -24px;
+
+  .webviewWrap {
+    webview {
+      height: 83vh;
+    }
+  }
+}

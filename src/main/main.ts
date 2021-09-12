@@ -82,6 +82,7 @@ const createWindow = async () => {
       preload: path.join(__dirname, '../preload/preload.common.js'),
       contextIsolation: false,
       nodeIntegration: true,
+      webviewTag: true,
     },
   });
 
