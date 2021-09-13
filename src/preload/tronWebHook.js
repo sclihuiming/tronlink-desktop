@@ -62,7 +62,8 @@ function createTronWebInstance() {
   return tronWebLocal;
 }
 
-function setHeaderInternal(headers = {}, tronWeb) {
+function setHeaderInternal(args, tronWeb) {
+  const [headers = {}] = args;
   tronWeb.fullNode.configure(tronWeb.fullNode.host, headers);
   tronWeb.solidityNode.configure(tronWeb.solidityNode.host, headers);
   tronWeb.eventServer.configure(tronWeb.eventServer.host, headers);
@@ -144,7 +145,7 @@ async function createTronInstance() {
   tronWeb.eventServer.configure(nodeInfo.eventServer);
 
   // Binding internal methods
-  tronWeb.setHeader = (...args) => setHeaderInternal(...args, tronWeb);
+  tronWeb.setHeader = (...args) => setHeaderInternal(args, tronWeb);
   tronWeb.trx.sign = (...args) => {
     return signInternal(args, tronWeb);
   };
