@@ -1,6 +1,9 @@
 const { ipcRenderer } = require('electron');
 // const { getDBInstance } = require('../store/index');
-const { createTronWebInstance } = require('./tronWebHook');
+const {
+  createTronWebInstance,
+  injectTronWebPropertyToWindow,
+} = require('./tronWebHook');
 
 window.electron = {
   ipcRenderer: {
@@ -26,7 +29,8 @@ window.electron = {
   },
 };
 
-window.tronWeb = createTronWebInstance();
+// window.tronWeb = createTronWebInstance();
+injectTronWebPropertyToWindow();
 
 // contextBridge.exposeInMainWorld('electron', {
 //   ipcRenderer: {

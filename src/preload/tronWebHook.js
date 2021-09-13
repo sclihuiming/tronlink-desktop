@@ -173,8 +173,8 @@ function setGlobalProvider(_tronWebProvider, _tronLinkProvider) {
 
 function bindEvents() {}
 
-function injectTronWebPropertyToWindow() {
-  const { tronWeb, tronLink } = createTronInstance();
+async function injectTronWebPropertyToWindow() {
+  const { tronWeb, tronLink } = await createTronInstance();
   setGlobalProvider(tronWeb, tronLink);
   window.dispatchEvent(new Event('tronLink#initialized'));
 }

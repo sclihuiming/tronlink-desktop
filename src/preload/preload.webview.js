@@ -1,5 +1,9 @@
 const { contextBridge } = require('electron');
-const { createTronWebInstance } = require('./tronWebHook');
+const {
+  createTronWebInstance,
+  injectTronWebPropertyToWindow,
+} = require('./tronWebHook');
 
 // contextIsolation=false
-window.tronWeb = createTronWebInstance();
+// window.tronWeb = createTronWebInstance();
+injectTronWebPropertyToWindow();

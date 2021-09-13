@@ -8,7 +8,7 @@ export * as dappController from './dappController';
 export * as nodeController from './nodeController';
 
 export async function getInitParams(): Promise<InjectData> {
-  const accountInfo = getSelectedAccountInfo();
+  const accountInfo = await getSelectedAccountInfo();
   const nodeInfo = await getCurrentNodeInfo();
   const importType = get(accountInfo, 'importType');
   let type = 1;
