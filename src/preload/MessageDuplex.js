@@ -21,16 +21,22 @@ function sendOrInvoke(method, params, ack = false) {
   return send(args);
 }
 
-export function getInitParams() {
+function getInitParams() {
   return sendOrInvoke('getInitParams', null, true);
 }
 
-export function signTransaction(transaction) {
+function signTransaction(transaction) {
   return sendOrInvoke('signTransaction', transaction, true);
 }
 
-export function bindEvents(dispatchEvents) {
+function bindEvents(dispatchEvents) {
   ipcRenderer.on('main2Render_simplex', (event, args) => {
     dispatchEvents(event, args);
   });
 }
+
+module.exports = {
+  getInitParams,
+  signTransaction,
+  bindEvents,
+};

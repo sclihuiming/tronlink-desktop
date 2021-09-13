@@ -1,5 +1,5 @@
-import { AddAccountParams, Response } from 'types';
-import { get, omit, size } from 'lodash';
+import { AddAccountParams } from 'types';
+import { find, get, omit, size } from 'lodash';
 import TronWeb from 'tronweb';
 import { BigNumber } from 'bignumber.js';
 import * as mainApi from '../../MessageDuplex/handlers/mainApi';
@@ -11,13 +11,13 @@ import {
   setSelectedAddressCache,
 } from '../service/cacheService';
 import { getDBInstance } from '../store/index';
-import { getTronwebInstance } from '../service/nodeService';
+import { getTronwebInstance } from './nodeController';
 
 async function addAccountByPrivatekey(
   importType: string,
   name: string,
   privateKey: string
-): Promise<Response> {
+): Promise<any> {
   const dbInstance = await getDBInstance();
   const address = TronWeb.address.fromPrivateKey(privateKey);
 
@@ -26,10 +26,7 @@ async function addAccountByPrivatekey(
     .find((item: JSON) => item.address === address)
     .value();
   if (size(existAccount) > 0) {
-    return <Response>{
-      code: 1001,
-      msg: '账户已经存在',
-    };
+    return new Error('账户已经存在');
   }
   const encodePrivateKey = encrypt(privateKey, '12345678');
   const accountInfo = {
@@ -39,24 +36,18 @@ async function addAccountByPrivatekey(
     privateKey: encodePrivateKey,
   };
   dbInstance.get('accounts', []).push(accountInfo).write();
-  return <Response>{
-    code: 200,
-    msg: '成功保存',
-  };
+  return '成功保存';
 }
 
 async function addAccountByMnemonic(
   importType: string,
   name: string,
   mnemonic: string
-): Promise<Response> {
-  return <Response>{
-    code: 200,
-    msg: 'not support type',
-  };
+): Promise<any> {
+  return new Error('not support type');
 }
 
-export async function addAccount(params: AddAccountParams): Promise<Response> {
+export async function addAccount(params: AddAccountParams): Promise<any> {
   const importType: string = get(params, 'importType', '');
   if (importType === 'privateKey') {
     return addAccountByPrivatekey(
@@ -72,10 +63,7 @@ export async function addAccount(params: AddAccountParams): Promise<Response> {
       params.user.mnemonic as string
     );
   }
-  return <Response>{
-    code: 1000,
-    msg: 'not support type',
-  };
+  return new Error('not support type');
 }
 
 export async function getSelectedAddress() {
@@ -88,10 +76,7 @@ export async function getSelectedAddress() {
       .get('selectAccountAddress', tmpAddress)
       .value();
   }
-  return <Response>{
-    code: 200,
-    data: selectedAddress,
-  };
+  return selectedAddress;
 }
 
 export async function refreshAccountsData(isLoadByNetwork: boolean) {
@@ -102,7 +87,6 @@ export async function refreshAccountsData(isLoadByNetwork: boolean) {
     .get('accounts', [])
     .map((item: JSON) => omit(item, 'privateKey'))
     .value();
-  const selectAccountAddress = await getSelectedAddress();
 
   // eslint-disable-next-line no-restricted-syntax
   for (const account of accounts) {
@@ -124,19 +108,22 @@ export async function refreshAccountsData(isLoadByNetwork: boolean) {
   dbInstance.set('accounts', accounts).write();
   setAccountsCache(accounts);
   mainApi.setAccounts(accounts);
+  dbInstance.write();
   return accounts;
 }
 
-export async function getAccounts(): Promise<Response> {
+export async function getAccounts(): Promise<any> {
   let accounts: any = await getAccountsCache();
   if (size(accounts) === 0) {
     accounts = await refreshAccountsData(true);
   }
+  return accounts;
+}
 
-  return <Response>{
-    code: 200,
-    data: accounts,
-  };
+export async function getSelectedAccountInfo() {
+  const selectedAddress = await getSelectedAddress();
+  const accounts = await getAccounts();
+  return find(accounts, (account) => account.address === selectedAddress);
 }
 
 export async function setSelectedAddress(address: string) {
@@ -144,8 +131,5 @@ export async function setSelectedAddress(address: string) {
   await dbInstance.set('selectAccountAddress', address).write();
   setSelectedAddressCache(address);
   mainApi.setSelectedAddress(address);
-  return <Response>{
-    code: 200,
-    data: address,
-  };
+  return address;
 }

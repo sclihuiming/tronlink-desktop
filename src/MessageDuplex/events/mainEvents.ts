@@ -4,10 +4,29 @@ import {
   simplexMessageEntryType,
   duplexMessageEntryType,
 } from '../../constants';
+import { Response } from '../../types';
 
-import { accountController, dappController } from '../../main/controller/index';
+import {
+  accountController,
+  dappController,
+  getInitParams,
+} from '../../main/controller/index';
 
-const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
+const makeResponseData = async (dataP: Promise<any>) => {
+  let msg = '';
+  let data = '';
+  try {
+    data = await dataP;
+  } catch (error) {
+    msg = error.message;
+  }
+
+  return <Response>{
+    code: 200,
+    data,
+    msg,
+  };
+};
 
 function dispatchInvokeEvent(event: any, args: any) {
   const method: string = get(args, 'method');
@@ -16,22 +35,19 @@ function dispatchInvokeEvent(event: any, args: any) {
     case 'getAccount':
       return null;
     case 'getAccounts':
-      return accountController.getAccounts();
+      return makeResponseData(accountController.getAccounts());
     case 'addAccount':
-      return accountController.addAccount(params);
+      return makeResponseData(accountController.addAccount(params));
     case 'setSelectedAddress':
-      return accountController.setSelectedAddress(params);
+      return makeResponseData(accountController.setSelectedAddress(params));
     case 'getSelectedAddress':
-      return accountController.getSelectedAddress();
+      return makeResponseData(accountController.getSelectedAddress());
     case 'getDappList':
-      return dappController.getDappList();
+      return makeResponseData(dappController.getDappList());
     case 'addDappData':
-      return dappController.addDappData(params);
-    case 'ipc-example':
-      return {
-        code: 200,
-        data: msgTemplate(params),
-      };
+      return makeResponseData(dappController.addDappData(params));
+    case 'getInitParams':
+      return makeResponseData(getInitParams());
     default:
       return null;
   }
@@ -46,7 +62,7 @@ function dispatchCommonEvent(event: any, args: any) {
     case 'ipc-example':
       event.reply(simplexMessageEntryType.main2Render, {
         method: 'ipc-example',
-        data: msgTemplate(params),
+        data: 'test-example',
       });
       return null;
     default:

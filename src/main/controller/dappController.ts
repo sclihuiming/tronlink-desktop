@@ -34,16 +34,11 @@ const dappList: DappData[] = [
   },
 ];
 
-export async function addDappData(data: DappData): Promise<Response> {
+export async function addDappData(data: DappData): Promise<any> {
   mainApi.setDappList(dappList);
-  return <Response>{
-    code: 200,
-  };
+  return null;
 }
 
-export async function getDappList(): Promise<Response> {
-  return <Response>{
-    code: 200,
-    data: dappList,
-  };
+export async function getDappList(): Promise<any> {
+  return dappList;
 }

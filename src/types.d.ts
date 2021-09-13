@@ -15,7 +15,7 @@ type LocalData1 = {
 };
 
 type AddAccountParams = {
-  importType: 'privateKey' | 'mnemonic';
+  importType: 'privateKey' | 'mnemonic' | 'ledger';
   user: {
     name: string;
     privateKey?: string;
