@@ -87,7 +87,8 @@ const createWindow = async () => {
   });
 
   // console.log('resolveHtmlPath:', resolveHtmlPath('index.html'));
-  mainWindow.loadURL(resolveHtmlPath('index.html'));
+  // mainWindow.loadURL(resolveHtmlPath('index.html'));
+  mainWindow.loadURL('http://123.56.166.152:18096/#/home');
 
   // load init Data
   const db = await getDBInstance();

@@ -1,13 +1,14 @@
 module.exports = {
-  injectPromise: (func, ...args) => {
+  injectPromise: (func, tronWeb, ...args) => {
     return new Promise((resolve, reject) => {
-      func(...args, (err, res) => {
+      args.push((err, res) => {
         if (err) {
           reject(err);
         } else {
           resolve(res);
         }
       });
+      func(args, tronWeb);
     });
   },
 };

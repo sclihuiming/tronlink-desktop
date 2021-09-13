@@ -69,9 +69,9 @@ function setHeaderInternal(args, tronWeb) {
   tronWeb.eventServer.configure(tronWeb.eventServer.host, headers);
 }
 
-function signInternal(params, tronWebIns) {
+function signInternal(params, tronWebSign) {
   const [transaction] = params;
-  let [, privateKey = priKey, useTronHeader = true, callback] = params;
+  let [, privateKey, useTronHeader = true, callback] = params;
   if (Object.prototype.toString.call(privateKey).slice(8, -1) === 'Function') {
     callback = privateKey;
     privateKey = priKey;
@@ -85,24 +85,21 @@ function signInternal(params, tronWebIns) {
   }
 
   if (!callback) {
-    return injectPromise(signInternal, transaction, privateKey, useTronHeader);
+    return injectPromise(
+      signInternal,
+      tronWebSign,
+      transaction,
+      privateKey,
+      useTronHeader
+    );
   }
 
   if (privateKey) {
-    return tronWebIns.trx.sign(
-      transaction,
-      privateKey,
-      useTronHeader,
-      callback
-    );
+    return tronWebSign(transaction, privateKey, useTronHeader, callback);
   }
 
   if (!transaction) {
     return callback('Invalid transaction provided');
-  }
-
-  if (!tronWebIns.ready) {
-    return callback('User has not unlocked wallet');
   }
 
   // eslint-disable-next-line no-underscore-dangle
@@ -146,8 +143,9 @@ async function createTronInstance() {
 
   // Binding internal methods
   tronWeb.setHeader = (...args) => setHeaderInternal(args, tronWeb);
+  const tronWebSign = tronWeb.trx.sign.bind(tronWeb);
   tronWeb.trx.sign = (...args) => {
-    return signInternal(args, tronWeb);
+    return signInternal(args, tronWebSign);
   };
 
   tronWeb.ready = true;
