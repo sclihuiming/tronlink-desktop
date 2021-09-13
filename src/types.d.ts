@@ -35,4 +35,23 @@ type Response = {
   data?: JSON | undefined | string | [];
 };
 
-export { LocalData, LocalData1, AddAccountParams, Response, DappData };
+type InjectData = {
+  accountInfo: {
+    address: string;
+    name: string;
+    type: number;
+  };
+  nodeInfo: {
+    fullNode: string;
+    eventServer: string;
+  };
+};
+
+export {
+  LocalData,
+  LocalData1,
+  AddAccountParams,
+  Response,
+  DappData,
+  InjectData,
+};
