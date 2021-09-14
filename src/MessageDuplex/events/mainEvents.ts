@@ -10,6 +10,7 @@ import {
   accountController,
   dappController,
   getInitParams,
+  transactionController,
 } from '../../main/controller/index';
 
 const makeResponseData = async (dataP: Promise<any>) => {
@@ -54,6 +55,7 @@ function dispatchInvokeEvent(event: any, args: any) {
 }
 
 function dispatchCommonEvent(event: any, args: any) {
+  console.log('dispatchInvokeEvent', event.sender.getURL());
   const method: string = get(args, 'method');
   const params = get(args, 'params');
   switch (method) {
@@ -65,6 +67,8 @@ function dispatchCommonEvent(event: any, args: any) {
         data: 'test-example',
       });
       return null;
+    case 'signTransaction':
+      return transactionController.signTransaction(event, params);
     default:
       return null;
   }

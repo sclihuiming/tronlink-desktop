@@ -1,4 +1,8 @@
 const { ipcRenderer } = require('electron');
+const { nanoid } = require('nanoid');
+const { get } = require('lodash');
+
+const outgoing = new Map();
 
 function send(...args) {
   ipcRenderer.send('render2Main_simplex', ...args);
@@ -26,12 +30,37 @@ function getInitParams() {
 }
 
 function signTransaction(transaction) {
-  return sendOrInvoke('signTransaction', transaction, true);
+  return new Promise((resolve, reject) => {
+    const messageID = nanoid();
+
+    outgoing.set(messageID, resolve);
+    sendOrInvoke(
+      'signTransaction',
+      {
+        transaction,
+        messageID,
+      },
+      false
+    );
+  });
 }
 
 function bindEvents(dispatchEvents) {
   ipcRenderer.on('main2Render_simplex', (event, args) => {
-    dispatchEvents(event, args);
+    const method = get(args, 'method');
+    const params = get(args, 'params', {});
+    switch (method) {
+      case 'signTransactionReply':
+        // eslint-disable-next-line no-case-declarations
+        const { messageID, error, res } = params;
+        if (!outgoing.has(messageID)) return;
+        if (error) outgoing.get(messageID)(Promise.reject(res));
+        else outgoing.get(messageID)(res);
+        outgoing.delete(messageID);
+        break;
+      default:
+        dispatchEvents(event, args);
+    }
   });
 }
 

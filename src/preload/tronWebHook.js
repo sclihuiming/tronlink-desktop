@@ -1,7 +1,11 @@
 /* eslint-disable no-param-reassign */
 const { get } = require('lodash');
 const TronWeb = require('tronweb');
-const { getInitParams, signTransaction } = require('./MessageDuplex');
+const {
+  getInitParams,
+  signTransaction,
+  bindEvents,
+} = require('./MessageDuplex');
 const { ProxiesProvider } = require('./ProxiesProvider');
 const { injectPromise } = require('./utils');
 
@@ -170,10 +174,20 @@ function setGlobalProvider(_tronWebProvider, _tronLinkProvider) {
   });
 }
 
-function bindEvents() {}
+function dispatchEvents(event, args) {
+  const method = get(args, 'method');
+  const params = get(args, 'params');
+  switch (method) {
+    case 'signTransactionReply':
+      break;
+    default:
+      break;
+  }
+}
 
 async function injectTronWebPropertyToWindow() {
   const { tronWeb, tronLink } = await createTronInstance();
+  bindEvents(dispatchEvents);
   setGlobalProvider(tronWeb, tronLink);
   window.dispatchEvent(new Event('tronLink#initialized'));
 }

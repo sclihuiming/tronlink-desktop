@@ -1,5 +1,12 @@
 # TronLink-desktop
 
+## todo
+
+- [x] 账户管理
+- [ ] 节点管理
+- [x] Page Hook 注入
+- [ ] 签名模态框
+
 ## To Use
 
 To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
