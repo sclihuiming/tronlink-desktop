@@ -15,6 +15,7 @@ import {
   createMainWindow,
   activateWindow,
 } from './controller/windowController';
+import * as mainTool from './mainTool';
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -27,6 +28,9 @@ const isDevelopment =
 if (isDevelopment) {
   require('electron-debug')();
 }
+
+// load init Data
+mainTool.run();
 
 /**
  * Add event listeners...

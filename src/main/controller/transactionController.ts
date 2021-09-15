@@ -3,6 +3,7 @@
 import { get } from 'lodash';
 import { nanoid } from 'nanoid';
 import { simplexMessageEntryType } from '../../constants';
+import { createSignModalWindow } from './windowController';
 
 const requestMap = new Map();
 const transactionQueue: {
@@ -53,6 +54,7 @@ export async function signTransaction(event: any, data: any) {
   });
 
   // open new window
+  createSignModalWindow();
 }
 
 export function getTransaction() {

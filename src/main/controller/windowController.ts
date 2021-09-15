@@ -6,9 +6,9 @@ import { autoUpdater } from 'electron-updater';
 import { addWindow, deleteWindow } from '../store/windowManager';
 import MenuBuilder from '../menu';
 import { resolveHtmlPath } from '../../utils';
-import * as mainTool from '../mainTool';
 
 let mainWindow: BrowserWindow | null = null;
+let modalWindow: BrowserWindow | null = null;
 
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
@@ -28,6 +28,43 @@ export default class AppUpdater {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
+  }
+}
+
+export function createModalWindow(url: string, parentWindow: BrowserWindow) {
+  if (modalWindow) {
+    modalWindow.close();
+    deleteWindow(modalWindow);
+    modalWindow = null;
+  }
+
+  modalWindow = new BrowserWindow({
+    parent: parentWindow,
+    modal: true,
+    show: false,
+    webPreferences: {
+      contextIsolation: false,
+      nodeIntegration: true,
+    },
+  });
+  modalWindow.loadURL(url);
+  modalWindow.once('ready-to-show', () => {
+    if (modalWindow) {
+      modalWindow.show();
+      modalWindow.focus();
+    }
+  });
+
+  modalWindow.on('closed', () => {
+    deleteWindow(<BrowserWindow>modalWindow);
+    modalWindow = null;
+  });
+}
+
+export function createSignModalWindow() {
+  const url = `${resolveHtmlPath('index.html')}?sign=true`;
+  if (mainWindow) {
+    createModalWindow(url, mainWindow);
   }
 }
 
@@ -77,9 +114,6 @@ export async function createMainWindow() {
       mainWindow.focus();
     }
   });
-
-  // load init Data
-  mainTool.run();
 
   addWindow(mainWindow);
 
