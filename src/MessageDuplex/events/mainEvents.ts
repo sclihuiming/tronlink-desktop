@@ -49,6 +49,8 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(dappController.addDappData(params));
     case 'getInitParams':
       return makeResponseData(getInitParams());
+    case 'getTransactions':
+      return makeResponseData(transactionController.getTransactions());
     default:
       return null;
   }

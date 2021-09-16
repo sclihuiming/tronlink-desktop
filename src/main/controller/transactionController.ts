@@ -1,9 +1,11 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
-import { get } from 'lodash';
+import { get, omit, size } from 'lodash';
 import { nanoid } from 'nanoid';
-import { simplexMessageEntryType } from '../../constants';
+import { REFER_ABI, simplexMessageEntryType } from '../../constants';
 import { createSignModalWindow } from './windowController';
+import { getAbiCode, getTronwebInstance } from './nodeController';
+import { decodeParams } from '../../utils';
 
 const requestMap = new Map();
 const transactionQueue: {
@@ -57,6 +59,43 @@ export async function signTransaction(event: any, data: any) {
   createSignModalWindow();
 }
 
-export function getTransaction() {
-  return transactionQueue;
+export async function getTransactions() {
+  const target = transactionQueue[size(transactionQueue) - 1];
+  const transaction = get(target, 'data', {});
+  transaction.hostname = target.hostname;
+  transaction.origin = target.origin;
+
+  try {
+    const tronWebInstance = getTronwebInstance();
+    let contractAddress = get(
+      transaction,
+      'transaction.input.contract_address',
+      ''
+    );
+    const functionSelector = get(
+      transaction,
+      'transaction.input.function_selector'
+    );
+    const parameter = get(transaction, 'transaction.input.parameter');
+    let functionName;
+    const match = String(functionSelector).match(/[\w-]+/);
+    if (typeof match === 'object') {
+      functionName = get(match, '0');
+      transaction.functionName = functionName;
+    }
+    let abi = REFER_ABI;
+    if (contractAddress) {
+      contractAddress = tronWebInstance.address.fromHex(contractAddress);
+      abi = await getAbiCode(contractAddress);
+      const args = decodeParams(parameter, abi, functionSelector);
+      transaction.args = args;
+    }
+    transaction.contractType = get(
+      transaction,
+      'transaction.transaction.raw_data.contract.0.type'
+    );
+  } catch (error) {
+    console.error('getTransactions error:', error);
+  }
+  return transaction;
 }

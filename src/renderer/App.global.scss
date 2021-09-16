@@ -1,0 +1,32 @@
+.scroll {
+  overflow: auto;
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background: #c2c8d5;
+      position: relative;
+      left: -5px;
+    }
+    scrollbar-color: transparent #c2c8d5;
+    scrollbar-width: thin;
+  }
+
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: transparent;
+    position: relative;
+    left: -5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  scrollbar-color: transparent #c2c8d5;
+  scrollbar-width: thin;
+}

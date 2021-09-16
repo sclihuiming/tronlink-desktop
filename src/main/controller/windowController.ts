@@ -42,6 +42,8 @@ export function createModalWindow(url: string, parentWindow: BrowserWindow) {
     parent: parentWindow,
     modal: true,
     show: false,
+    width: 660,
+    height: 600,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,

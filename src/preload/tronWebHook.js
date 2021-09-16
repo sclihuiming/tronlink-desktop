@@ -9,6 +9,9 @@ const {
 const { ProxiesProvider } = require('./ProxiesProvider');
 const { injectPromise } = require('./utils');
 
+// 代理方法
+const proxiesMethods = {};
+
 const priKey =
   '0c6e219d4c53649a14c2613c3a123a7b084d7c8caf67325ed8e2fb137fbcc943';
 
@@ -134,9 +137,20 @@ async function createTronInstance() {
     new ProxiesProvider(),
     new ProxiesProvider()
   );
+  proxiesMethods.setAddress = tronWeb.setAddress.bind(tronWeb);
+
+  [
+    'setPrivateKey',
+    'setAddress',
+    'setFullNode',
+    'setSolidityNode',
+    'setEventServer',
+  ].forEach((method) => {
+    tronWeb[method] = () => new Error('TronLink has disabled this method');
+  });
 
   // setAddress
-  tronWeb.setAddress(accountInfo.address);
+  proxiesMethods.setAddress(accountInfo.address);
   tronWeb.defaultAddress.name = accountInfo.name;
   tronWeb.defaultAddress.type = accountInfo.type;
 

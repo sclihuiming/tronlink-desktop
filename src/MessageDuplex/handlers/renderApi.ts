@@ -57,3 +57,7 @@ export function getDappList() {
 export function addDappData(data: DappData) {
   return sendOrInvoke('addDappData', data, true);
 }
+
+export function getTransactions() {
+  return sendOrInvoke('getTransactions', null, true);
+}

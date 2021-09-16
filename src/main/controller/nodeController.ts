@@ -54,6 +54,11 @@ export function getTronwebInstance() {
   return tronWebInstance;
 }
 
+export async function getAbiCode(contractAddress: string) {
+  const contract = await tronWebInstance.contract().at(contractAddress);
+  return contract.abi;
+}
+
 async function initTronwebInterval() {
   if (!tronWebInstance) {
     const nodeInfo = await getCurrentNodeInfo();
