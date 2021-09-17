@@ -38,13 +38,14 @@ const AddAccount = () => {
   const onFinish = async (values: AddAccountParams) => {
     message.loading({ content: '正在保存...', key });
     const res = await renderApi.addAccount(values);
+    console.log('onFinishonFinish', res);
     if (res.code === 200) {
       setTimeout(() => {
-        message.success({ content: res.msg, key, duration: 2 });
+        message.success({ content: res.data, key, duration: 2 });
       }, 1000);
     } else {
       setTimeout(() => {
-        message.error({ content: res.msg, key, duration: 2 });
+        message.error({ content: res.msg || '...', key, duration: 2 });
       }, 1000);
     }
   };

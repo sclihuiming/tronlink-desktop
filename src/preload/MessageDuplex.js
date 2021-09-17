@@ -49,13 +49,14 @@ function bindEvents(dispatchEvents) {
   ipcRenderer.on('main2Render_simplex', (event, args) => {
     const method = get(args, 'method');
     const params = get(args, 'params', {});
+    console.log('bindEvents:', method, params);
     switch (method) {
       case 'signTransactionReply':
         // eslint-disable-next-line no-case-declarations
-        const { messageID, error, res } = params;
+        const { messageID, error, data } = params;
         if (!outgoing.has(messageID)) return;
-        if (error) outgoing.get(messageID)(Promise.reject(res));
-        else outgoing.get(messageID)(res);
+        if (error) outgoing.get(messageID)(Promise.reject(data));
+        else outgoing.get(messageID)(data);
         outgoing.delete(messageID);
         break;
       default:

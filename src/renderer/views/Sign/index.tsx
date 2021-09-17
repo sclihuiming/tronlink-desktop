@@ -3,13 +3,19 @@ import { connect } from 'react-redux';
 import { RootState } from 'renderer/store';
 import { get, size } from 'lodash';
 import { Spin, Button } from 'antd';
-import { getTransactions } from '../../../MessageDuplex/handlers/renderApi';
+import {
+  getTransactions,
+  acceptConfirmation,
+  rejectConfirmation,
+} from '../../../MessageDuplex/handlers/renderApi';
 
 import './Sign.global.scss';
 
 function Sign() {
   const [transaction, setTransaction] = useState();
   const [loading, setLoading] = useState(false);
+  const [rejectLoading, setRejectLoading] = useState(false);
+  const [acceptLoading, setAcceptLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -25,6 +31,7 @@ function Sign() {
   const input = get(transaction, 'transaction.input');
   const functionName = get(transaction, 'functionName');
   const args = get(transaction, 'args', []);
+  const messageID = get(transaction, 'messageID', '');
   let rawDataHex = get(transaction, 'transaction.transaction.raw_data_hex', '');
   if (typeof input === 'string') {
     rawDataHex = get(transaction, 'transaction.transaction', '').replace(
@@ -32,6 +39,20 @@ function Sign() {
       ''
     );
   }
+
+  const acceptFunc = async () => {
+    setAcceptLoading(true);
+    const res = await acceptConfirmation(messageID);
+    console.log('acceptFunc', res);
+
+    setAcceptLoading(false);
+  };
+
+  const rejectFunc = async () => {
+    setRejectLoading(true);
+    await rejectConfirmation(messageID);
+    setRejectLoading(false);
+  };
   return (
     <div className="signWrap">
       <div className="header">
@@ -72,10 +93,21 @@ function Sign() {
         </div>
       </Spin>
       <div className="btnWrap">
-        <Button shape="round" size="large">
+        <Button
+          shape="round"
+          size="large"
+          loading={rejectLoading}
+          onClick={() => rejectFunc()}
+        >
           拒绝
         </Button>
-        <Button type="primary" shape="round" size="large">
+        <Button
+          type="primary"
+          shape="round"
+          size="large"
+          loading={acceptLoading}
+          onClick={() => acceptFunc()}
+        >
           签名
         </Button>
       </div>

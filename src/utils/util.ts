@@ -41,3 +41,12 @@ export function encrypt(encodedStr: string, key: string) {
 
   return crypted;
 }
+
+export function decrypt(data: string, key: string) {
+  const decipher = crypto.createDecipher(encryptionAlgorithm, key);
+
+  let decrypted = decipher.update(data, 'hex', 'utf8');
+  decrypted += decipher.final('utf8');
+
+  return decrypted;
+}

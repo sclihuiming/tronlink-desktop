@@ -5,7 +5,7 @@ export const storePath = join(__dirname, '../../data');
 export const storeFileName = 'db.json';
 export const defaultLocalData = {
   accounts: [],
-  certificate: [],
+  certificate: {},
   selectAccountAddress: '',
 };
 export const simplexMessageEntryType = {
@@ -19,6 +19,7 @@ export const duplexMessageEntryType = {
 
 export const accountsCacheKey = 'accounts_cache';
 export const accountsSelectedCacheKey = 'accounts_selected_cache';
+export const authenticationKey = 'authentication_key';
 export const cacheTTL = 0;
 
 export const REFER_ABI = [

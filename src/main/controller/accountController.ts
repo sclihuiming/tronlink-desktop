@@ -13,59 +13,6 @@ import {
 import { getDBInstance } from '../store/index';
 import { getTronwebInstance } from './nodeController';
 
-async function addAccountByPrivatekey(
-  importType: string,
-  name: string,
-  privateKey: string
-): Promise<any> {
-  const dbInstance = await getDBInstance();
-  const address = TronWeb.address.fromPrivateKey(privateKey);
-
-  const existAccount = dbInstance
-    .get('accounts', [])
-    .find((item: JSON) => item.address === address)
-    .value();
-  if (size(existAccount) > 0) {
-    return new Error('账户已经存在');
-  }
-  const encodePrivateKey = encrypt(privateKey, '12345678');
-  const accountInfo = {
-    importType,
-    name,
-    address,
-    privateKey: encodePrivateKey,
-  };
-  dbInstance.get('accounts', []).push(accountInfo).write();
-  return '成功保存';
-}
-
-async function addAccountByMnemonic(
-  importType: string,
-  name: string,
-  mnemonic: string
-): Promise<any> {
-  return new Error('not support type');
-}
-
-export async function addAccount(params: AddAccountParams): Promise<any> {
-  const importType: string = get(params, 'importType', '');
-  if (importType === 'privateKey') {
-    return addAccountByPrivatekey(
-      importType,
-      params.user.name,
-      params.user.privateKey as string
-    );
-  }
-  if (importType === 'mnemonic') {
-    return addAccountByMnemonic(
-      importType,
-      params.user.name,
-      params.user.mnemonic as string
-    );
-  }
-  return new Error('not support type');
-}
-
 export async function getSelectedAddress() {
   const dbInstance = await getDBInstance();
   let selectedAddress = getSelectedAddressCache();
@@ -132,4 +79,71 @@ export async function setSelectedAddress(address: string) {
   setSelectedAddressCache(address);
   mainApi.setSelectedAddress(address);
   return address;
+}
+
+async function addAccountByPrivatekey(
+  importType: string,
+  name: string,
+  privateKey: string
+): Promise<any> {
+  const dbInstance = await getDBInstance();
+  const address = TronWeb.address.fromPrivateKey(privateKey);
+
+  const existAccount = dbInstance
+    .get('accounts', [])
+    .find((item: JSON) => item.address === address)
+    .value();
+  if (size(existAccount) > 0) {
+    return Promise.reject(new Error('账户已经存在'));
+  }
+  // TODO: password
+  const encodePrivateKey = encrypt(privateKey, '12345678');
+  const accountInfo = {
+    importType,
+    name,
+    address,
+    privateKey: encodePrivateKey,
+  };
+  dbInstance.get('accounts', []).push(accountInfo).write();
+  dbInstance.get('certificate', {}).value();
+  dbInstance
+    .get('certificate', {})
+    .assign({ [address]: { privateKey: encodePrivateKey } })
+    .write();
+  setSelectedAddress(address);
+  return '成功保存';
+}
+
+async function addAccountByMnemonic(
+  importType: string,
+  name: string,
+  mnemonic: string
+): Promise<any> {
+  return Promise.reject(new Error('not support type'));
+}
+
+export async function addAccount(params: AddAccountParams): Promise<any> {
+  const importType: string = get(params, 'importType', '');
+  if (importType === 'privateKey') {
+    return addAccountByPrivatekey(
+      importType,
+      params.user.name,
+      params.user.privateKey as string
+    );
+  }
+  if (importType === 'mnemonic') {
+    return addAccountByMnemonic(
+      importType,
+      params.user.name,
+      params.user.mnemonic as string
+    );
+  }
+  return Promise.reject(new Error('not support type'));
+}
+
+export async function getSelectedAuthKey() {
+  const dbInstance = await getDBInstance();
+  const selectedAddress = await getSelectedAddress();
+  const encryptKey = dbInstance.get(`certificate.${selectedAddress}`).value();
+  return encryptKey;
 }

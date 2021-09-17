@@ -61,3 +61,11 @@ export function addDappData(data: DappData) {
 export function getTransactions() {
   return sendOrInvoke('getTransactions', null, true);
 }
+
+export function rejectConfirmation(messageID: string) {
+  return sendOrInvoke('rejectConfirmation', messageID, true);
+}
+
+export function acceptConfirmation(messageID: string) {
+  return sendOrInvoke('acceptConfirmation', messageID, true);
+}

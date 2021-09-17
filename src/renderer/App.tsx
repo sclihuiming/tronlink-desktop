@@ -16,7 +16,7 @@ export default function App() {
   const params = new URLSearchParams(paramsStr);
   const isGotoSign = !!params.get('sign');
   const isGotoLogin = false;
-  const isGotoHome = false;
+  const isGotoHome = true;
   // console.log('App', window.location)
 
   return (

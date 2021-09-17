@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-const { get } = require('lodash');
+const { get, size } = require('lodash');
 const TronWeb = require('tronweb');
 const {
   getInitParams,
@@ -150,7 +150,9 @@ async function createTronInstance() {
   });
 
   // setAddress
-  proxiesMethods.setAddress(accountInfo.address);
+  if (get(accountInfo, 'address')) {
+    proxiesMethods.setAddress(accountInfo.address);
+  }
   tronWeb.defaultAddress.name = accountInfo.name;
   tronWeb.defaultAddress.type = accountInfo.type;
 

@@ -51,13 +51,16 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(getInitParams());
     case 'getTransactions':
       return makeResponseData(transactionController.getTransactions());
+    case 'rejectConfirmation':
+      return makeResponseData(transactionController.rejectConfirmation(params));
+    case 'acceptConfirmation':
+      return makeResponseData(transactionController.acceptConfirmation(params));
     default:
       return null;
   }
 }
 
 function dispatchCommonEvent(event: any, args: any) {
-  console.log('dispatchInvokeEvent', event.sender.getURL());
   const method: string = get(args, 'method');
   const params = get(args, 'params');
   switch (method) {

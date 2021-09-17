@@ -70,6 +70,14 @@ export function createSignModalWindow() {
   }
 }
 
+export function closeSignModalWindow() {
+  if (modalWindow) {
+    modalWindow.close();
+    deleteWindow(<BrowserWindow>modalWindow);
+    modalWindow = null;
+  }
+}
+
 export async function createMainWindow() {
   if (
     process.env.NODE_ENV === 'development' ||
