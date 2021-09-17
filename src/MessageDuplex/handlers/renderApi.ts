@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import { AddAccountParams, DappData } from 'types';
+import { AddAccountParams, DappData, RegisterData } from 'types';
 import {
   simplexMessageEntryType,
   duplexMessageEntryType,
@@ -68,4 +68,12 @@ export function rejectConfirmation(messageID: string) {
 
 export function acceptConfirmation(messageID: string) {
   return sendOrInvoke('acceptConfirmation', messageID, true);
+}
+
+export function registerNewUser(authInfo: RegisterData) {
+  return sendOrInvoke('registerNewUser', authInfo, true);
+}
+
+export function isNewUser() {
+  return sendOrInvoke('isNewUser', null, true);
 }

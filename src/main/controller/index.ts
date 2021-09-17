@@ -7,6 +7,7 @@ export * as accountController from './accountController';
 export * as dappController from './dappController';
 export * as nodeController from './nodeController';
 export * as transactionController from './transactionController';
+export * as systemController from './systemController';
 
 export async function getInitParams(): Promise<InjectData> {
   const accountInfo = await getSelectedAccountInfo();

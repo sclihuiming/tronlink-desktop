@@ -11,19 +11,22 @@ import {
   dappController,
   getInitParams,
   transactionController,
+  systemController,
 } from '../../main/controller/index';
 
 const makeResponseData = async (dataP: Promise<any>) => {
   let msg = '';
   let data = '';
+  let code = 200;
   try {
     data = await dataP;
   } catch (error) {
     msg = error.message;
+    code = 1000;
   }
 
   return <Response>{
-    code: 200,
+    code,
     data,
     msg,
   };
@@ -55,6 +58,10 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(transactionController.rejectConfirmation(params));
     case 'acceptConfirmation':
       return makeResponseData(transactionController.acceptConfirmation(params));
+    case 'registerNewUser':
+      return makeResponseData(systemController.registerNewUser(params));
+    case 'isNewUser':
+      return makeResponseData(systemController.isNewUser());
     default:
       return null;
   }

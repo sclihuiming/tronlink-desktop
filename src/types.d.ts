@@ -47,6 +47,11 @@ type InjectData = {
   };
 };
 
+type RegisterData = {
+  password: string;
+  confirm: string;
+};
+
 export {
   LocalData,
   LocalData1,
@@ -54,4 +59,5 @@ export {
   Response,
   DappData,
   InjectData,
+  RegisterData,
 };

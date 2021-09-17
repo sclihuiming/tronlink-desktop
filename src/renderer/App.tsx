@@ -10,19 +10,20 @@ import './App.global.scss';
 // import 'antd/dist/antd.css';
 import Home from './views/Home';
 import Sign from './views/Sign';
+import Login from './views/Login';
 
 export default function App() {
   const paramsStr = window.location.search;
   const params = new URLSearchParams(paramsStr);
   const isGotoSign = !!params.get('sign');
   const isGotoLogin = false;
-  const isGotoHome = true;
+  const isGotoHome = false;
   // console.log('App', window.location)
 
   return (
     <Router>
       <Switch>
-        <Route path="/login" />
+        <Route path="/login" component={Login} />
         <Route path="/home" component={Home} />
         <Route path="/sign" component={Sign} />
         {isGotoSign && <Redirect to="/sign" />}

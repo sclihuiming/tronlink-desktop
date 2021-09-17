@@ -38,7 +38,6 @@ const AddAccount = () => {
   const onFinish = async (values: AddAccountParams) => {
     message.loading({ content: '正在保存...', key });
     const res = await renderApi.addAccount(values);
-    console.log('onFinishonFinish', res);
     if (res.code === 200) {
       setTimeout(() => {
         message.success({ content: res.data, key, duration: 2 });

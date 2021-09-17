@@ -22,6 +22,8 @@ export const accountsSelectedCacheKey = 'accounts_selected_cache';
 export const authenticationKey = 'authentication_key';
 export const cacheTTL = 0;
 
+export const systemTag = 'pc_tronLink_hamlin';
+
 export const REFER_ABI = [
   {
     constant: true,
