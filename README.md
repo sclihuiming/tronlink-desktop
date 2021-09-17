@@ -8,6 +8,7 @@
 - [x] Page Hook 注入
 - [ ] 签名模态框
 - [ ] webview 事件通知
+- [ ] ledger 支持
 
 ## To Use
 

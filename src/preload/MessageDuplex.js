@@ -49,7 +49,6 @@ function bindEvents(dispatchEvents) {
   ipcRenderer.on('main2Render_simplex', (event, args) => {
     const method = get(args, 'method');
     const params = get(args, 'params', {});
-    console.log('bindEvents:', method, params);
     switch (method) {
       case 'signTransactionReply':
         // eslint-disable-next-line no-case-declarations
