@@ -6,8 +6,11 @@ declare global {
 }
 
 type LocalData = {
-  accounts: JSON[];
+  accounts: [];
   certificate: JSON[];
+  selectAccountAddress: string;
+  selectedNode?: string;
+  registerTag?: string;
 };
 
 type LocalData1 = {

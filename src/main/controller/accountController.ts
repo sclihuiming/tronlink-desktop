@@ -3,9 +3,10 @@ import { find, get, omit, size } from 'lodash';
 import TronWeb from 'tronweb';
 import { BigNumber } from 'bignumber.js';
 import * as mainApi from '../../MessageDuplex/handlers/mainApi';
-import { encrypt } from '../../utils';
+import { encrypt, cryptoUtil } from '../../utils';
 import {
   getAccountsCache,
+  getAuthentication,
   getSelectedAddressCache,
   setAccountsCache,
   setSelectedAddressCache,
@@ -96,19 +97,19 @@ async function addAccountByPrivatekey(
   if (size(existAccount) > 0) {
     return Promise.reject(new Error('账户已经存在'));
   }
-  // TODO: password
-  const encodePrivateKey = encrypt(privateKey, '12345678');
+
+  const authKey = getAuthentication();
+  const encodePrivateInfo = cryptoUtil.encryptSync(privateKey, <string>authKey);
   const accountInfo = {
     importType,
     name,
     address,
-    privateKey: encodePrivateKey,
   };
   dbInstance.get('accounts', []).push(accountInfo).write();
   dbInstance.get('certificate', {}).value();
   dbInstance
     .get('certificate', {})
-    .assign({ [address]: { privateKey: encodePrivateKey } })
+    .assign({ [address]: { privateKey: JSON.stringify(encodePrivateInfo) } })
     .write();
   setSelectedAddress(address);
   return '成功保存';

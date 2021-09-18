@@ -41,6 +41,7 @@ const AddAccount = () => {
     if (res.code === 200) {
       setTimeout(() => {
         message.success({ content: res.data, key, duration: 2 });
+        form.resetFields();
       }, 1000);
     } else {
       setTimeout(() => {
