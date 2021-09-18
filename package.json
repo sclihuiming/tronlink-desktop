@@ -13,7 +13,8 @@
     "start": "node -r @babel/register ./.erb/scripts/check-port-in-use.js && yarn start:renderer",
     "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/babel-register ./src/main/main.ts",
     "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js",
-    "test": "jest"
+    "test": "jest",
+    "test-utils": "cross-env NODE_ENV=test CONFIG_ENDPOINT_TEST=test.org jest ./src/test/utils/index.spec.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -180,6 +181,7 @@
     "babel-plugin-dev-expression": "^0.2.2",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "browserslist-config-erb": "^0.0.1",
+    "chai": "^4.3.4",
     "chalk": "^4.1.1",
     "concurrently": "^6.0.2",
     "core-js": "^3.11.3",
@@ -244,6 +246,7 @@
     "electron-log": "^4.3.5",
     "electron-updater": "^4.3.8",
     "history": "4.x.x",
+    "js-sha3": "^0.8.0",
     "lodash": "^4.17.21",
     "lowdb": "1.0.0",
     "nanoid": "^3.1.25",
