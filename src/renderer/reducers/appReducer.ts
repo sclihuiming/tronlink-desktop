@@ -3,12 +3,14 @@ import { createReducer, createAction } from '@reduxjs/toolkit';
 export const setTest = createAction<string>('setTest');
 export const setAccounts = createAction<[]>('setAccounts');
 export const setSelectedAddress = createAction<string>('setSelectedAddress');
+export const setLoginStatus = createAction<boolean>('setLoginStatus');
 
 export const appReducer = createReducer(
   {
     test: 'test',
     accounts: [],
     selectedAddress: '',
+    isLogin: false,
   },
   (builder) => {
     builder.addCase(setTest, (state, action) => {
@@ -19,6 +21,9 @@ export const appReducer = createReducer(
     });
     builder.addCase(setSelectedAddress, (state, action) => {
       state.selectedAddress = action.payload;
+    });
+    builder.addCase(setLoginStatus, (state, action) => {
+      state.isLogin = !!action.payload;
     });
   }
 );

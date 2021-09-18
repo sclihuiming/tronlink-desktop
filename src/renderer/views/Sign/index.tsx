@@ -21,7 +21,7 @@ function Sign() {
     async function fetchData() {
       setLoading(true);
       const res = await getTransactions();
-      console.log('res', res);
+
       setTransaction(get(res, 'data'));
       setLoading(false);
     }
@@ -43,7 +43,6 @@ function Sign() {
   const acceptFunc = async () => {
     setAcceptLoading(true);
     const res = await acceptConfirmation(messageID);
-    console.log('acceptFunc', res);
 
     setAcceptLoading(false);
   };

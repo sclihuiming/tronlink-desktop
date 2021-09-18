@@ -6,7 +6,11 @@ import { get } from 'lodash';
 import App from './App';
 import * as renderEvents from '../MessageDuplex/events/renderEvents';
 import * as renderApi from '../MessageDuplex/handlers/renderApi';
-import { setAccounts, setSelectedAddress } from './reducers/appReducer';
+import {
+  setAccounts,
+  setSelectedAddress,
+  setLoginStatus,
+} from './reducers/appReducer';
 import { setDappList } from './reducers/dappReducer';
 import store from './store';
 
@@ -28,13 +32,15 @@ class Entry {
   }
 
   async getAppState() {
-    const [accountsRes, selectedRes] = await Promise.all([
+    const [accountsRes, selectedRes, loginRes] = await Promise.all([
       renderApi.getAccounts(),
       renderApi.getSelectedAddress(),
+      renderApi.isLogin(),
     ]);
 
     this.store.dispatch(setAccounts(get(accountsRes, 'data', [])));
     this.store.dispatch(setSelectedAddress(get(selectedRes, 'data', '')));
+    this.store.dispatch(setLoginStatus(get(loginRes, 'data', false)));
 
     renderApi.getDappList()?.then((res) => {
       return this.store.dispatch(setDappList(get(res, 'data', [])));

@@ -1,6 +1,6 @@
 /* eslint-disable jest/valid-expect */
 import { expect } from 'chai';
-import { encryptSync, decryptSync } from '../../utils/crypro';
+import { encryptSync, decryptSync } from '../../utils/crypto';
 
 describe('Utils', () => {
   let text;

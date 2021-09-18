@@ -2,8 +2,8 @@ import { size } from 'lodash';
 import { RegisterData } from 'types';
 import { getDBInstance } from '../store/index';
 import { systemTag } from '../../constants';
-import { decrypt, encrypt } from '../../utils';
-import { setAuthentication } from '../service/cacheService';
+import { decrypt, encrypt, cryptoUtil } from '../../utils';
+import { getAuthentication, setAuthentication } from '../service/cacheService';
 
 export async function setRegisterTag(encryptTag: string) {
   const dbInstance = await getDBInstance();
@@ -25,8 +25,8 @@ export async function registerNewUser(params: RegisterData) {
     return Promise.reject(new Error('password is invalid'));
   }
   try {
-    const encryptTag = encrypt(systemTag, params.password);
-    await setRegisterTag(encryptTag);
+    const encryptTag = cryptoUtil.encryptSync(systemTag, params.password);
+    await setRegisterTag(JSON.stringify(encryptTag));
     setAuthentication(params.password);
     return true;
   } catch (error) {
@@ -40,13 +40,15 @@ export async function login(password: string) {
     if (size(tag) === 0 || size(password) === 0) {
       return new Error('password or data is invalid');
     }
-    console.log(tag, password);
-    const data = decrypt(tag, password);
-    console.log(data);
+    cryptoUtil.decryptSync(tag, password);
     setAuthentication(password);
     return true;
   } catch (error) {
-    console.log('error:', error);
+    console.error('error:', error);
     return Promise.reject(error);
   }
+}
+
+export async function isLogin() {
+  return !!getAuthentication();
 }

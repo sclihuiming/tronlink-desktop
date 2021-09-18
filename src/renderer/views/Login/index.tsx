@@ -11,6 +11,8 @@ import {
   registerNewUser,
   login,
 } from 'MessageDuplex/handlers/renderApi';
+import { setLoginStatus } from 'renderer/reducers/appReducer';
+
 import { sleep } from '../../../utils';
 
 const createStars = () => {
@@ -36,7 +38,7 @@ const formTailLayout = {
 
 const key = 'loginPage';
 
-function Login() {
+function Login(props: any) {
   const [form] = Form.useForm();
   const [loginForm] = Form.useForm();
   const history = useHistory();
@@ -48,7 +50,6 @@ function Login() {
     forceUpdate({});
     async function checkIsNew() {
       const result = await isNewUser();
-      console.log('result:', result);
       setIsNew(!!get(result, 'data'));
     }
     checkIsNew();
@@ -61,6 +62,7 @@ function Login() {
       res = await registerNewUser(values);
       await sleep(1300);
       setLoading(false);
+      props.updateLoginStatus(true);
       history.push('/home');
     } catch (errorInfo) {
       setLoading(false);
@@ -73,20 +75,20 @@ function Login() {
     try {
       setLoading(true);
       res = await login(params.password);
-      console.log(params, res);
       if (get(res, 'code') !== 200) {
         throw new Error(res.msg);
       }
       await sleep(1300);
       setLoading(false);
-      // history.push('/home');
+      props.updateLoginStatus(true);
+      history.push('/home');
     } catch (errorInfo) {
       setLoading(false);
       message.success({ content: res.msg, key, duration: 2 });
     }
   };
   return (
-    <Spin spinning={loading}>
+    <Spin spinning={loading} size="large">
       <div className="loginWrap">
         {createStars()}
         <div className="operationWrap">
@@ -217,4 +219,4 @@ function Login() {
   );
 }
 
-export default connect()(Login);
+export default connect(null, { updateLoginStatus: setLoginStatus })(Login);
