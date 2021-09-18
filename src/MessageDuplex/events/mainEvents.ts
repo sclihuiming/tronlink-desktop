@@ -62,6 +62,8 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(systemController.registerNewUser(params));
     case 'isNewUser':
       return makeResponseData(systemController.isNewUser());
+    case 'login':
+      return makeResponseData(systemController.login(params));
     default:
       return null;
   }

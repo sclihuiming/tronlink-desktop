@@ -1,7 +1,8 @@
+import { size } from 'lodash';
 import { RegisterData } from 'types';
 import { getDBInstance } from '../store/index';
 import { systemTag } from '../../constants';
-import { encrypt } from '../../utils';
+import { decrypt, encrypt } from '../../utils';
 import { setAuthentication } from '../service/cacheService';
 
 export async function setRegisterTag(encryptTag: string) {
@@ -29,6 +30,23 @@ export async function registerNewUser(params: RegisterData) {
     setAuthentication(params.password);
     return true;
   } catch (error) {
+    return Promise.reject(error);
+  }
+}
+
+export async function login(password: string) {
+  try {
+    const tag = await getRegisterTag();
+    if (size(tag) === 0 || size(password) === 0) {
+      return new Error('password or data is invalid');
+    }
+    console.log(tag, password);
+    const data = decrypt(tag, password);
+    console.log(data);
+    setAuthentication(password);
+    return true;
+  } catch (error) {
+    console.log('error:', error);
     return Promise.reject(error);
   }
 }

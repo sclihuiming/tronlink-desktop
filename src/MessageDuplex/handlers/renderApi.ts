@@ -77,3 +77,7 @@ export function registerNewUser(authInfo: RegisterData) {
 export function isNewUser() {
   return sendOrInvoke('isNewUser', null, true);
 }
+
+export function login(password: string) {
+  return sendOrInvoke('login', password, true);
+}

@@ -10,6 +10,16 @@
 
   .operationWrap {
     color: #fff;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+
+    .login {
+      display: flex;
+      width: 60vw;
+      align-items: center;
+      justify-content: center;
+    }
 
     label {
       color: #fff;

@@ -3,9 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, Button, Spin, message } from 'antd';
+import { LockOutlined } from '@ant-design/icons';
 import { get } from 'lodash';
 import './Login.global.scss';
-import { isNewUser, registerNewUser } from 'MessageDuplex/handlers/renderApi';
+import {
+  isNewUser,
+  registerNewUser,
+  login,
+} from 'MessageDuplex/handlers/renderApi';
 import { sleep } from '../../../utils';
 
 const createStars = () => {
@@ -22,24 +27,25 @@ const createStars = () => {
 };
 
 const formItemLayout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
+  wrapperCol: { span: 24 },
 };
 
 const formTailLayout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16, offset: 8 },
+  wrapperCol: { span: 24 },
 };
 
-const key = 'register';
+const key = 'loginPage';
 
 function Login() {
   const [form] = Form.useForm();
+  const [loginForm] = Form.useForm();
   const history = useHistory();
   const [isNew, setIsNew] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [, forceUpdate] = useState({});
 
   useEffect(() => {
+    forceUpdate({});
     async function checkIsNew() {
       const result = await isNewUser();
       console.log('result:', result);
@@ -61,10 +67,28 @@ function Login() {
       message.success({ content: res.msg, key, duration: 2 });
     }
   };
+
+  const loginAction = async (params: any) => {
+    let res;
+    try {
+      setLoading(true);
+      res = await login(params.password);
+      console.log(params, res);
+      if (get(res, 'code') !== 200) {
+        throw new Error(res.msg);
+      }
+      await sleep(1300);
+      setLoading(false);
+      // history.push('/home');
+    } catch (errorInfo) {
+      setLoading(false);
+      message.success({ content: res.msg, key, duration: 2 });
+    }
+  };
   return (
-    <div className="loginWrap">
-      {createStars()}
-      <Spin spinning={loading}>
+    <Spin spinning={loading}>
+      <div className="loginWrap">
+        {createStars()}
         <div className="operationWrap">
           {isNew && (
             <div className="register">
@@ -77,7 +101,6 @@ function Login() {
                 <Form.Item
                   {...formItemLayout}
                   name="password"
-                  label="登陆密码"
                   rules={[
                     {
                       required: true,
@@ -91,12 +114,14 @@ function Login() {
                   ]}
                   hasFeedback
                 >
-                  <Input.Password placeholder="请输入密码" />
+                  <Input.Password
+                    prefix={<LockOutlined className="site-form-item-icon" />}
+                    placeholder="请输入密码"
+                  />
                 </Form.Item>
                 <Form.Item
                   {...formItemLayout}
                   name="confirm"
-                  label="确认密码"
                   rules={[
                     {
                       required: true,
@@ -115,20 +140,80 @@ function Login() {
                   ]}
                   hasFeedback
                 >
-                  <Input.Password placeholder="请再次输入密码" />
+                  <Input.Password
+                    prefix={<LockOutlined className="site-form-item-icon" />}
+                    placeholder="请再次输入密码"
+                  />
                 </Form.Item>
-                <Form.Item {...formTailLayout}>
-                  <Button type="primary" htmlType="submit">
-                    注册新用户
-                  </Button>
+                <Form.Item wrapperCol={{ span: 24, offset: 6 }} shouldUpdate>
+                  {() => (
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      disabled={
+                        !form.isFieldsTouched(true) ||
+                        !!form
+                          .getFieldsError()
+                          .filter(({ errors }) => errors.length).length
+                      }
+                    >
+                      注册新用户
+                    </Button>
+                  )}
                 </Form.Item>
               </Form>
             </div>
           )}
-          {!isNewUser && <div className="login">12</div>}
+          {!isNew && (
+            <div className="login">
+              <Form
+                form={loginForm}
+                name="dynamic_rule"
+                size="middle"
+                layout="inline"
+                onFinish={loginAction}
+              >
+                <Form.Item
+                  {...formItemLayout}
+                  name="password"
+                  rules={[
+                    { required: true, message: '请输入密码' },
+                    {
+                      min: 8,
+                      max: 100,
+                      message: '至少8个字符',
+                    },
+                  ]}
+                  hasFeedback
+                >
+                  <Input.Password
+                    prefix={<LockOutlined className="site-form-item-icon" />}
+                    type="password"
+                    placeholder="请输入密码"
+                  />
+                </Form.Item>
+                <Form.Item {...formTailLayout} shouldUpdate>
+                  {() => (
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      disabled={
+                        !loginForm.isFieldsTouched(true) ||
+                        !!loginForm
+                          .getFieldsError()
+                          .filter(({ errors }) => errors.length).length
+                      }
+                    >
+                      登陆
+                    </Button>
+                  )}
+                </Form.Item>
+              </Form>
+            </div>
+          )}
         </div>
-      </Spin>
-    </div>
+      </div>
+    </Spin>
   );
 }
 
