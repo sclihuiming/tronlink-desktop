@@ -57,7 +57,6 @@ export async function setSelectedNode(nodeId: string) {
   dbInstance.set('selectedNode', nodeId).write();
   await dbInstance.read();
   const nodeInfo = find(nodes, (node) => node.nodeId === nodeId) || nodes[0];
-  console.log('nodeInfo:', nodeInfo);
   await rebuildTronWeb(nodeInfo);
   changeNodeId(nodeId);
   return true;

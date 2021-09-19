@@ -190,11 +190,37 @@ function setGlobalProvider(_tronWebProvider, _tronLinkProvider) {
   });
 }
 
+function postEvent(action, data) {
+  window.postMessage(
+    {
+      message: {
+        action,
+        data,
+      },
+      source: 'contentScript',
+      isTronLink: true,
+    },
+    '*'
+  );
+}
+
 function dispatchEvents(event, args) {
   const method = get(args, 'method');
   const params = get(args, 'params');
   switch (method) {
-    case 'signTransactionReply':
+    case 'setAccount_interval':
+      if (get(params, 'address')) {
+        proxiesMethods.setAddress(params.address);
+      }
+      window.tronWeb.defaultAddress.name = params.name;
+      window.tronWeb.defaultAddress.type = params.type;
+      postEvent('setAccount', params);
+      break;
+    case 'setNode_interval':
+      window.tronWeb.fullNode.configure(params.fullNode);
+      window.tronWeb.solidityNode.configure(params.fullNode);
+      window.tronWeb.eventServer.configure(params.eventServer);
+      postEvent('setNode', params);
       break;
     default:
       break;

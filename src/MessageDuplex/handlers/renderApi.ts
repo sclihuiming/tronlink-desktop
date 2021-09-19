@@ -94,10 +94,18 @@ export function getNodeId() {
   return sendOrInvoke('getNodeId', null, true);
 }
 
+export function getCurrentNodeInfo() {
+  return sendOrInvoke('getCurrentNodeInfo', null, true);
+}
+
 export function getNodeList() {
   return sendOrInvoke('getNodeList', null, true);
 }
 
 export function changeNode(nodeId: string) {
   return sendOrInvoke('changeNode', nodeId, true);
+}
+
+export function getCurrentAccountAndNodeInfo() {
+  return sendOrInvoke('getInitParams', null, true);
 }

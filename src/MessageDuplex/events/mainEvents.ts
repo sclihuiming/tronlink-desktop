@@ -72,6 +72,8 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(systemController.logOut());
     case 'getNodeId':
       return makeResponseData(nodeController.getSelectedNode());
+    case 'getCurrentNodeInfo':
+      return makeResponseData(nodeController.getCurrentNodeInfo());
     case 'getNodeList':
       return makeResponseData(nodeController.getNodeList());
     case 'changeNode':

@@ -62,6 +62,7 @@ function bindEvents(dispatchEvents) {
         dispatchEvents(event, args);
     }
   });
+  ipcRenderer.on('render2Webview_simplex', dispatchEvents);
 }
 
 module.exports = {
