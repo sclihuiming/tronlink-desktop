@@ -12,6 +12,8 @@ import {
   getInitParams,
   transactionController,
   systemController,
+  nodeController,
+  commonController,
 } from '../../main/controller/index';
 
 const makeResponseData = async (dataP: Promise<any>) => {
@@ -66,6 +68,12 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(systemController.isLogin());
     case 'login':
       return makeResponseData(systemController.login(params));
+    case 'getNodeId':
+      return makeResponseData(nodeController.getSelectedNode());
+    case 'getNodeList':
+      return makeResponseData(nodeController.getNodeList());
+    case 'changeNode':
+      return makeResponseData(commonController.changeNode(params));
     default:
       return null;
   }

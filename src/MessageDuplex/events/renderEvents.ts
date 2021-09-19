@@ -4,6 +4,7 @@ import { simplexMessageEntryType } from '../../constants';
 import {
   setAccounts,
   setSelectedAddress,
+  setNodeId,
 } from '../../renderer/reducers/appReducer';
 import { setDappList } from '../../renderer/reducers/dappReducer';
 import store from '../../renderer/store/index';
@@ -22,6 +23,9 @@ function dispatchEvents(event: any, args: any) {
       break;
     case 'setDappList':
       store.dispatch(setDappList(params));
+      break;
+    case 'changeNodeId':
+      store.dispatch(setNodeId(params));
       break;
     default:
       break;

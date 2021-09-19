@@ -4,6 +4,7 @@ export const setTest = createAction<string>('setTest');
 export const setAccounts = createAction<[]>('setAccounts');
 export const setSelectedAddress = createAction<string>('setSelectedAddress');
 export const setLoginStatus = createAction<boolean>('setLoginStatus');
+export const setNodeId = createAction<string>('setNodeId');
 
 export const appReducer = createReducer(
   {
@@ -11,6 +12,7 @@ export const appReducer = createReducer(
     accounts: [],
     selectedAddress: '',
     isLogin: false,
+    nodeId: '',
   },
   (builder) => {
     builder.addCase(setTest, (state, action) => {
@@ -24,6 +26,9 @@ export const appReducer = createReducer(
     });
     builder.addCase(setLoginStatus, (state, action) => {
       state.isLogin = !!action.payload;
+    });
+    builder.addCase(setNodeId, (state, action) => {
+      state.nodeId = action.payload;
     });
   }
 );

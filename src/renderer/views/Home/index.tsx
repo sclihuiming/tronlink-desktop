@@ -6,7 +6,10 @@ import { get, find, size, add } from 'lodash';
 import { UserOutlined, PieChartOutlined } from '@ant-design/icons';
 import { RootState } from 'renderer/store';
 import './Home.global.scss';
-import { setSelectedAddress } from '../../../MessageDuplex/handlers/renderApi';
+import {
+  setSelectedAddress,
+  getNodeList,
+} from '../../../MessageDuplex/handlers/renderApi';
 
 import Overview from '../Overview';
 import AddAccount from '../AddAccount';
@@ -105,16 +108,51 @@ function renderAccountList(accountList: [], selectedAddress: string) {
   );
 }
 
+function renderNodeList(nodeList: any[], selectNodeId: string) {
+  function onChange(value: string) {
+    console.log('onChange', value);
+    // setSelectedAddress(value);
+  }
+  return (
+    <div className="nodeList">
+      <Select
+        defaultValue={selectNodeId}
+        className="accountSelect"
+        style={{ width: 160 }}
+        bordered={false}
+        onChange={onChange}
+      >
+        {nodeList.map((node: any) => {
+          const { nodeId, name } = node;
+          return (
+            <Option value={nodeId} key={nodeId}>
+              {name}
+            </Option>
+          );
+        })}
+      </Select>
+    </div>
+  );
+}
+
 function Home(props: any) {
   const match = useRouteMatch();
-  const { accounts, selectedAddress } = props;
+  const { accounts, selectedAddress, nodeId } = props;
   const pathname = get(props, 'location.pathname', '');
   const [collapsed, onCollapse] = useState(false);
   const [selectedKey, setSelectedKey] = useState(pathname);
   const [headerSelectedKey, setHeaderSelectedKey] = useState('/home');
   const [openKey, setOpenKey] = useState([] as string[]);
+  const [nodeList, setNodeList] = useState([]);
 
-  useEffect(() => {}, []);
+  async function fetchNodeList() {
+    const res = await getNodeList();
+    setNodeList(get(res, 'data', []));
+  }
+
+  useEffect(() => {
+    fetchNodeList();
+  }, []);
 
   useEffect(() => {
     const item = find(routerTree, (info) => pathname === info.routerPath);
@@ -155,6 +193,7 @@ function Home(props: any) {
           </Menu>
         </div>
         <div className="partTwo">
+          {renderNodeList(nodeList, nodeId)}
           {renderAccountList(accounts, selectedAddress)}
         </div>
       </Header>
@@ -224,5 +263,6 @@ export default connect((state: RootState, ownProps) => {
   return {
     accounts: state.app.accounts,
     selectedAddress: state.app.selectedAddress,
+    nodeId: state.app.nodeId,
   };
 })(Home);

@@ -85,3 +85,15 @@ export function isLogin() {
 export function login(password: string) {
   return sendOrInvoke('login', password, true);
 }
+
+export function getNodeId() {
+  return sendOrInvoke('getNodeId', null, true);
+}
+
+export function getNodeList() {
+  return sendOrInvoke('getNodeList', null, true);
+}
+
+export function changeNode(nodeId: string) {
+  return sendOrInvoke('changeNode', nodeId, true);
+}

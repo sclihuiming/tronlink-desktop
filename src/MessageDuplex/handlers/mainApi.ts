@@ -26,3 +26,7 @@ export function setSelectedAddress(address: string) {
 export function setDappList(dappList: DappData[]) {
   return send('setDappList', dappList);
 }
+
+export function changeNodeId(nodeId: string) {
+  return send('changeNodeId', nodeId);
+}
