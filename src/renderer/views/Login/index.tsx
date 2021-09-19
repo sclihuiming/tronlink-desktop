@@ -41,6 +41,7 @@ const key = 'loginPage';
 function Login(props: any) {
   const [form] = Form.useForm();
   const [loginForm] = Form.useForm();
+  const inputRef = React.useRef<any>(null);
   const history = useHistory();
   const [isNew, setIsNew] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -51,6 +52,11 @@ function Login(props: any) {
     async function checkIsNew() {
       const result = await isNewUser();
       setIsNew(!!get(result, 'data'));
+      setTimeout(() => {
+        inputRef.current?.focus({
+          cursor: 'all',
+        });
+      });
     }
     checkIsNew();
   }, []);
@@ -117,6 +123,7 @@ function Login(props: any) {
                   hasFeedback
                 >
                   <Input.Password
+                    ref={inputRef}
                     prefix={<LockOutlined className="site-form-item-icon" />}
                     placeholder="请输入密码"
                   />
@@ -189,6 +196,7 @@ function Login(props: any) {
                   hasFeedback
                 >
                   <Input.Password
+                    ref={inputRef}
                     prefix={<LockOutlined className="site-form-item-icon" />}
                     type="password"
                     placeholder="请输入密码"
