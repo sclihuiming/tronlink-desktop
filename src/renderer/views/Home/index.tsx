@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
-import { Layout, Menu, Select } from 'antd';
+import { Layout, Menu, Select, Spin } from 'antd';
 import { get, find, size, add } from 'lodash';
 import { UserOutlined, PieChartOutlined } from '@ant-design/icons';
 import { RootState } from 'renderer/store';
@@ -9,6 +9,7 @@ import './Home.global.scss';
 import {
   setSelectedAddress,
   getNodeList,
+  changeNode,
 } from '../../../MessageDuplex/handlers/renderApi';
 
 import Overview from '../Overview';
@@ -108,29 +109,37 @@ function renderAccountList(accountList: [], selectedAddress: string) {
   );
 }
 
-function renderNodeList(nodeList: any[], selectNodeId: string) {
-  function onChange(value: string) {
-    console.log('onChange', value);
-    // setSelectedAddress(value);
+function renderNodeList(
+  nodeList: any[],
+  selectNodeId: string,
+  loading: boolean,
+  setLoading: any
+) {
+  async function onChange(value: string) {
+    setLoading(true);
+    await changeNode(value);
+    setLoading(false);
   }
   return (
     <div className="nodeList">
-      <Select
-        defaultValue={selectNodeId}
-        className="accountSelect"
-        style={{ width: 160 }}
-        bordered={false}
-        onChange={onChange}
-      >
-        {nodeList.map((node: any) => {
-          const { nodeId, name } = node;
-          return (
-            <Option value={nodeId} key={nodeId}>
-              {name}
-            </Option>
-          );
-        })}
-      </Select>
+      <Spin spinning={loading}>
+        <Select
+          defaultValue={selectNodeId}
+          className="accountSelect"
+          style={{ width: 160 }}
+          bordered={false}
+          onChange={onChange}
+        >
+          {nodeList.map((node: any) => {
+            const { nodeId, name } = node;
+            return (
+              <Option value={nodeId} key={nodeId}>
+                {name}
+              </Option>
+            );
+          })}
+        </Select>
+      </Spin>
     </div>
   );
 }
@@ -144,6 +153,7 @@ function Home(props: any) {
   const [headerSelectedKey, setHeaderSelectedKey] = useState('/home');
   const [openKey, setOpenKey] = useState([] as string[]);
   const [nodeList, setNodeList] = useState([]);
+  const [nodeLoading, setNodeLoading] = useState(false);
 
   async function fetchNodeList() {
     const res = await getNodeList();
@@ -193,7 +203,7 @@ function Home(props: any) {
           </Menu>
         </div>
         <div className="partTwo">
-          {renderNodeList(nodeList, nodeId)}
+          {renderNodeList(nodeList, nodeId, nodeLoading, setNodeLoading)}
           {renderAccountList(accounts, selectedAddress)}
         </div>
       </Header>
