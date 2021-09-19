@@ -68,6 +68,7 @@ const AddAccount = () => {
         </Radio.Group>
       </Form.Item>
       <Form.Item
+        wrapperCol={{ span: 12 }}
         name={['user', 'name']}
         label="账户名称"
         required
