@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
-import { Layout, Menu, Breadcrumb } from 'antd';
-import { get, find, size } from 'lodash';
-import {
-  UserOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  FileOutlined,
-  DesktopOutlined,
-} from '@ant-design/icons';
+import { Layout, Menu, Select } from 'antd';
+import { get, find, size, add } from 'lodash';
+import { UserOutlined, PieChartOutlined } from '@ant-design/icons';
 import { RootState } from 'renderer/store';
 import './Home.global.scss';
+import { setSelectedAddress } from '../../../MessageDuplex/handlers/renderApi';
 
 import Overview from '../Overview';
 import AddAccount from '../AddAccount';
@@ -19,6 +14,7 @@ import Dapp from '../Dapp';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
+const { Option } = Select;
 
 type RouterData = {
   title: string;
@@ -79,8 +75,39 @@ function renderRouter(routerTrees: RouterData[]) {
   );
 }
 
+function renderAccountList(accountList: [], selectedAddress: string) {
+  function onChange(value: string) {
+    setSelectedAddress(value);
+  }
+  return (
+    <div className="accountList">
+      <Select
+        defaultValue={selectedAddress}
+        className="accountSelect"
+        style={{ width: 220 }}
+        bordered={false}
+        onChange={onChange}
+      >
+        {accountList.map((account: any) => {
+          const { address, name } = account;
+          return (
+            <Option value={address} key={address}>
+              {`${
+                name.length > 6 ? `${name.substring(0, 6)}...` : name
+              }(${address.substring(0, 6)}...${address.substring(
+                address.length - 6
+              )})`}
+            </Option>
+          );
+        })}
+      </Select>
+    </div>
+  );
+}
+
 function Home(props: any) {
   const match = useRouteMatch();
+  const { accounts, selectedAddress } = props;
   const pathname = get(props, 'location.pathname', '');
   const [collapsed, onCollapse] = useState(false);
   const [selectedKey, setSelectedKey] = useState(pathname);
@@ -116,15 +143,20 @@ function Home(props: any) {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header className="header">
-        <div className={`logo ${collapsed ? 'collapsed' : ''}`} />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={[headerSelectedKey]}
-          selectedKeys={[headerSelectedKey]}
-        >
-          {renderRouter(headerRouterTrees)}
-        </Menu>
+        <div className="partOne">
+          <div className={`logo ${collapsed ? 'collapsed' : ''}`} />
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={[headerSelectedKey]}
+            selectedKeys={[headerSelectedKey]}
+          >
+            {renderRouter(headerRouterTrees)}
+          </Menu>
+        </div>
+        <div className="partTwo">
+          {renderAccountList(accounts, selectedAddress)}
+        </div>
       </Header>
 
       <Layout className="site-layout">
@@ -190,6 +222,7 @@ function Home(props: any) {
 
 export default connect((state: RootState, ownProps) => {
   return {
-    test: state.app.test,
+    accounts: state.app.accounts,
+    selectedAddress: state.app.selectedAddress,
   };
 })(Home);

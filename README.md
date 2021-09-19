@@ -2,13 +2,14 @@
 
 ## todo
 
-- [ ] 登陆
+- [x] 登陆
 - [x] 账户管理
 - [ ] 节点管理
 - [x] Page Hook 注入
 - [ ] 签名模态框
 - [ ] webview 事件通知
 - [ ] ledger 支持
+- [x] kdf(scrypt)加密
 
 ## To Use
 
