@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
-import { Layout, Menu, Select, Spin } from 'antd';
+import {
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useHistory,
+} from 'react-router-dom';
+import { Layout, Menu, Select, Spin, Button, Modal } from 'antd';
 import { get, find, size, add } from 'lodash';
-import { UserOutlined, PieChartOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  PieChartOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import { RootState } from 'renderer/store';
 import './Home.global.scss';
 import {
   setSelectedAddress,
   getNodeList,
   changeNode,
+  logOut,
 } from '../../../MessageDuplex/handlers/renderApi';
 
 import Overview from '../Overview';
@@ -146,6 +157,7 @@ function renderNodeList(
 
 function Home(props: any) {
   const match = useRouteMatch();
+  const history = useHistory();
   const { accounts, selectedAddress, nodeId } = props;
   const pathname = get(props, 'location.pathname', '');
   const [collapsed, onCollapse] = useState(false);
@@ -188,6 +200,19 @@ function Home(props: any) {
     setOpenKey(openKeys);
   };
 
+  const openModal = () => {
+    Modal.confirm({
+      title: '确认退出该应用?',
+      icon: <ExclamationCircleOutlined />,
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        logOut();
+        history.push('/login');
+      },
+    });
+  };
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header className="header">
@@ -205,6 +230,16 @@ function Home(props: any) {
         <div className="partTwo">
           {renderNodeList(nodeList, nodeId, nodeLoading, setNodeLoading)}
           {renderAccountList(accounts, selectedAddress)}
+          <div className="btnWrap">
+            <Button
+              type="link"
+              size="small"
+              className="customLink"
+              onClick={openModal}
+            >
+              登出
+            </Button>
+          </div>
         </div>
       </Header>
 

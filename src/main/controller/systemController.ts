@@ -52,3 +52,7 @@ export async function login(password: string) {
 export async function isLogin() {
   return !!getAuthentication();
 }
+
+export async function logOut() {
+  setAuthentication('');
+}

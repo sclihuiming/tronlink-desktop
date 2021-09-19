@@ -68,6 +68,8 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(systemController.isLogin());
     case 'login':
       return makeResponseData(systemController.login(params));
+    case 'logOut':
+      return makeResponseData(systemController.logOut());
     case 'getNodeId':
       return makeResponseData(nodeController.getSelectedNode());
     case 'getNodeList':

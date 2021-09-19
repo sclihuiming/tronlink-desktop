@@ -1,7 +1,7 @@
 .header {
   display: flex;
   justify-content: space-between;
-  padding-left: 0;
+  padding: 0;
 
   .partOne {
     display: flex;
@@ -25,6 +25,7 @@
   .partTwo {
     color: #fff;
     display: flex;
+    padding-right: 10px;
 
     .accountSelect {
       color: #82a4bd;
@@ -33,6 +34,13 @@
 
       .ant-select-arrow {
         color: #fff;
+      }
+    }
+
+    .btnWrap {
+      margin-left: 10px;
+      .customLink {
+        color: #967575;
       }
     }
   }

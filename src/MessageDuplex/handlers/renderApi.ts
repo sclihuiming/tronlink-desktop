@@ -86,6 +86,10 @@ export function login(password: string) {
   return sendOrInvoke('login', password, true);
 }
 
+export function logOut() {
+  return sendOrInvoke('logOut', null, true);
+}
+
 export function getNodeId() {
   return sendOrInvoke('getNodeId', null, true);
 }
