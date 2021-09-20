@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 const { get, size } = require('lodash');
 const TronWeb = require('tronweb');
+const SunWeb = require('sunweb');
 const {
   getInitParams,
   signTransaction,
@@ -11,6 +12,18 @@ const { injectPromise } = require('./utils');
 
 // 代理方法
 const proxiesMethods = {};
+
+const CONTRACT_ADDRESS = {
+  USDT: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
+  MAIN: 'TL9q7aDAHYbW5KdPCwk8oJR3bCDhRwegFf',
+  SIDE: 'TGKotco6YoULzbYisTBuP6DWXDjEgJSpYz',
+  MAIN_TEST: 'TFLtPoEtVJBMcj6kZPrQrwEdM3W3shxsBU', // testnet mainchain
+  SIDE_TEST: 'TRDepx5KoQ8oNbFVZ5sogwUxtdYmATDRgX', // testnet sidechain
+  MAIN_TEST_NILE: 'TTYtjySdWFkZeUnQEB7cfwyxj3PD2ZsEmd',
+  SIDE_TEST_NILE: 'TWLoD341FRJ43JfwTPADRqGnUT4zEU3UxG',
+};
+
+const SIDE_CHAIN_ID = '41E209E4DE650F0150788E8EC5CAFA240A23EB8EB7';
 
 const priKey =
   '0c6e219d4c53649a14c2613c3a123a7b084d7c8caf67325ed8e2fb137fbcc943';
@@ -127,6 +140,17 @@ function signInternal(params, tronWebSign) {
     });
 }
 
+async function requestHandlerInterval(args = {}, provider) {
+  if (args && args.method === 'tron_requestAccounts') {
+    args.params = { ...args.params, ...provider.tronlinkParams };
+  }
+  // TODO:
+  return {
+    code: 200,
+    message: 'success',
+  };
+}
+
 async function createTronInstance() {
   const res = await getInitParams();
   const accountInfo = get(res, 'data.accountInfo', {});
@@ -138,6 +162,25 @@ async function createTronInstance() {
     new ProxiesProvider()
   );
   proxiesMethods.setAddress = tronWeb.setAddress.bind(tronWeb);
+
+  const tronWeb1 = new TronWeb(
+    new ProxiesProvider(),
+    new ProxiesProvider(),
+    new ProxiesProvider()
+  );
+
+  const tronWeb2 = new TronWeb(
+    new ProxiesProvider(1),
+    new ProxiesProvider(1),
+    new ProxiesProvider(1)
+  );
+  const sunWeb = new SunWeb(
+    tronWeb1,
+    tronWeb2,
+    CONTRACT_ADDRESS.MAIN,
+    CONTRACT_ADDRESS.SIDE,
+    SIDE_CHAIN_ID
+  );
 
   [
     'setPrivateKey',
@@ -168,6 +211,14 @@ async function createTronInstance() {
     return signInternal(args, tronWebSign);
   };
 
+  tronWeb.request = (args) => {
+    return requestHandlerInterval(args, tronWeb);
+  };
+
+  sunWeb.request = (args) => {
+    return requestHandlerInterval(args, sunWeb);
+  };
+
   tronWeb.ready = true;
   tronWeb.defaultPrivateKey = false;
   const tronLink = {
@@ -175,12 +226,21 @@ async function createTronInstance() {
     tronWeb,
   };
 
-  return { tronWeb, tronLink };
+  tronLink.request = (args) => {
+    return requestHandlerInterval(args, tronWeb);
+  };
+
+  return { tronWeb, tronLink, sunWeb };
 }
 
-function setGlobalProvider(_tronWebProvider, _tronLinkProvider) {
+function setGlobalProvider(
+  _tronWebProvider,
+  _tronLinkProvider,
+  _sunWebProvider
+) {
   _tronWebProvider.isTronLink = true;
   _tronLinkProvider.isTronLink = true;
+  _sunWebProvider.isDeprecation = true;
 
   window.tronWeb = new Proxy(_tronWebProvider, {
     deleteProperty: () => true,
@@ -188,6 +248,7 @@ function setGlobalProvider(_tronWebProvider, _tronLinkProvider) {
   window.tronLink = new Proxy(_tronLinkProvider, {
     deleteProperty: () => true,
   });
+  window.sunWeb = _sunWebProvider;
 }
 
 function postEvent(action, data) {
@@ -228,9 +289,9 @@ function dispatchEvents(event, args) {
 }
 
 async function injectTronWebPropertyToWindow() {
-  const { tronWeb, tronLink } = await createTronInstance();
+  const { tronWeb, tronLink, sunWeb } = await createTronInstance();
   bindEvents(dispatchEvents);
-  setGlobalProvider(tronWeb, tronLink);
+  setGlobalProvider(tronWeb, tronLink, sunWeb);
   window.dispatchEvent(new Event('tronLink#initialized'));
 }
 
