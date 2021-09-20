@@ -276,6 +276,7 @@ function dispatchEvents(event, args) {
       window.tronWeb.defaultAddress.name = params.name;
       window.tronWeb.defaultAddress.type = params.type;
       postEvent('setAccount', params);
+      postEvent('accountsChanged', params);
       break;
     case 'setNode_interval':
       window.tronWeb.fullNode.configure(params.fullNode);
