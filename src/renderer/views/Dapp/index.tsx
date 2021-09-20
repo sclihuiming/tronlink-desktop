@@ -6,6 +6,7 @@ import {
   ArrowRightOutlined,
   ArrowLeftOutlined,
   ReloadOutlined,
+  HomeOutlined,
 } from '@ant-design/icons';
 
 import { RootState } from 'renderer/store';
@@ -16,9 +17,20 @@ import {
 } from '../../../MessageDuplex/handlers/renderApi';
 import './Dapp.global.scss';
 
-function renderDappItem(dapp: DappData) {
+function renderDappItem(dapp: DappData, openWebview: any) {
   return (
-    <div className="dappItem" key={dapp.url}>
+    <div
+      className="dappItem"
+      key={dapp.url}
+      role="button"
+      onClick={() => {
+        openWebview(dapp.url);
+      }}
+      onKeyDown={() => {
+        openWebview(dapp.url);
+      }}
+      tabIndex={0}
+    >
       <div className="logoWrap">
         <img src={dapp.logo} alt="" />
       </div>
@@ -34,10 +46,11 @@ function Dapp(props: any) {
   const webviewRef = React.useRef<any>(null);
   const dappListDefault: DappData[] = get(props, 'dappList', []);
   const [dappList, setDappList] = useState(dappListDefault);
-  const [mode, setMode] = useState('webview');
+  const [mode, setMode] = useState('dapp');
   const [webviewLoading, setWebviewLoading] = useState(true);
   const [canGoBack, setGoBackStatus] = useState(false);
   const [canGoForward, setGoForwardStatus] = useState(false);
+  const [webviewUrl, setWebviewUrl] = useState('');
   const [dappUrl, setDappUrl] = useState('');
 
   // eslint-disable-next-line global-require
@@ -45,22 +58,7 @@ function Dapp(props: any) {
     './src/preload/preload.webview.js'
   )}`;
 
-  useEffect(() => {
-    const webview = document.getElementById('dappWebView');
-    if (webview) {
-      webview.addEventListener('dom-ready', () => {
-        setWebviewLoading(false);
-        setDappUrl(webview.getURL());
-        setGoBackStatus(webview.canGoBack());
-        setGoForwardStatus(webview.canGoForward());
-      });
-    }
-    setTimeout(() => {
-      if (webviewLoading) {
-        setWebviewLoading(false);
-      }
-    }, 3000);
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     setDappList(dappListDefault);
@@ -86,7 +84,6 @@ function Dapp(props: any) {
       const res = await getCurrentAccountAndNodeInfo();
       const nodeInfo = get(res, 'data.nodeInfo', {});
       try {
-        webviewRef.current?.openDevTools();
         webviewRef.current?.send('render2Webview_simplex', {
           method: 'setNode_interval',
           params: nodeInfo,
@@ -96,6 +93,30 @@ function Dapp(props: any) {
       }
     })();
   }, [nodeId]);
+
+  function webviewInitial(webview: any) {
+    setWebviewLoading(false);
+    setDappUrl(webview.getURL());
+    setGoBackStatus(webview.canGoBack());
+    setGoForwardStatus(webview.canGoForward());
+  }
+
+  useEffect(() => {
+    if (mode === 'webview') {
+      const webview = document.getElementById('dappWebView');
+      if (webview) {
+        webview.addEventListener('dom-ready', () => {
+          webviewInitial(webview);
+        });
+      }
+      setTimeout(() => {
+        const webviewAgain = document.getElementById('dappWebView');
+        if (webviewAgain && webviewAgain.isLoading()) {
+          webviewInitial(webviewAgain);
+        }
+      }, 15000);
+    }
+  }, [mode]);
 
   function goBack() {
     try {
@@ -124,10 +145,24 @@ function Dapp(props: any) {
     }
   }
 
+  function goHome() {
+    setMode('dapp');
+  }
+
+  function openWebview(url: string) {
+    setWebviewUrl(url);
+    setDappUrl(url);
+    setMode('webview');
+  }
+
   if (mode === 'dapp') {
     return (
       <div className="dappContainer">
-        <div className="listWrap">{dappList.map(renderDappItem)}</div>
+        <div className="listWrap">
+          {dappList.map((item) => {
+            return renderDappItem(item, openWebview);
+          })}
+        </div>
       </div>
     );
   }
@@ -157,6 +192,16 @@ function Dapp(props: any) {
               />
             </Tooltip>
           </div>
+          <div className="home">
+            <Tooltip title="回到DApp列表">
+              <Button
+                type="text"
+                size="small"
+                icon={<HomeOutlined />}
+                onClick={goHome}
+              />
+            </Tooltip>
+          </div>
           <div className="reloadBtn">
             <Tooltip title="重新加载此页">
               <Button
@@ -176,7 +221,7 @@ function Dapp(props: any) {
             <webview
               ref={webviewRef}
               id="dappWebView"
-              src="http://123.56.166.152:18096/#/home"
+              src={webviewUrl}
               // src="https://nile.tronscan.org"
               preload={preloadPath}
               webpreferences="contextIsolation=false"
