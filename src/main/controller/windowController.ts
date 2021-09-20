@@ -96,7 +96,7 @@ export async function createMainWindow() {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1224,
+    width: 1250,
     height: 728,
     icon: getAssetPath('icon.png'),
     webPreferences: {

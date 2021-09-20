@@ -45,11 +45,22 @@
 }
 
 .webviewContainer {
-  margin: -24px;
+  margin: -34px -24px -24px -24px;
+  background: #fff;
+
+  .navigationBar {
+    display: flex;
+    padding: 10px;
+
+    .url {
+      width: 95vw;
+      margin-left: 10px;
+    }
+  }
 
   .webviewWrap {
     webview {
-      height: 83vh;
+      height: 78vh;
     }
   }
 }
