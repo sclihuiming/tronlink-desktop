@@ -94,10 +94,11 @@ function renderAccountList(accountList: [], selectedAddress: string) {
   function onChange(value: string) {
     setSelectedAddress(value);
   }
+
   return (
     <div className="accountList">
       <Select
-        defaultValue={selectedAddress}
+        value={selectedAddress}
         className="accountSelect"
         style={{ width: 220 }}
         bordered={false}
@@ -195,6 +196,8 @@ function Home(props: any) {
       setHeaderSelectedKey(pathname);
     }
   }, [pathname]);
+
+  useEffect(() => {}, [selectedAddress]);
 
   const onOpenChange: any = (openKeys: string[]) => {
     setOpenKey(openKeys);

@@ -1,48 +1,68 @@
 .overview {
   .accountsWrap {
-    display: flex;
-    flex-flow: wrap;
-    padding: 10px;
+    // display: flex;
+    // flex-flow: wrap;
+    // padding: 10px;
 
     .accountItem {
       position: relative;
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      margin: 0 10px 20px 0;
 
-      box-shadow: 5px 5px 5px #f0f0f0;
-      border: 1px solid #f5f5f5;
-      padding: 20px;
+      .accountDetail {
+        .address {
+          color: rgba(0, 0, 0, 0.45);
+        }
 
-      .checked {
-        position: absolute;
-        right: 10px;
-        top: 10px;
+        .balance {
+          color: rgba(0, 0, 0, 0.85);
+          font-size: 16px;
+          font-weight: 600;
+        }
+
+        .btnWrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 10px;
+        }
       }
 
-      .circle {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        width: 14px;
-        height: 14px;
-        border-radius: 100%;
-        border: 1px solid #1890ff;
-        cursor: pointer;
-      }
+      // display: flex;
+      // align-items: center;
+      // flex-direction: column;
+      // margin: 0 10px 20px 0;
 
-      .name {
-      }
+      // box-shadow: 5px 5px 5px #f0f0f0;
+      // border: 1px solid #f5f5f5;
+      // padding: 20px;
 
-      .address {
-        color: gray;
-      }
+      // .checked {
+      //   position: absolute;
+      //   right: 10px;
+      //   top: 10px;
+      // }
 
-      .balance {
-        font-size: 16px;
-        font-weight: 600;
-      }
+      // .circle {
+      //   position: absolute;
+      //   right: 10px;
+      //   top: 10px;
+      //   width: 14px;
+      //   height: 14px;
+      //   border-radius: 100%;
+      //   border: 1px solid #1890ff;
+      //   cursor: pointer;
+      // }
+
+      // .name {
+      // }
+
+      // .address {
+      //   color: gray;
+      // }
+
+      // .balance {
+      //   font-size: 16px;
+      //   font-weight: 600;
+      // }
     }
   }
 
