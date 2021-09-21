@@ -17,6 +17,8 @@ import {
   ArrowLeftOutlined,
   ReloadOutlined,
   HomeOutlined,
+  DeleteOutlined,
+  PlusOutlined,
 } from '@ant-design/icons';
 
 import { RootState } from 'renderer/store';
@@ -25,6 +27,7 @@ import {
   getCurrentAccountAndNodeInfo,
   getCurrentNodeInfo,
 } from '../../../MessageDuplex/handlers/renderApi';
+import DappModal from '../../components/DappModal';
 import './Dapp.global.scss';
 
 const { Meta } = Card;
@@ -40,6 +43,9 @@ function Dapp(props: any) {
   const [canGoForward, setGoForwardStatus] = useState(false);
   const [webviewUrl, setWebviewUrl] = useState('');
   const [dappUrl, setDappUrl] = useState('');
+
+  // modal
+  const [visible, setVisible] = React.useState(false);
 
   // eslint-disable-next-line global-require
   const preloadPath = `file://${require('path').resolve(
@@ -163,29 +169,68 @@ function Dapp(props: any) {
             xl: 4,
             xxl: 4,
           }}
-          dataSource={dappList}
-          renderItem={(item) => (
-            <List.Item>
-              <Badge.Ribbon
-                text={item.netType === 0 ? '主网' : '测试网'}
-                color={item.netType === 0 ? 'blue' : 'gray'}
-              >
-                <Card
-                  hoverable
-                  className="listItem"
-                  onClick={() => {
-                    openWebview(item.url);
-                  }}
+          dataSource={[...dappList, 'operation']}
+          renderItem={(item) => {
+            if (typeof item === 'string') {
+              return (
+                <List.Item>
+                  <Card className="addNew">
+                    <Button
+                      icon={<PlusOutlined />}
+                      type="link"
+                      size="small"
+                      onClick={() => {
+                        setVisible(true);
+                      }}
+                    >
+                      新增dapp
+                    </Button>
+                  </Card>
+                </List.Item>
+              );
+            }
+            return (
+              <List.Item>
+                <Badge.Ribbon
+                  text={item.netType === 0 ? '主网' : '测试网'}
+                  color={item.netType === 0 ? 'blue' : 'gray'}
                 >
-                  <Meta
-                    title={item.name}
-                    description={item.url}
-                    avatar={<Avatar src={item.logo} />}
-                  />
-                </Card>
-              </Badge.Ribbon>
-            </List.Item>
-          )}
+                  <Card
+                    hoverable
+                    className="listItem"
+                    onClick={() => {
+                      openWebview(item.url);
+                    }}
+                  >
+                    <Meta
+                      title={
+                        <div className="nameWrap">
+                          <div className="name">{item.name}</div>
+                          {!item.isOffice && (
+                            <div className="btnWrap">
+                              <Button
+                                type="dashed"
+                                size="small"
+                                icon={<DeleteOutlined />}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      }
+                      description={item.url}
+                      avatar={<Avatar src={item.logo} />}
+                    />
+                  </Card>
+                </Badge.Ribbon>
+              </List.Item>
+            );
+          }}
+        />
+        <DappModal
+          visible={visible}
+          closeModal={() => {
+            setVisible(false);
+          }}
         />
       </div>
     );

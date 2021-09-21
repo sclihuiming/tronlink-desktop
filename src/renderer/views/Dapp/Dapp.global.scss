@@ -1,14 +1,23 @@
 .dappContainer {
-  .listWrap {
-    display: flex;
-    flex-flow: wrap;
+  .listItem {
+    position: relative;
 
-    .listItem {
-      position: relative;
+    .nameWrap {
+      display: flex;
+      align-items: center;
+      .btnWrap {
+        margin-left: 10px;
+      }
     }
   }
   .customAlert {
     margin-bottom: 10px;
+  }
+
+  .addNew {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

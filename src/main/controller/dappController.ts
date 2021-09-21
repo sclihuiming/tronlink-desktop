@@ -1,5 +1,8 @@
 import { Response, DappData } from 'types';
+import axios from 'axios';
+import { chain, size } from 'lodash';
 import * as mainApi from '../../MessageDuplex/handlers/mainApi';
+import { getDBInstance } from '../store';
 
 const dappList: DappData[] = [
   {
@@ -46,11 +49,43 @@ const dappList: DappData[] = [
   },
 ];
 
-export async function addDappData(data: DappData): Promise<any> {
-  mainApi.setDappList(dappList);
-  return null;
+export async function getDappList(): Promise<DappData[]> {
+  const dbInstance = await getDBInstance();
+  const customDappList = dbInstance.get('dappList', []).value();
+  const list = chain(dappList).concat(customDappList).uniqBy('url').value();
+  return list;
 }
 
-export async function getDappList(): Promise<any> {
-  return dappList;
+export async function addDappData(data: DappData): Promise<any> {
+  data.isOffice = false;
+  try {
+    // check
+    const res = await axios.get(data.url);
+    if (res.status !== 200) {
+      return await Promise.reject(new Error('invalid url'));
+    }
+    const dbInstance = await getDBInstance();
+    const existDapp =
+      dbInstance
+        .get('dappList', [])
+        .find((item: DappData) => item.url === data.url)
+        .value() ||
+      chain(dappList)
+        .find((item: DappData) => item.url === data.url)
+        .value();
+    if (size(existDapp) > 0) {
+      return Promise.reject(new Error('dapp已经存在'));
+    }
+    const isExist = dbInstance.has('dappList').value();
+    if (isExist) {
+      dbInstance.get('dappList', []).push(data).write();
+    } else {
+      dbInstance.set('dappList', [data]).write();
+    }
+
+    mainApi.setDappList(await getDappList());
+    return true;
+  } catch (error) {
+    return Promise.reject(error);
+  }
 }
