@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { RootState } from 'renderer/store';
 import { get, size } from 'lodash';
+import { List, Card, Avatar, Badge, Alert } from 'antd';
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 import './Overview.global.scss';
@@ -58,6 +59,40 @@ function Overview(props: any) {
       {size(accounts) > 0 && (
         <div className="accountsWrap">
           {accounts.map((item) => renderAccount(item, selectedAddress))}{' '}
+          {/* <List
+            grid={{
+              gutter: 16,
+              xs: 1,
+              sm: 2,
+              md: 2,
+              lg: 3,
+              xl: 4,
+              xxl: 4,
+            }}
+            dataSource={accounts}
+            renderItem={(item) => (
+              <List.Item>
+                <Badge.Ribbon
+                  text={item.netType === 0 ? '主网' : '测试网'}
+                  color={item.netType === 0 ? 'blue' : 'gray'}
+                >
+                  <Card
+                    hoverable
+                    className="listItem"
+                    onClick={() => {
+                      openWebview(item.url);
+                    }}
+                  >
+                    <Meta
+                      title={item.name}
+                      description={item.url}
+                      avatar={<Avatar src={item.logo} />}
+                    />
+                  </Card>
+                </Badge.Ribbon>
+              </List.Item>
+            )}
+          /> */}
         </div>
       )}
       {size(accounts) === 0 && (

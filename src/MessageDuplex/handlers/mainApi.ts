@@ -1,6 +1,6 @@
 import { getAllWindow } from '../../main/store/windowManager';
 import { simplexMessageEntryType } from '../../constants';
-import { DappData } from '../../types';
+import { AccountData, DappData } from '../../types';
 
 function send(method: string, params: any) {
   const args = {
@@ -15,7 +15,7 @@ function send(method: string, params: any) {
   return null;
 }
 
-export function setAccounts(accounts: JSON[]) {
+export function setAccounts(accounts: AccountData[]) {
   return send('setAccounts', accounts);
 }
 

@@ -1,4 +1,4 @@
-import { AddAccountParams } from 'types';
+import { AccountData, AddAccountParams } from 'types';
 import { find, get, omit, size } from 'lodash';
 import TronWeb from 'tronweb';
 import { BigNumber } from 'bignumber.js';
@@ -14,9 +14,9 @@ import {
 import { getDBInstance } from '../store/index';
 import { getTronwebInstance } from './nodeController';
 
-export async function getSelectedAddress() {
+export async function getSelectedAddress(): Promise<string> {
   const dbInstance = await getDBInstance();
-  let selectedAddress = getSelectedAddressCache();
+  let selectedAddress: string = getSelectedAddressCache();
   if (!selectedAddress) {
     await dbInstance.read();
     const tmpAddress = dbInstance.get('accounts.0.address', '').value();
@@ -31,7 +31,7 @@ export async function refreshAccountsData(isLoadByNetwork: boolean) {
   const dbInstance = await getDBInstance();
   const tronwebInstance = getTronwebInstance();
   await dbInstance.read();
-  const accounts = dbInstance
+  const accounts: AccountData[] = dbInstance
     .get('accounts', [])
     .map((item: JSON) => omit(item, 'privateKey'))
     .value();
@@ -60,8 +60,8 @@ export async function refreshAccountsData(isLoadByNetwork: boolean) {
   return accounts;
 }
 
-export async function getAccounts(): Promise<any> {
-  let accounts: any = await getAccountsCache();
+export async function getAccounts(): Promise<AccountData[]> {
+  let accounts: AccountData[] = await getAccountsCache();
   if (size(accounts) === 0) {
     accounts = await refreshAccountsData(true);
   }
@@ -69,8 +69,8 @@ export async function getAccounts(): Promise<any> {
 }
 
 export async function getSelectedAccountInfo() {
-  const selectedAddress = await getSelectedAddress();
-  const accounts = await getAccounts();
+  const selectedAddress: string = await getSelectedAddress();
+  const accounts: AccountData[] = await getAccounts();
   return find(accounts, (account) => account.address === selectedAddress);
 }
 

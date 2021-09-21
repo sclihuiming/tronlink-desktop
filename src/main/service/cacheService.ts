@@ -1,4 +1,5 @@
 import NodeCache from 'node-cache';
+import { AccountData } from 'types';
 import {
   accountsCacheKey,
   accountsSelectedCacheKey,
@@ -8,20 +9,20 @@ import {
 
 const myCache = new NodeCache();
 
-export function setAccountsCache(accounts: JSON[]) {
+export function setAccountsCache(accounts: AccountData[]) {
   return myCache.set(accountsCacheKey, accounts, cacheTTL);
 }
 
-export function getAccountsCache() {
-  return myCache.get(accountsCacheKey);
+export function getAccountsCache(): AccountData[] {
+  return myCache.get(accountsCacheKey) || [];
 }
 
 export function setSelectedAddressCache(address: string) {
   return myCache.set(accountsSelectedCacheKey, address, cacheTTL);
 }
 
-export function getSelectedAddressCache() {
-  return myCache.get(accountsSelectedCacheKey);
+export function getSelectedAddressCache(): string {
+  return myCache.get(accountsSelectedCacheKey) || '';
 }
 
 export function setAuthentication(word: string) {

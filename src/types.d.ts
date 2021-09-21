@@ -26,6 +26,14 @@ type AddAccountParams = {
   };
 };
 
+type AccountData = {
+  importType: 'privateKey' | 'mnemonic' | 'ledger';
+  name: string;
+  address: string;
+  balance?: string | number;
+  type?: number;
+};
+
 type DappData = {
   name: string;
   url: string;
@@ -64,4 +72,5 @@ export {
   DappData,
   InjectData,
   RegisterData,
+  AccountData,
 };

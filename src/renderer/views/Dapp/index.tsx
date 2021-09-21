@@ -187,7 +187,6 @@ function Dapp(props: any) {
             </List.Item>
           )}
         />
-        ,
       </div>
     );
   }
