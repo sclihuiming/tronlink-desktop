@@ -30,6 +30,7 @@ type DappData = {
   name: string;
   url: string;
   logo: string;
+  netType: number;
 };
 
 type Response = {

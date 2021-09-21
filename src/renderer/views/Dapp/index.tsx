@@ -1,7 +1,17 @@
 import { get, find } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Tooltip, Input, Spin } from 'antd';
+import {
+  Button,
+  Tooltip,
+  Input,
+  Spin,
+  List,
+  Card,
+  Avatar,
+  Badge,
+  Alert,
+} from 'antd';
 import {
   ArrowRightOutlined,
   ArrowLeftOutlined,
@@ -17,29 +27,7 @@ import {
 } from '../../../MessageDuplex/handlers/renderApi';
 import './Dapp.global.scss';
 
-function renderDappItem(dapp: DappData, openWebview: any) {
-  return (
-    <div
-      className="dappItem"
-      key={dapp.url}
-      role="button"
-      onClick={() => {
-        openWebview(dapp.url);
-      }}
-      onKeyDown={() => {
-        openWebview(dapp.url);
-      }}
-      tabIndex={0}
-    >
-      <div className="logoWrap">
-        <img src={dapp.logo} alt="" />
-      </div>
-      <div className="nameWrap">
-        <div className="name">{dapp.name}</div>
-      </div>
-    </div>
-  );
-}
+const { Meta } = Card;
 
 function Dapp(props: any) {
   const { selectedAddress, nodeId, accounts } = props;
@@ -150,6 +138,7 @@ function Dapp(props: any) {
   }
 
   function openWebview(url: string) {
+    setWebviewLoading(true);
     setWebviewUrl(url);
     setDappUrl(url);
     setMode('webview');
@@ -158,11 +147,47 @@ function Dapp(props: any) {
   if (mode === 'dapp') {
     return (
       <div className="dappContainer">
-        <div className="listWrap">
-          {dappList.map((item) => {
-            return renderDappItem(item, openWebview);
-          })}
-        </div>
+        <Alert
+          className="customAlert"
+          message="点击下方的dapp可以进入第三方dapp, 涉及到不清楚的签名, 请谨慎授权, 保护资产安全"
+          type="info"
+          showIcon
+        />
+        <List
+          grid={{
+            gutter: 16,
+            xs: 1,
+            sm: 2,
+            md: 2,
+            lg: 3,
+            xl: 4,
+            xxl: 4,
+          }}
+          dataSource={dappList}
+          renderItem={(item) => (
+            <List.Item>
+              <Badge.Ribbon
+                text={item.netType === 0 ? '主网' : '测试网'}
+                color={item.netType === 0 ? 'blue' : 'gray'}
+              >
+                <Card
+                  hoverable
+                  className="listItem"
+                  onClick={() => {
+                    openWebview(item.url);
+                  }}
+                >
+                  <Meta
+                    title={item.name}
+                    description={item.url}
+                    avatar={<Avatar src={item.logo} />}
+                  />
+                </Card>
+              </Badge.Ribbon>
+            </List.Item>
+          )}
+        />
+        ,
       </div>
     );
   }
