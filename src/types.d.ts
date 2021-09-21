@@ -39,6 +39,7 @@ type DappData = {
   url: string;
   logo: string;
   netType: number;
+  isOffice?: boolean;
 };
 
 type Response = {
