@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Radio, message } from 'antd';
 import { connect } from 'react-redux';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import { FormattedMessage, useIntl } from 'react-intl';
 import * as renderApi from 'MessageDuplex/handlers/renderApi';
 import { AddAccountParams } from 'types';
 
@@ -14,6 +15,8 @@ message.config({
 const AddAccount = () => {
   const [form] = Form.useForm();
   const [type, setImportType] = useState<string>('privateKey');
+
+  const intl = useIntl();
 
   const onRequiredTypeChange = (
     _: any,
@@ -29,14 +32,12 @@ const AddAccount = () => {
     // wrapperCol: { span: 22 },
   };
 
-  /* eslint-disable no-template-curly-in-string */
-  const validateMessages = {
-    required: '${label} 必须填写!',
-  };
-
   const key = 'updatable';
   const onFinish = async (values: AddAccountParams) => {
-    message.loading({ content: '正在保存...', key });
+    message.loading({
+      content: intl.formatMessage({ id: 'message.save' }),
+      key,
+    });
     const res = await renderApi.addAccount(values);
     if (res.code === 200) {
       setTimeout(() => {
@@ -58,35 +59,55 @@ const AddAccount = () => {
       initialValues={{ importType: type }}
       onValuesChange={onRequiredTypeChange}
       requiredMark={true as boolean}
-      validateMessages={validateMessages}
       onFinish={onFinish}
     >
-      <Form.Item label="导入方式" name="importType">
+      <Form.Item
+        label={intl.formatMessage({ id: 'account.add.label.type' })}
+        name="importType"
+      >
         <Radio.Group>
-          <Radio.Button value="privateKey">私钥</Radio.Button>
-          <Radio.Button value="mnemonic">助记词</Radio.Button>
+          <Radio.Button value="privateKey">
+            <FormattedMessage id="account.add.type.privatekey" />
+          </Radio.Button>
+          <Radio.Button value="mnemonic">
+            <FormattedMessage id="account.add.type.mnemonic" />
+          </Radio.Button>
         </Radio.Group>
       </Form.Item>
       <Form.Item
         wrapperCol={{ span: 12 }}
         name={['user', 'name']}
-        label="账户名称"
+        label={intl.formatMessage({ id: 'account.add.label.name' })}
         required
-        tooltip="账户名称是必须填写的"
-        rules={[{ required: true }]}
+        tooltip={intl.formatMessage({ id: 'account.add.tips.name' })}
+        rules={[
+          {
+            required: true,
+            message: intl.formatMessage({
+              id: 'rules.account.name',
+            }),
+          },
+        ]}
       >
         <Input placeholder="" />
       </Form.Item>
       {type === 'privateKey' && (
         <Form.Item
           name={['user', 'privateKey']}
-          label="私钥"
+          label={intl.formatMessage({ id: 'account.add.type.privatekey' })}
           required
           tooltip={{
-            title: '私钥是必须填写的',
+            title: intl.formatMessage({ id: 'account.add.tips.privatekey' }),
             icon: <InfoCircleOutlined />,
           }}
-          rules={[{ required: true }]}
+          rules={[
+            {
+              required: true,
+              message: intl.formatMessage({
+                id: 'rules.account.privatekey',
+              }),
+            },
+          ]}
         >
           <Input placeholder="" />
         </Form.Item>
@@ -95,13 +116,20 @@ const AddAccount = () => {
       {type === 'mnemonic' && (
         <Form.Item
           name={['user', 'mnemonic']}
-          label="助记词"
+          label={intl.formatMessage({ id: 'account.add.type.mnemonic' })}
           required
           tooltip={{
-            title: '助记词是必须填写的',
+            title: intl.formatMessage({ id: 'account.add.tips.mnemonic' }),
             icon: <InfoCircleOutlined />,
           }}
-          rules={[{ required: true }]}
+          rules={[
+            {
+              required: true,
+              message: intl.formatMessage({
+                id: 'rules.account.mnemonic',
+              }),
+            },
+          ]}
         >
           <Input.TextArea />
         </Form.Item>
@@ -109,7 +137,7 @@ const AddAccount = () => {
 
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          Submit
+          <FormattedMessage id="button.add" />
         </Button>
       </Form.Item>
     </Form>

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form, Input, Radio, message } from 'antd';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { addDappData } from 'MessageDuplex/handlers/renderApi';
 
 export default function DappModal(props: any) {
   const [form] = Form.useForm();
   const { visible, closeModal } = props;
   const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const intl = useIntl();
 
   // const handleOk = () => {
   //   setConfirmLoading(true);
@@ -42,7 +45,11 @@ export default function DappModal(props: any) {
     const res = await addDappData(values);
     if (res.code === 200) {
       handleCancel();
-      message.success({ content: '添加成功', key, duration: 2 });
+      message.success({
+        content: intl.formatMessage({ id: 'message.success.add' }),
+        key,
+        duration: 2,
+      });
     } else {
       message.error({ content: res.msg || '...', key, duration: 2 });
     }
@@ -51,12 +58,12 @@ export default function DappModal(props: any) {
 
   return (
     <Modal
-      title="增加Dapp网站"
+      title={intl.formatMessage({ id: 'dapp.add.modal.title' })}
       maskClosable={false}
       closable={false}
       visible={visible}
-      okText="添加"
-      cancelText="取消"
+      okText={intl.formatMessage({ id: 'button.add' })}
+      cancelText={intl.formatMessage({ id: 'button.cancel' })}
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
       okButtonProps={{ htmlType: 'submit', form: 'dappForm' }}
@@ -74,12 +81,12 @@ export default function DappModal(props: any) {
       >
         <Form.Item
           name="name"
-          label="网站名称"
-          tooltip="便于识别当前网站?"
+          label={intl.formatMessage({ id: 'dapp.add.modal.label.name' })}
+          tooltip={intl.formatMessage({ id: 'dapp.add.modal.tips.name' })}
           rules={[
             {
               required: true,
-              message: '请输入网站名称!',
+              message: intl.formatMessage({ id: 'rules.dapp.name' }),
               whitespace: true,
             },
           ]}
@@ -89,21 +96,38 @@ export default function DappModal(props: any) {
         <Form.Item
           name="url"
           label="url"
-          rules={[{ required: true, message: '请输入网站地址!' }]}
+          rules={[
+            {
+              required: true,
+              message: intl.formatMessage({ id: 'rules.dapp.url' }),
+            },
+          ]}
         >
           <Input onBlur={onUrlChange} />
         </Form.Item>
-        <Form.Item name="logo" label="logo地址">
+        <Form.Item
+          name="logo"
+          label={intl.formatMessage({ id: 'dapp.add.modal.label.logo' })}
+        >
           <Input />
         </Form.Item>
         <Form.Item
           name="netType"
-          label="网路类型"
-          rules={[{ required: true, message: '请选择一个类型' }]}
+          label={intl.formatMessage({ id: 'dapp.add.modal.label.type' })}
+          rules={[
+            {
+              required: true,
+              message: intl.formatMessage({ id: 'rules.dapp.network' }),
+            },
+          ]}
         >
           <Radio.Group value={0}>
-            <Radio.Button value={0}>主网</Radio.Button>
-            <Radio.Button value={1}>测试网</Radio.Button>
+            <Radio.Button value={0}>
+              <FormattedMessage id="dapp.network.main_chain" />
+            </Radio.Button>
+            <Radio.Button value={1}>
+              <FormattedMessage id="dapp.network.test_chain" />
+            </Radio.Button>
           </Radio.Group>
         </Form.Item>
       </Form>

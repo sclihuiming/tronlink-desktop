@@ -14,6 +14,8 @@ import {
   PieChartOutlined,
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { RootState } from 'renderer/store';
 import './Home.global.scss';
 import {
@@ -36,43 +38,6 @@ type RouterData = {
   routerPath: string;
   parentPath?: string;
 };
-
-const routerTree = [
-  {
-    title: '概览',
-    routerPath: '/home',
-  },
-  {
-    title: '账户管理',
-    routerPath: '/home/manager-accounts',
-    parentPath: 'accountManager',
-  },
-  {
-    title: '增加账户',
-    routerPath: '/home/add-accounts',
-    parentPath: 'accountManager',
-  },
-  {
-    title: '增加ledger账户',
-    routerPath: '/home/add-ledger-accounts',
-    parentPath: 'accountManager',
-  },
-];
-
-const headerRouterTrees: RouterData[] = [
-  {
-    title: '功能',
-    routerPath: '/home',
-  },
-  {
-    title: 'DApp',
-    routerPath: '/home/dapp',
-  },
-  {
-    title: '关于',
-    routerPath: '/home/about',
-  },
-];
 
 function renderRouter(routerTrees: RouterData[]) {
   return (
@@ -157,6 +122,45 @@ function renderNodeList(
 }
 
 function Home(props: any) {
+  const intl = useIntl();
+
+  const routerTree = [
+    {
+      title: intl.formatMessage({ id: 'menu.home' }),
+      routerPath: '/home',
+    },
+    {
+      title: intl.formatMessage({ id: 'menu.accountManager.manager' }),
+      routerPath: '/home/manager-accounts',
+      parentPath: 'accountManager',
+    },
+    {
+      title: intl.formatMessage({ id: 'menu.accountManager.add' }),
+      routerPath: '/home/add-accounts',
+      parentPath: 'accountManager',
+    },
+    {
+      title: intl.formatMessage({ id: 'menu.accountManager.ledger' }),
+      routerPath: '/home/add-ledger-accounts',
+      parentPath: 'accountManager',
+    },
+  ];
+
+  const headerRouterTrees: RouterData[] = [
+    {
+      title: intl.formatMessage({ id: 'menu.header.home' }),
+      routerPath: '/home',
+    },
+    {
+      title: intl.formatMessage({ id: 'menu.header.dapp' }),
+      routerPath: '/home/dapp',
+    },
+    {
+      title: intl.formatMessage({ id: 'menu.header.about' }),
+      routerPath: '/home/about',
+    },
+  ];
+
   const match = useRouteMatch();
   const history = useHistory();
   const { accounts, selectedAddress, nodeId } = props;
@@ -205,10 +209,10 @@ function Home(props: any) {
 
   const openModal = () => {
     Modal.confirm({
-      title: '确认退出该应用?',
+      title: intl.formatMessage({ id: 'home.logout.tips' }),
       icon: <ExclamationCircleOutlined />,
-      okText: '确认',
-      cancelText: '取消',
+      okText: intl.formatMessage({ id: 'button.confirm' }),
+      cancelText: intl.formatMessage({ id: 'button.cancel' }),
       onOk: () => {
         logOut();
         history.push('/login');
@@ -240,7 +244,7 @@ function Home(props: any) {
               className="customLink"
               onClick={openModal}
             >
-              登出
+              <FormattedMessage id="button.logout" />
             </Button>
           </div>
         </div>
@@ -259,7 +263,9 @@ function Home(props: any) {
               onOpenChange={onOpenChange}
             >
               <Menu.Item key="/home" icon={<PieChartOutlined />}>
-                <Link to={`${match.url}`}>概览</Link>
+                <Link to={`${match.url}`}>
+                  <FormattedMessage id="menu.home" />
+                </Link>
               </Menu.Item>
               <SubMenu
                 key="accountManager"
@@ -267,14 +273,18 @@ function Home(props: any) {
                 title="账户管理"
               >
                 <Menu.Item key="/home/manager-accounts">
-                  <Link to={`${match.url}/manager-accounts`}>管理账户</Link>
+                  <Link to={`${match.url}/manager-accounts`}>
+                    <FormattedMessage id="menu.accountManager.manager" />
+                  </Link>
                 </Menu.Item>
                 <Menu.Item key="/home/add-accounts">
-                  <Link to={`${match.url}/add-accounts`}>增加账户</Link>
+                  <Link to={`${match.url}/add-accounts`}>
+                    <FormattedMessage id="menu.accountManager.add" />
+                  </Link>
                 </Menu.Item>
                 <Menu.Item key="/home/add-ledger-accounts">
                   <Link to={`${match.url}/add-ledger-accounts`}>
-                    ledger添加账户
+                    <FormattedMessage id="menu.accountManager.ledger" />
                   </Link>
                 </Menu.Item>
               </SubMenu>

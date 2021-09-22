@@ -21,6 +21,7 @@ import {
   DeleteOutlined,
   PlusOutlined,
 } from '@ant-design/icons';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { RootState } from 'renderer/store';
 import { DappData } from '../../../types';
@@ -47,6 +48,8 @@ function Dapp(props: any) {
 
   // modal
   const [visible, setVisible] = useState(false);
+
+  const intl = useIntl();
 
   // eslint-disable-next-line global-require
   const preloadPath = `file://${require('path').resolve(
@@ -160,7 +163,7 @@ function Dapp(props: any) {
       <div className="dappContainer">
         <Alert
           className="customAlert"
-          message="点击下方的dapp可以进入第三方dapp, 涉及到不清楚的签名, 请谨慎授权, 保护资产安全"
+          message={intl.formatMessage({ id: 'dapp.page.tips' })}
           type="info"
           showIcon
         />
@@ -188,7 +191,7 @@ function Dapp(props: any) {
                         setVisible(true);
                       }}
                     >
-                      新增dapp
+                      <FormattedMessage id="button.add.dapp" />
                     </Button>
                   </Card>
                 </List.Item>
@@ -197,7 +200,11 @@ function Dapp(props: any) {
             return (
               <List.Item>
                 <Badge.Ribbon
-                  text={item.netType === 0 ? '主网' : '测试网'}
+                  text={
+                    item.netType === 0
+                      ? intl.formatMessage({ id: 'dapp.network.main_chain' })
+                      : intl.formatMessage({ id: 'dapp.network.test_chain' })
+                  }
                   color={item.netType === 0 ? 'blue' : 'gray'}
                 >
                   <Card
@@ -224,12 +231,18 @@ function Dapp(props: any) {
                               tabIndex={0}
                             >
                               <Popconfirm
-                                title="确认删除当前Dapp信息?"
+                                title={intl.formatMessage({
+                                  id: 'dapp.delete.data.tips',
+                                })}
                                 onConfirm={() => {
                                   removeDappData(item.url);
                                 }}
-                                okText="删除"
-                                cancelText="取消"
+                                okText={intl.formatMessage({
+                                  id: 'button.delete',
+                                })}
+                                cancelText={intl.formatMessage({
+                                  id: 'button.cancel',
+                                })}
                               >
                                 <Button
                                   type="dashed"
@@ -264,7 +277,9 @@ function Dapp(props: any) {
       <div className="webviewContainer">
         <div className="navigationBar">
           <div className="prevBtn">
-            <Tooltip title="点击可后退">
+            <Tooltip
+              title={intl.formatMessage({ id: 'dapp.webview.back.tips' })}
+            >
               <Button
                 type="text"
                 size="small"
@@ -275,7 +290,9 @@ function Dapp(props: any) {
             </Tooltip>
           </div>
           <div className="nextBtn">
-            <Tooltip title="点击可前进">
+            <Tooltip
+              title={intl.formatMessage({ id: 'dapp.webview.forward.tips' })}
+            >
               <Button
                 type="text"
                 size="small"
@@ -286,7 +303,9 @@ function Dapp(props: any) {
             </Tooltip>
           </div>
           <div className="home">
-            <Tooltip title="回到DApp列表">
+            <Tooltip
+              title={intl.formatMessage({ id: 'dapp.webview.home.tips' })}
+            >
               <Button
                 type="text"
                 size="small"
@@ -296,7 +315,9 @@ function Dapp(props: any) {
             </Tooltip>
           </div>
           <div className="reloadBtn">
-            <Tooltip title="重新加载此页">
+            <Tooltip
+              title={intl.formatMessage({ id: 'dapp.webview.reload.tips' })}
+            >
               <Button
                 type="text"
                 size="small"

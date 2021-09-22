@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, Button, Spin, message } from 'antd';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { LockOutlined } from '@ant-design/icons';
 import { get } from 'lodash';
 import './Login.global.scss';
@@ -47,6 +48,8 @@ function Login(props: any) {
   const [loading, setLoading] = useState(false);
   const [, forceUpdate] = useState({});
 
+  const intl = useIntl();
+
   useEffect(() => {
     forceUpdate({});
     async function checkIsNew() {
@@ -90,7 +93,7 @@ function Login(props: any) {
       history.push('/home');
     } catch (errorInfo) {
       setLoading(false);
-      message.success({ content: res.msg, key, duration: 2 });
+      message.error({ content: res.msg, key, duration: 2 });
     }
   };
   return (
@@ -112,12 +115,17 @@ function Login(props: any) {
                   rules={[
                     {
                       required: true,
-                      message: '请输入密码',
+                      message: intl.formatMessage({
+                        id: 'rules.password.require',
+                      }),
                     },
                     {
                       min: 8,
                       max: 100,
-                      message: '至少8个字符',
+                      message: intl.formatMessage(
+                        { id: 'rules.min.characters' },
+                        { amount: 8 }
+                      ),
                     },
                   ]}
                   hasFeedback
@@ -125,7 +133,9 @@ function Login(props: any) {
                   <Input.Password
                     ref={inputRef}
                     prefix={<LockOutlined className="site-form-item-icon" />}
-                    placeholder="请输入密码"
+                    placeholder={intl.formatMessage({
+                      id: 'login.input.placeholder',
+                    })}
                   />
                 </Form.Item>
                 <Form.Item
@@ -134,7 +144,9 @@ function Login(props: any) {
                   rules={[
                     {
                       required: true,
-                      message: '请输入你的确认密码',
+                      message: intl.formatMessage({
+                        id: 'rules.password.confirm',
+                      }),
                     },
                     ({ getFieldValue }) => ({
                       validator(_, value) {
@@ -142,7 +154,11 @@ function Login(props: any) {
                           return Promise.resolve();
                         }
                         return Promise.reject(
-                          new Error('两次输入的密码不匹配')
+                          new Error(
+                            intl.formatMessage({
+                              id: 'rules.password.not_match',
+                            })
+                          )
                         );
                       },
                     }),
@@ -151,7 +167,9 @@ function Login(props: any) {
                 >
                   <Input.Password
                     prefix={<LockOutlined className="site-form-item-icon" />}
-                    placeholder="请再次输入密码"
+                    placeholder={intl.formatMessage({
+                      id: 'register.input_confirm.placeholder',
+                    })}
                   />
                 </Form.Item>
                 <Form.Item wrapperCol={{ span: 24, offset: 6 }} shouldUpdate>
@@ -166,7 +184,7 @@ function Login(props: any) {
                           .filter(({ errors }) => errors.length).length
                       }
                     >
-                      注册新用户
+                      <FormattedMessage id="button.register" />
                     </Button>
                   )}
                 </Form.Item>
@@ -186,11 +204,19 @@ function Login(props: any) {
                   {...formItemLayout}
                   name="password"
                   rules={[
-                    { required: true, message: '请输入密码' },
+                    {
+                      required: true,
+                      message: intl.formatMessage({
+                        id: 'rules.password.require',
+                      }),
+                    },
                     {
                       min: 8,
                       max: 100,
-                      message: '至少8个字符',
+                      message: intl.formatMessage(
+                        { id: 'rules.min.characters' },
+                        { amount: 8 }
+                      ),
                     },
                   ]}
                   hasFeedback
@@ -199,7 +225,9 @@ function Login(props: any) {
                     ref={inputRef}
                     prefix={<LockOutlined className="site-form-item-icon" />}
                     type="password"
-                    placeholder="请输入密码"
+                    placeholder={intl.formatMessage({
+                      id: 'login.input.placeholder',
+                    })}
                   />
                 </Form.Item>
                 <Form.Item {...formTailLayout} shouldUpdate>
@@ -214,7 +242,7 @@ function Login(props: any) {
                           .filter(({ errors }) => errors.length).length
                       }
                     >
-                      登陆
+                      <FormattedMessage id="button.login" />
                     </Button>
                   )}
                 </Form.Item>

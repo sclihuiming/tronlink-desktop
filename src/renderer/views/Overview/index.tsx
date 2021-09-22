@@ -4,6 +4,7 @@ import { RootState } from 'renderer/store';
 import { get, size } from 'lodash';
 import { List, Card, Badge, Typography, Tooltip, Button } from 'antd';
 import { Link, useRouteMatch } from 'react-router-dom';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { AccountData } from 'types';
 import './Overview.global.scss';
 import { setSelectedAddress } from '../../../MessageDuplex/handlers/renderApi';
@@ -45,7 +46,7 @@ function renderAccount(accountItem: AccountData, selectedAddress: string) {
                 disabled={address === selectedAddress}
                 onClick={handleClick}
               >
-                切换到该账户
+                <FormattedMessage id="account.switch.current" />
               </Button>
             </div>
           </div>
@@ -59,6 +60,8 @@ function Overview(props: any) {
   const { accounts: propsAccounts, selectedAddress } = props;
   const match = useRouteMatch();
   const [accounts, setAccounts] = useState([] as AccountData[]);
+
+  const intl = useIntl();
 
   useEffect(() => {
     setAccounts(props.accounts);
@@ -82,15 +85,12 @@ function Overview(props: any) {
             }}
             dataSource={accounts}
             renderItem={(item) => {
-              const { address } = item;
-              const formatAddress = `${address.substring(
-                0,
-                8
-              )}...${address.substring(address.length - 8)}`;
               return (
                 <List.Item>
                   {item.address === selectedAddress ? (
-                    <Badge.Ribbon text="当前账户">
+                    <Badge.Ribbon
+                      text={intl.formatMessage({ id: 'account.current' })}
+                    >
                       {renderAccount(item, selectedAddress)}
                     </Badge.Ribbon>
                   ) : (
@@ -104,7 +104,9 @@ function Overview(props: any) {
       )}
       {size(accounts) === 0 && (
         <div className="empty">
-          <Link to={`${match.url}/add-accounts`}>增加账户</Link>
+          <Link to={`${match.url}/add-accounts`}>
+            <FormattedMessage id="button.add.account" />
+          </Link>
         </div>
       )}
     </div>

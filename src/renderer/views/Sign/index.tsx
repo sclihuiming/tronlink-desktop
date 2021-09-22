@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { RootState } from 'renderer/store';
 import { get, size } from 'lodash';
 import { Spin, Button } from 'antd';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
   getTransactions,
   acceptConfirmation,
@@ -16,6 +17,8 @@ function Sign() {
   const [loading, setLoading] = useState(false);
   const [rejectLoading, setRejectLoading] = useState(false);
   const [acceptLoading, setAcceptLoading] = useState(false);
+
+  const intl = useIntl();
 
   useEffect(() => {
     async function fetchData() {
@@ -56,15 +59,22 @@ function Sign() {
     <div className="signWrap">
       <div className="header">
         <div className="hostname">{get(transaction, 'hostname', '')}</div>
-        正在请求签名
+        <FormattedMessage id="sign.transaction.request.tips" />
       </div>
       <Spin spinning={loading}>
         <div className="greyWrap">
           <div className="tradeData scroll">
             <div className="item">
               <div className="titleWrap">
-                <div className="partOne">合约方法</div>
-                <div className="partTwo">{functionName || '未知方法'}</div>
+                <div className="partOne">
+                  <FormattedMessage id="sign.contract.function" />
+                </div>
+                <div className="partTwo">
+                  {functionName ||
+                    intl.formatMessage({
+                      id: 'sign.contract.function.unknown',
+                    })}
+                </div>
               </div>
               {size(args) > 0 ? (
                 <div className="valueWrap">
@@ -98,7 +108,7 @@ function Sign() {
           loading={rejectLoading}
           onClick={() => rejectFunc()}
         >
-          拒绝
+          <FormattedMessage id="button.reject" />
         </Button>
         <Button
           type="primary"
@@ -107,7 +117,7 @@ function Sign() {
           loading={acceptLoading}
           onClick={() => acceptFunc()}
         >
-          签名
+          <FormattedMessage id="button.sign" />
         </Button>
       </div>
     </div>
