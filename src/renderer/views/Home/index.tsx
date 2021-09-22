@@ -130,11 +130,6 @@ function Home(props: any) {
       routerPath: '/home',
     },
     {
-      title: intl.formatMessage({ id: 'menu.accountManager.manager' }),
-      routerPath: '/home/manager-accounts',
-      parentPath: 'accountManager',
-    },
-    {
       title: intl.formatMessage({ id: 'menu.accountManager.add' }),
       routerPath: '/home/add-accounts',
       parentPath: 'accountManager',
@@ -270,13 +265,10 @@ function Home(props: any) {
               <SubMenu
                 key="accountManager"
                 icon={<UserOutlined />}
-                title="账户管理"
+                title={intl.formatMessage({
+                  id: 'menu.accountManager.manager',
+                })}
               >
-                <Menu.Item key="/home/manager-accounts">
-                  <Link to={`${match.url}/manager-accounts`}>
-                    <FormattedMessage id="menu.accountManager.manager" />
-                  </Link>
-                </Menu.Item>
                 <Menu.Item key="/home/add-accounts">
                   <Link to={`${match.url}/add-accounts`}>
                     <FormattedMessage id="menu.accountManager.add" />
