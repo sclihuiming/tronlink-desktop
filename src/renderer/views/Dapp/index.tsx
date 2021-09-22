@@ -11,6 +11,7 @@ import {
   Avatar,
   Badge,
   Alert,
+  Popconfirm,
 } from 'antd';
 import {
   ArrowRightOutlined,
@@ -25,7 +26,7 @@ import { RootState } from 'renderer/store';
 import { DappData } from '../../../types';
 import {
   getCurrentAccountAndNodeInfo,
-  getCurrentNodeInfo,
+  removeDappData as renderApiRemoveDappData,
 } from '../../../MessageDuplex/handlers/renderApi';
 import DappModal from '../../components/DappModal';
 import './Dapp.global.scss';
@@ -45,7 +46,7 @@ function Dapp(props: any) {
   const [dappUrl, setDappUrl] = useState('');
 
   // modal
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
 
   // eslint-disable-next-line global-require
   const preloadPath = `file://${require('path').resolve(
@@ -150,6 +151,10 @@ function Dapp(props: any) {
     setMode('webview');
   }
 
+  function removeDappData(url: string) {
+    renderApiRemoveDappData(url);
+  }
+
   if (mode === 'dapp') {
     return (
       <div className="dappContainer">
@@ -207,12 +212,31 @@ function Dapp(props: any) {
                         <div className="nameWrap">
                           <div className="name">{item.name}</div>
                           {!item.isOffice && (
-                            <div className="btnWrap">
-                              <Button
-                                type="dashed"
-                                size="small"
-                                icon={<DeleteOutlined />}
-                              />
+                            <div
+                              role="button"
+                              className="btnWrap"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
+                              onKeyPress={(e) => {
+                                e.stopPropagation();
+                              }}
+                              tabIndex={0}
+                            >
+                              <Popconfirm
+                                title="确认删除当前Dapp信息?"
+                                onConfirm={() => {
+                                  removeDappData(item.url);
+                                }}
+                                okText="删除"
+                                cancelText="取消"
+                              >
+                                <Button
+                                  type="dashed"
+                                  size="small"
+                                  icon={<DeleteOutlined />}
+                                />
+                              </Popconfirm>
                             </div>
                           )}
                         </div>

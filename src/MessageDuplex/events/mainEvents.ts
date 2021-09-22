@@ -52,6 +52,8 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(dappController.getDappList());
     case 'addDappData':
       return makeResponseData(dappController.addDappData(params));
+    case 'removeDappData':
+      return makeResponseData(dappController.removeDappData(params));
     case 'getInitParams':
       return makeResponseData(getInitParams());
     case 'getTransactions':

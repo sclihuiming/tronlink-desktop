@@ -89,3 +89,14 @@ export async function addDappData(data: DappData): Promise<any> {
     return Promise.reject(error);
   }
 }
+
+export async function removeDappData(url: string) {
+  try {
+    const dbInstance = await getDBInstance();
+    dbInstance.get('dappList', []).remove({ url }).write();
+    mainApi.setDappList(await getDappList());
+    return true;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}

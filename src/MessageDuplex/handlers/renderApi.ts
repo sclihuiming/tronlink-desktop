@@ -58,6 +58,10 @@ export function addDappData(data: DappData) {
   return sendOrInvoke('addDappData', data, true);
 }
 
+export function removeDappData(url: string) {
+  return sendOrInvoke('removeDappData', url, true);
+}
+
 export function getTransactions() {
   return sendOrInvoke('getTransactions', null, true);
 }
