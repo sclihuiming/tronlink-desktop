@@ -7,6 +7,7 @@
   width: 100vw;
   height: 100vh;
   background: radial-gradient(ellipse at bottom, #0d1d31 0%, #0c0d13 100%);
+  position: relative;
 
   .operationWrap {
     color: #fff;
@@ -23,6 +24,21 @@
 
     label {
       color: #fff;
+    }
+  }
+
+  .lang {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    .customSwitch {
+      min-width: 80px;
+      background-color: #8370bd;
+    }
+
+    .ant-switch-checked {
+      background-color: #3a76ad;
     }
   }
 

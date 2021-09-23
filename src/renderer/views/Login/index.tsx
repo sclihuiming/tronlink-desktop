@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Form, Input, Button, Spin, message } from 'antd';
+import { Form, Input, Button, Spin, message, Switch } from 'antd';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { LockOutlined } from '@ant-design/icons';
 import { get } from 'lodash';
@@ -99,6 +99,14 @@ function Login(props: any) {
   return (
     <Spin spinning={loading} size="large">
       <div className="loginWrap">
+        <div className="lang">
+          <Switch
+            className="customSwitch"
+            checkedChildren=" 中  文 "
+            unCheckedChildren="English"
+            defaultChecked
+          />
+        </div>
         {createStars()}
         <div className="operationWrap">
           {isNew && (
