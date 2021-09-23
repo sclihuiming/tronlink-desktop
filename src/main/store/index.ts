@@ -5,11 +5,18 @@ import { createDataFile } from '../../utils/index';
 
 let db: any;
 
+async function initOptionData() {
+  if (!db.has('setting').value()) {
+    db.set('setting', {}).write();
+  }
+}
+
 export async function initLocalData(): Promise<void> {
   if (!db) {
     const filePath: string = createDataFile();
     const adapter = new FileSync(filePath);
     db = low(adapter);
+    await initOptionData();
     await db.read();
   }
 }

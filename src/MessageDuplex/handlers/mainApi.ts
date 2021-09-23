@@ -30,3 +30,7 @@ export function setDappList(dappList: DappData[]) {
 export function changeNodeId(nodeId: string) {
   return send('changeNodeId', nodeId);
 }
+
+export function changeLanguage(lang: string) {
+  return send('changeLanguage', lang);
+}

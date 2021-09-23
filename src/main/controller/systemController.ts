@@ -1,9 +1,11 @@
 import { size } from 'lodash';
 import { RegisterData } from 'types';
+import { app } from 'electron';
 import { getDBInstance } from '../store/index';
 import { systemTag } from '../../constants';
 import { decrypt, encrypt, cryptoUtil } from '../../utils';
 import { getAuthentication, setAuthentication } from '../service/cacheService';
+import { changeLanguage } from '../../MessageDuplex/handlers/mainApi';
 
 export async function setRegisterTag(encryptTag: string) {
   const dbInstance = await getDBInstance();
@@ -55,4 +57,26 @@ export async function isLogin() {
 
 export async function logOut() {
   setAuthentication('');
+}
+
+// 设置
+export async function getLanguage() {
+  const dbInstance = await getDBInstance();
+  let lang = dbInstance.get('setting.lang').value();
+  if (!lang) {
+    const systemLang = app.getLocale();
+    if (['zh-CN', 'zh', 'zh-HK', 'zh-TW'].includes(systemLang)) {
+      lang = 'zh-CN';
+    } else {
+      lang = 'en-US';
+    }
+  }
+  return lang;
+}
+
+export async function setLanguage(lang: string) {
+  const dbInstance = await getDBInstance();
+  dbInstance.set('setting.lang', lang).write();
+  changeLanguage(lang);
+  return true;
 }

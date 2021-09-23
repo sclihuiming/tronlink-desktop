@@ -113,3 +113,11 @@ export function changeNode(nodeId: string) {
 export function getCurrentAccountAndNodeInfo() {
   return sendOrInvoke('getInitParams', null, true);
 }
+
+export function getLanguage() {
+  return sendOrInvoke('getLanguage', null, true);
+}
+
+export function setLanguage(lang: string) {
+  return sendOrInvoke('setLanguage', lang, true);
+}

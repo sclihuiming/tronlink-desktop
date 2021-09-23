@@ -46,6 +46,18 @@
   }
 }
 
+.customFooter {
+  position: relative;
+  text-align: center;
+  padding: 0 50px 10px 50px;
+
+  .lang {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+}
+
 .ant-layout-content {
   background: #fff;
 }

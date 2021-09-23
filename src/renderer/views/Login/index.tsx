@@ -12,6 +12,7 @@ import {
   registerNewUser,
   login,
 } from 'MessageDuplex/handlers/renderApi';
+import SwitchLang from 'renderer/components/SwitchLang';
 import { setLoginStatus } from 'renderer/reducers/appReducer';
 
 import { sleep } from '../../../utils';
@@ -100,12 +101,7 @@ function Login(props: any) {
     <Spin spinning={loading} size="large">
       <div className="loginWrap">
         <div className="lang">
-          <Switch
-            className="customSwitch"
-            checkedChildren=" 中  文 "
-            unCheckedChildren="English"
-            defaultChecked
-          />
+          <SwitchLang />
         </div>
         {createStars()}
         <div className="operationWrap">

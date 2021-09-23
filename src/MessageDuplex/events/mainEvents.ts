@@ -72,6 +72,10 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(systemController.login(params));
     case 'logOut':
       return makeResponseData(systemController.logOut());
+    case 'getLanguage':
+      return makeResponseData(systemController.getLanguage());
+    case 'setLanguage':
+      return makeResponseData(systemController.setLanguage(params));
     case 'getNodeId':
       return makeResponseData(nodeController.getSelectedNode());
     case 'getCurrentNodeInfo':

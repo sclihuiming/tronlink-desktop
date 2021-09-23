@@ -19,12 +19,13 @@ import Login from './views/Login';
 import enMessages from './lang/en-US.json';
 import zhMessages from './lang/zh-CN.json';
 
-const langs = {
+const langs: { [propName: string]: any } = {
   'zh-CN': zhMessages,
   'en-US': enMessages,
 };
 
 function App(props: any) {
+  const { lang } = props;
   const paramsStr = window.location.search;
   const params = new URLSearchParams(paramsStr);
   const isGotoSign = !!params.get('sign');
@@ -33,11 +34,7 @@ function App(props: any) {
   const isGotoHome = !isGotoLogin;
   return (
     <Router>
-      <IntlProvider
-        messages={langs['zh-CN']}
-        locale="zh-CN"
-        defaultLocale="zh-CN"
-      >
+      <IntlProvider messages={langs[lang]} locale={lang} defaultLocale="zh-CN">
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/home" component={Home} />
@@ -54,5 +51,6 @@ function App(props: any) {
 export default connect((state: RootState, ownProps) => {
   return {
     isLogin: state.app.isLogin,
+    lang: state.app.lang,
   };
 })(App);

@@ -5,6 +5,7 @@ import {
   setAccounts,
   setSelectedAddress,
   setNodeId,
+  setLanguage,
 } from '../../renderer/reducers/appReducer';
 import { setDappList } from '../../renderer/reducers/dappReducer';
 import store from '../../renderer/store/index';
@@ -26,6 +27,9 @@ function dispatchEvents(event: any, args: any) {
       break;
     case 'changeNodeId':
       store.dispatch(setNodeId(params));
+      break;
+    case 'changeLanguage':
+      store.dispatch(setLanguage(params));
       break;
     default:
       break;

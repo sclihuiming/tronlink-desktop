@@ -15,6 +15,7 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import { FormattedMessage, useIntl } from 'react-intl';
+import SwitchLang from 'renderer/components/SwitchLang';
 
 import { RootState } from 'renderer/store';
 import './Home.global.scss';
@@ -300,8 +301,11 @@ function Home(props: any) {
               </Switch>
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center', padding: '0 50px 10px 50px' }}>
+          <Footer className="customFooter">
             TronLink Desktop ©2021 sclihuiming@163.com
+            <div className="lang">
+              <SwitchLang />
+            </div>
           </Footer>
         </Layout>
       </Layout>
