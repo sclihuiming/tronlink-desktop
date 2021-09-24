@@ -2,7 +2,7 @@ import { size } from 'lodash';
 import { RegisterData } from 'types';
 import { app } from 'electron';
 import { getDBInstance } from '../store/index';
-import { systemTag } from '../../constants';
+import { EN_US, systemTag, ZH_CN } from '../../constants';
 import { decrypt, encrypt, cryptoUtil } from '../../utils';
 import { getAuthentication, setAuthentication } from '../service/cacheService';
 import { changeLanguage } from '../../MessageDuplex/handlers/mainApi';
@@ -66,9 +66,9 @@ export async function getLanguage() {
   if (!lang) {
     const systemLang = app.getLocale();
     if (['zh-CN', 'zh', 'zh-HK', 'zh-TW'].includes(systemLang)) {
-      lang = 'zh-CN';
+      lang = ZH_CN;
     } else {
-      lang = 'en-US';
+      lang = EN_US;
     }
   }
   return lang;

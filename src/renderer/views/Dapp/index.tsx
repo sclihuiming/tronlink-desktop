@@ -23,7 +23,7 @@ import {
 } from '@ant-design/icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { RootState } from 'renderer/store';
+import { RootState } from '../../store';
 import { DappData } from '../../../types';
 import {
   getCurrentAccountAndNodeInfo,

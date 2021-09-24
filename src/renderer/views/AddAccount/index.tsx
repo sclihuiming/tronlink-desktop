@@ -4,8 +4,8 @@ import { Form, Input, Button, Radio, message } from 'antd';
 import { connect } from 'react-redux';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { FormattedMessage, useIntl } from 'react-intl';
-import * as renderApi from 'MessageDuplex/handlers/renderApi';
 import { AddAccountParams } from 'types';
+import * as renderApi from '../../../MessageDuplex/handlers/renderApi';
 
 message.config({
   top: 200,

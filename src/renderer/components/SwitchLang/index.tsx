@@ -2,7 +2,7 @@ import { Switch } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { RootState } from 'renderer/store';
-import { setLanguage } from 'MessageDuplex/handlers/renderApi';
+import { setLanguage } from '../../../MessageDuplex/handlers/renderApi';
 import './SwitchLang.global.scss';
 import { EN_US, ZH_CN } from '../../../constants';
 

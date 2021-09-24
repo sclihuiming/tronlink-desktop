@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form, Input, Radio, message } from 'antd';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { addDappData } from 'MessageDuplex/handlers/renderApi';
+import { addDappData } from '../../../MessageDuplex/handlers/renderApi';
 
 export default function DappModal(props: any) {
   const [form] = Form.useForm();

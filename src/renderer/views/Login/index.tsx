@@ -11,9 +11,9 @@ import {
   isNewUser,
   registerNewUser,
   login,
-} from 'MessageDuplex/handlers/renderApi';
-import SwitchLang from 'renderer/components/SwitchLang';
-import { setLoginStatus } from 'renderer/reducers/appReducer';
+} from '../../../MessageDuplex/handlers/renderApi';
+import SwitchLang from '../../components/SwitchLang';
+import { setLoginStatus } from '../../reducers/appReducer';
 
 import { sleep } from '../../../utils';
 

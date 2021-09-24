@@ -11,7 +11,7 @@ import { get } from 'lodash';
 import './App.global.css';
 import './App.global.scss';
 // import 'antd/dist/antd.css';
-import { RootState } from 'renderer/store';
+import { RootState } from './store';
 import { EN_US, ZH_CN } from '../constants';
 import Home from './views/Home';
 import Sign from './views/Sign';

@@ -15,9 +15,9 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import { FormattedMessage, useIntl } from 'react-intl';
-import SwitchLang from 'renderer/components/SwitchLang';
+import { RootState } from '../../store';
+import SwitchLang from '../../components/SwitchLang';
 
-import { RootState } from 'renderer/store';
 import './Home.global.scss';
 import {
   setSelectedAddress,
