@@ -3,7 +3,7 @@ import TronWeb from 'tronweb';
 import { changeNodeId } from '../../MessageDuplex/handlers/mainApi';
 import { getDBInstance } from '../store';
 
-const TRON_GRID_API_KEY = 'f20ce1cd-dd43-4dfc-9db6-6cbfe4d554d9';
+const TRON_GRID_API_KEY = '9d5dc642-7ec8-4411-9dc7-add7c83227d3';
 const nodes = [
   {
     nodeId: '99def0880e627a80d9f7f7655426b05541b99f15',
@@ -37,6 +37,9 @@ async function rebuildTronWeb(nodeInfo: any) {
     nodeInfo.fullNode,
     nodeInfo.eventServer
   );
+  if (tronWebInstance.setHeader && nodeInfo.headers) {
+    tronWebInstance.setHeader(nodeInfo.headers);
+  }
 }
 
 export async function getNodeList() {
@@ -95,6 +98,9 @@ async function initTronwebInterval() {
       nodeInfo.fullNode,
       nodeInfo.eventServer
     );
+    if (tronWebInstance.setHeader && nodeInfo.headers) {
+      tronWebInstance.setHeader(nodeInfo.headers);
+    }
   }
 }
 

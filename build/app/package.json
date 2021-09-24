@@ -15,5 +15,7 @@
     "postinstall": "yarn electron-rebuild && yarn link-modules"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "@ledgerhq/hw-transport-node-hid-singleton": "^6.7.0"
+  }
 }
