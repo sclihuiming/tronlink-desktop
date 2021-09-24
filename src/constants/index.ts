@@ -24,6 +24,9 @@ export const cacheTTL = 0;
 
 export const systemTag = 'pc_tronLink_hamlin';
 
+export const ZH_CN = 'zh-CN';
+export const EN_US = 'en-US';
+
 export const REFER_ABI = [
   {
     constant: true,

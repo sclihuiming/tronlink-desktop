@@ -12,6 +12,7 @@ import './App.global.css';
 import './App.global.scss';
 // import 'antd/dist/antd.css';
 import { RootState } from 'renderer/store';
+import { EN_US, ZH_CN } from '../constants';
 import Home from './views/Home';
 import Sign from './views/Sign';
 import Login from './views/Login';
@@ -20,8 +21,8 @@ import enMessages from './lang/en-US.json';
 import zhMessages from './lang/zh-CN.json';
 
 const langs: { [propName: string]: any } = {
-  'zh-CN': zhMessages,
-  'en-US': enMessages,
+  [ZH_CN]: zhMessages,
+  [EN_US]: enMessages,
 };
 
 function App(props: any) {
@@ -34,7 +35,7 @@ function App(props: any) {
   const isGotoHome = !isGotoLogin;
   return (
     <Router>
-      <IntlProvider messages={langs[lang]} locale={lang} defaultLocale="zh-CN">
+      <IntlProvider messages={langs[lang]} locale={lang} defaultLocale={ZH_CN}>
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/home" component={Home} />

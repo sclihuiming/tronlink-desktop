@@ -4,17 +4,18 @@ import { connect } from 'react-redux';
 import { RootState } from 'renderer/store';
 import { setLanguage } from 'MessageDuplex/handlers/renderApi';
 import './SwitchLang.global.scss';
+import { EN_US, ZH_CN } from '../../../constants';
 
 function SwitchLang(props: any) {
   const { lang } = props;
   const [switchChecked, setSwitchChecked] = useState(true);
 
   useEffect(() => {
-    setSwitchChecked(lang === 'zh-CN');
+    setSwitchChecked(lang === ZH_CN);
   }, [lang]);
 
   const changLanguage = async (checked: boolean) => {
-    setLanguage(checked ? 'zh-CN' : 'en-US');
+    setLanguage(checked ? ZH_CN : EN_US);
   };
 
   return (
