@@ -15,10 +15,10 @@ const limit = 120;
 
 export default function LedgerConnect(props: any) {
   const [status, setStatus] = useState(0);
-  const [amount, setAmount] = useState(0);
 
   const intl = useIntl();
 
+  let amount = 0;
   let timer: NodeJS.Timeout;
 
   async function getAddressInfos() {
@@ -44,10 +44,11 @@ export default function LedgerConnect(props: any) {
       props.finish && props.finish();
     } else {
       setStatus(1);
-      setAmount(amount + 1);
+      amount += 1;
       if (timer) {
         clearTimeout(timer);
       }
+      console.log('amount:', amount);
       if (amount > limit) {
         props.goBack && props.goBack();
         message.error(intl.formatMessage({ id: 'ledger.stepTip.failed' }));
