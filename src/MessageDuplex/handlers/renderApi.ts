@@ -121,3 +121,11 @@ export function getLanguage() {
 export function setLanguage(lang: string) {
   return sendOrInvoke('setLanguage', lang, true);
 }
+
+export function checkTransport() {
+  return sendOrInvoke('checkTransport', null, true);
+}
+
+export function getAddressInfo(index: number, boolDisplay = false) {
+  return sendOrInvoke('getAddressInfo', { index, boolDisplay }, true);
+}

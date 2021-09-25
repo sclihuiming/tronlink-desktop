@@ -10,6 +10,7 @@
   "button.add.account":"增加账户",
   "button.reject":"拒绝",
   "button.sign": "签名",
+  "button.ledger.connect": "开始连接ledger",
 
   "menu.home":"主页",
   "menu.accountManager.manager":"账户管理",
@@ -51,6 +52,15 @@
   "sign.transaction.request.tips": "正在请求签名",
   "sign.contract.function": "合约方法",
   "sign.contract.function.unknown":"未知方法",
+
+  "ledger.step.one": "连接ledger",
+  "ledger.step.two": "加载并选择账户",
+  "ledger.connect.usb": "usb连接ledger",
+  "ledger.connect.bluetooth": "蓝牙连接ledger",
+  "ledger.stepTip.connectToPC": "请将ledger连接到电脑",
+  "ledger.stepTip.openTheTron": "在ledger上打开tron app",
+  "ledger.stepTip.finish": "连接成功, 正在加载账户",
+  "ledger.stepTip.failed": "连接失败",
 
   "rules.min.characters": "至少{amount}个字符",
   "rules.password.require": "请输入密码",

@@ -23,5 +23,8 @@
   },
   "cSpell.words": [
     "Popconfirm"
+  ],
+  "i18n-ally.localesPaths": [
+    "src/renderer/lang"
   ]
 }

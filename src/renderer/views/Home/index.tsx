@@ -29,6 +29,7 @@ import {
 import Overview from '../Overview';
 import AddAccount from '../AddAccount';
 import Dapp from '../Dapp';
+import AddLedgerAccount from '../AddLedgerAccount';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
@@ -297,6 +298,10 @@ function Home(props: any) {
                   component={AddAccount}
                 />
                 <Route path={`${match.path}/dapp`} component={Dapp} />
+                <Route
+                  path={`${match.path}/add-ledger-accounts`}
+                  component={AddLedgerAccount}
+                />
                 <Route path={`${match.path}`} component={Overview} />
               </Switch>
             </div>

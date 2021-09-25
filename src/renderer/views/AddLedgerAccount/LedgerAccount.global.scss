@@ -1,0 +1,27 @@
+.ledgerAccountWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .content {
+    margin-top: 30px;
+
+    .ledgerConnect {
+      display: flex;
+      flex-direction: column;
+
+      .customBtn {
+        margin-top: 20px;
+        border-radius: 5px;
+      }
+
+      .loadingWrap {
+        margin-top: 10px;
+      }
+    }
+
+    .ledgerAccounts {
+    }
+  }
+}

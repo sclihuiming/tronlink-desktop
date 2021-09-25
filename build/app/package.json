@@ -16,6 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@ledgerhq/hw-transport-node-ble": "^6.7.0",
     "@ledgerhq/hw-transport-node-hid-singleton": "^6.7.0"
   }
 }

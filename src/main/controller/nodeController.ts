@@ -26,8 +26,7 @@ const nodes = [
   },
 ];
 
-// TODO: 需要改成正式网
-const defaultSelectedNode = '6265f8e7676d66d70b90b049230024bf6ed52d93';
+const defaultSelectedNode = '99def0880e627a80d9f7f7655426b05541b99f15';
 
 let tronWebInstance: any;
 

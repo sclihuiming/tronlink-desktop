@@ -9,6 +9,7 @@ export * as nodeController from './nodeController';
 export * as transactionController from './transactionController';
 export * as systemController from './systemController';
 export * as commonController from './commonController';
+export * as ledgerController from './ledgerController';
 
 export async function getInitParams(): Promise<InjectData> {
   const accountInfo = await getSelectedAccountInfo();
@@ -28,8 +29,8 @@ export async function getInitParams(): Promise<InjectData> {
 
   return {
     accountInfo: {
-      address: get(accountInfo, 'address'),
-      name: get(accountInfo, 'name'),
+      address: get(accountInfo, 'address', ''),
+      name: get(accountInfo, 'name', ''),
       type,
     },
     nodeInfo: {

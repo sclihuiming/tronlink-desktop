@@ -14,6 +14,7 @@ import {
   systemController,
   nodeController,
   commonController,
+  ledgerController,
 } from '../../main/controller/index';
 
 const makeResponseData = async (dataP: Promise<any>) => {
@@ -84,6 +85,10 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(nodeController.getNodeList());
     case 'changeNode':
       return makeResponseData(commonController.changeNode(params));
+    case 'checkTransport':
+      return makeResponseData(ledgerController.checkTransport());
+    case 'getAddressInfo':
+      return makeResponseData(ledgerController.getAddressInfo(params));
     default:
       return null;
   }

@@ -10,6 +10,7 @@
   "button.add.account": "Add account",
   "button.reject": "Reject",
   "button.sign": "Sign",
+  "button.ledger.connect": "Start connect ledger",
 
   "menu.home": "Home",
   "menu.accountManager.manager": "Account Manager",
@@ -51,6 +52,15 @@
   "sign.transaction.request.tips": "Signature being requested",
   "sign.contract.function": "Contract method",
   "sign.contract.function.unknown": "Unknown method",
+
+  "ledger.step.one": "Connect ledger",
+  "ledger.step.two": "Load and select account",
+  "ledger.connect.usb": "usb connection ledger",
+  "ledger.connect.bluetooth": "Bluetooth connection ledger",
+  "ledger.stepTip.connectToPC": "Please connect the ledger to your computer",
+  "ledger.stepTip.openTheTron": "Open the tron app on the ledger",
+  "ledger.stepTip.finish": "Connected successfully, loading account now",
+  "ledger.stepTip.failed": "Connection Failed",
 
   "rules.min.characters": "At least {amount} characters",
   "rules.password.require": "Please enter a password",
