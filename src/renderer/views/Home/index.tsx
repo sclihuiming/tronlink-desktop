@@ -165,7 +165,7 @@ function Home(props: any) {
   const [collapsed, onCollapse] = useState(false);
   const [selectedKey, setSelectedKey] = useState(pathname);
   const [headerSelectedKey, setHeaderSelectedKey] = useState('/home');
-  const [openKey, setOpenKey] = useState([] as string[]);
+  const [openKey, setOpenKey] = useState(['accountManager'] as string[]);
   const [nodeList, setNodeList] = useState([]);
   const [nodeLoading, setNodeLoading] = useState(false);
 

@@ -93,6 +93,7 @@ const AddAccount = () => {
       </Form.Item>
       {type === 'privateKey' && (
         <Form.Item
+          wrapperCol={{ span: 18 }}
           name={['user', 'privateKey']}
           label={intl.formatMessage({ id: 'account.add.type.privatekey' })}
           required
@@ -109,12 +110,13 @@ const AddAccount = () => {
             },
           ]}
         >
-          <Input placeholder="" />
+          <Input.Password placeholder="" />
         </Form.Item>
       )}
 
       {type === 'mnemonic' && (
         <Form.Item
+          wrapperCol={{ span: 18 }}
           name={['user', 'mnemonic']}
           label={intl.formatMessage({ id: 'account.add.type.mnemonic' })}
           required
