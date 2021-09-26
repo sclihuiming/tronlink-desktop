@@ -49,6 +49,8 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(accountController.setSelectedAddress(params));
     case 'getSelectedAddress':
       return makeResponseData(accountController.getSelectedAddress());
+    case 'removeAccount':
+      return makeResponseData(accountController.removeAccount(params));
     case 'getDappList':
       return makeResponseData(dappController.getDappList());
     case 'addDappData':

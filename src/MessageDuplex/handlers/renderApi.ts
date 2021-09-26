@@ -38,6 +38,10 @@ export function addAccount(params: AddAccountParams) {
   return sendOrInvoke('addAccount', params, true);
 }
 
+export function removeAccount(address: string) {
+  return sendOrInvoke('removeAccount', address, true);
+}
+
 export function ipcExample(ping: string) {
   return sendOrInvoke('ipc-example', ping, false);
 }

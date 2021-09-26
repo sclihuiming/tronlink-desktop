@@ -23,6 +23,7 @@ type AddAccountParams = {
     name: string;
     privateKey?: string;
     mnemonic?: string;
+    ledgerAccounts?: any[];
   };
 };
 
@@ -32,6 +33,7 @@ type AccountData = {
   address: string;
   balance?: string | number;
   type?: number;
+  index?: number;
 };
 
 type DappData = {

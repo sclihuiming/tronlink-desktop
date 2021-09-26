@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import { Steps, Radio, Button, Checkbox, Divider, Form, Input } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { get, size } from 'lodash';
+import { get, keyBy, size } from 'lodash';
 
 import './LedgerAccount.global.scss';
 import LedgerConnect from '../../components/LedgerConnect';
 import { getAddressInfo } from '../../../MessageDuplex/handlers/renderApi';
+import { RootState } from '../../store';
 
 const { Step } = Steps;
 
@@ -59,8 +60,10 @@ function RenderStepOne(props: any) {
 }
 
 function RenderStepTwo(props: any) {
-  const { accountList = [], setAccountList } = props;
+  const { accountList = [], setAccountList, accounts } = props;
   const [btnLoading, setBtnLoading] = useState(false);
+
+  const accountInfos = keyBy(accounts, 'address');
 
   const intl = useIntl();
   const onFinish = (values: any) => {
@@ -122,7 +125,11 @@ function RenderStepTwo(props: any) {
           <Checkbox.Group className="checkboxGroup scroll">
             {accountList.map((item: any) => {
               return (
-                <Checkbox value={item.address} key={item.address}>
+                <Checkbox
+                  value={item.address}
+                  key={item.address}
+                  disabled={size(accountInfos[item.address]) > 0}
+                >
                   {item.address}
                 </Checkbox>
               );
@@ -143,6 +150,12 @@ function RenderStepTwo(props: any) {
     </div>
   );
 }
+
+const RenderStepTwos = connect((state: RootState, ownProps) => {
+  return {
+    accounts: state.app.accounts,
+  };
+})(RenderStepTwo);
 
 function LedgerAccount() {
   const [current, setCurrent] = useState(0);
@@ -173,7 +186,7 @@ function LedgerAccount() {
           />
         )}
         {current === 1 && (
-          <RenderStepTwo
+          <RenderStepTwos
             gotoNext={gotoNext}
             gotoPrev={gotoPrev}
             accountList={accountList}

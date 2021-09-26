@@ -1,5 +1,5 @@
 import { AccountData, AddAccountParams } from 'types';
-import { find, get, omit, size } from 'lodash';
+import { find, get, keyBy, omit, size } from 'lodash';
 import TronWeb from 'tronweb';
 import { BigNumber } from 'bignumber.js';
 import * as mainApi from '../../MessageDuplex/handlers/mainApi';
@@ -112,6 +112,7 @@ async function addAccountByPrivatekey(
     .assign({ [address]: { privateKey: JSON.stringify(encodePrivateInfo) } })
     .write();
   setSelectedAddress(address);
+  mainApi.setAccounts(dbInstance.get('accounts', []).value());
   return '成功保存';
 }
 
@@ -120,7 +121,33 @@ async function addAccountByMnemonic(
   name: string,
   mnemonic: string
 ): Promise<any> {
+  const dbInstance = await getDBInstance();
+  mainApi.setAccounts(dbInstance.get('accounts', []).value());
   return Promise.reject(new Error('not support type'));
+}
+
+async function addLedgerAccounts(
+  importType: string,
+  name: string,
+  accountList: any[]
+) {
+  const dbInstance = await getDBInstance();
+  const accounts = dbInstance.get('accounts', []).value();
+  const accountInfos = keyBy(accounts, 'address');
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const accountInfo of accountList) {
+    if (size(accountInfos[accountInfo.address]) === 0) {
+      const formatAddressInfo = {
+        importType,
+        name: `${name} #${accountInfo.index}`,
+        address: accountInfo.address,
+        index: accountInfo.index,
+      };
+      dbInstance.get('accounts', []).push(formatAddressInfo).write();
+    }
+  }
+  mainApi.setAccounts(dbInstance.get('accounts', []).value());
+  return '成功保存';
 }
 
 export async function addAccount(params: AddAccountParams): Promise<any> {
@@ -139,6 +166,14 @@ export async function addAccount(params: AddAccountParams): Promise<any> {
       params.user.mnemonic as string
     );
   }
+  if (importType === 'ledger') {
+    return addLedgerAccounts(
+      importType,
+      params.user.name,
+      params.user.ledgerAccounts as any[]
+    );
+    return true;
+  }
   return Promise.reject(new Error('not support type'));
 }
 
@@ -147,4 +182,21 @@ export async function getSelectedAuthKey() {
   const selectedAddress = await getSelectedAddress();
   const encryptKey = dbInstance.get(`certificate.${selectedAddress}`).value();
   return encryptKey;
+}
+
+export async function removeAccount(address: string) {
+  const dbInstance = await getDBInstance();
+  const accountInfo = dbInstance
+    .get('accounts', [])
+    .find((item: JSON) => item.address === address)
+    .value();
+  if (size(accountInfo) === 0) {
+    return Promise.reject(new Error('Account does not exist'));
+  }
+  dbInstance.get('accounts').remove({ address }).write();
+  if (accountInfo.importType !== 'ledger') {
+    dbInstance.unset(`certificate.${address}`).write();
+  }
+  mainApi.setAccounts(dbInstance.get('accounts', []).value());
+  return true;
 }
