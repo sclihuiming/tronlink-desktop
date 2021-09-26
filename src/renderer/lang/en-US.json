@@ -11,6 +11,7 @@
   "button.reject": "Reject",
   "button.sign": "Sign",
   "button.ledger.connect": "Start connect ledger",
+  "button.account.loadMore": "Load more addresses",
 
   "menu.home": "Home",
   "menu.accountManager.manager": "Account Manager",
@@ -72,6 +73,7 @@
   "rules.dapp.name": "Please enter the site name",
   "rules.dapp.url": "Please enter the website address!" ,
   "rules.dapp.network": "Please select a type",
+  "rules.ledger.account.select": "Please select at least one account",
 
   "message.save": "Saving..." ,
   "message.success.add": "Added successfully"

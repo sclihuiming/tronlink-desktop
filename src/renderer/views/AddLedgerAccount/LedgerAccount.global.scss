@@ -22,6 +22,12 @@
     }
 
     .ledgerAccounts {
+      .checkboxGroup {
+        .ant-checkbox-wrapper {
+          margin-left: 0;
+          color: gray;
+        }
+      }
     }
   }
 }

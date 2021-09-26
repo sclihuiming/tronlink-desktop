@@ -14,6 +14,7 @@ import {
 const limit = 120;
 
 export default function LedgerConnect(props: any) {
+  const { gotoNext, setAccountList, gotoPrev } = props;
   const [status, setStatus] = useState(0);
 
   const intl = useIntl();
@@ -33,15 +34,21 @@ export default function LedgerConnect(props: any) {
     }
     // TODO:  return props
     console.log('load account finish:', addressInfos);
+    setAccountList && setAccountList(addressInfos);
+    gotoNext && gotoNext();
   }
 
   async function checkConnectStatus() {
     const res = await checkTransport();
     console.log('res', res);
     if (res.code === 200 && res.data.success) {
-      setStatus(2);
-      await getAddressInfos();
-      props.finish && props.finish();
+      try {
+        setStatus(2);
+        await getAddressInfos();
+      } catch (error) {
+        setStatus(1);
+        timer = setTimeout(checkConnectStatus, 1000);
+      }
     } else {
       setStatus(1);
       amount += 1;
@@ -50,7 +57,7 @@ export default function LedgerConnect(props: any) {
       }
       console.log('amount:', amount);
       if (amount > limit) {
-        props.goBack && props.goBack();
+        gotoPrev && gotoPrev();
         message.error(intl.formatMessage({ id: 'ledger.stepTip.failed' }));
       } else {
         console.log('324234234-----');

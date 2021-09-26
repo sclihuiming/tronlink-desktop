@@ -11,6 +11,7 @@
   "button.reject":"拒绝",
   "button.sign": "签名",
   "button.ledger.connect": "开始连接ledger",
+  "button.account.loadMore": "加载更多地址",
 
   "menu.home":"主页",
   "menu.accountManager.manager":"账户管理",
@@ -72,6 +73,7 @@
   "rules.dapp.name":"请输入网站名称",
   "rules.dapp.url":"请输入网站地址!",
   "rules.dapp.network":"请选择一个类型",
+  "rules.ledger.account.select":"请至少选择一个账户",
 
   "message.save":"正在保存...",
   "message.success.add": "添加成功"
