@@ -16,6 +16,7 @@
 
   "result.success": "成功",
   "result.failed": "失败",
+  "result.no_data": "暂无数据",
 
   "menu.home":"主页",
   "menu.accountManager.manager":"账户管理",

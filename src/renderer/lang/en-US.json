@@ -16,6 +16,7 @@
 
   "result.success": "Success",
   "result.failed": "Failed",
+  "result.no_data": "No data available",
 
   "menu.home": "Home",
   "menu.accountManager.manager": "Account Manager",

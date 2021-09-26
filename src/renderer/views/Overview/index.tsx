@@ -11,6 +11,7 @@ import {
   Button,
   Popconfirm,
   message,
+  Empty,
 } from 'antd';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -127,7 +128,7 @@ function Overview(props: any) {
 
   return (
     <div className="overview">
-      {size(accounts) > 0 && (
+      {size(accounts) === 0 && (
         <div className="accountsWrap">
           {/* {accounts.map((item) => renderAccount(item, selectedAddress))}{' '} */}
           <List
@@ -165,11 +166,13 @@ function Overview(props: any) {
           />
         </div>
       )}
-      {size(accounts) === 0 && (
+      {size(accounts) > 0 && (
         <div className="empty">
-          <Link to={`${match.url}/add-accounts`}>
-            <FormattedMessage id="button.add.account" />
-          </Link>
+          <Empty description={intl.formatMessage({ id: 'result.no_data' })}>
+            <Link to={`${match.url}/add-accounts`}>
+              <FormattedMessage id="button.add.account" />
+            </Link>
+          </Empty>
         </div>
       )}
     </div>
