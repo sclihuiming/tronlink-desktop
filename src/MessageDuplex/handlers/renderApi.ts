@@ -133,3 +133,23 @@ export function checkTransport() {
 export function getAddressInfo(index: number, boolDisplay = false) {
   return sendOrInvoke('getAddressInfo', { index, boolDisplay }, true);
 }
+
+export function generateMnemonic() {
+  return sendOrInvoke('generateMnemonic', null, true);
+}
+
+export function generateMnemonicChinese() {
+  return sendOrInvoke('generateMnemonicChinese', null, true);
+}
+
+export function validateMnemonic(mnemonic: string) {
+  return sendOrInvoke('validateMnemonic', mnemonic, true);
+}
+
+export function validateMnemonicChinese(mnemonic: string) {
+  return sendOrInvoke('validateMnemonicChinese', mnemonic, true);
+}
+
+export function batchGenerateAccount(mnemonic: string, page = 0, size = 5) {
+  return sendOrInvoke('batchGenerateAccount', { mnemonic, page, size }, true);
+}

@@ -128,7 +128,7 @@ function Overview(props: any) {
 
   return (
     <div className="overview">
-      {size(accounts) === 0 && (
+      {size(accounts) > 0 && (
         <div className="accountsWrap">
           {/* {accounts.map((item) => renderAccount(item, selectedAddress))}{' '} */}
           <List
@@ -166,7 +166,7 @@ function Overview(props: any) {
           />
         </div>
       )}
-      {size(accounts) > 0 && (
+      {size(accounts) === 0 && (
         <div className="empty">
           <Empty description={intl.formatMessage({ id: 'result.no_data' })}>
             <Link to={`${match.url}/add-accounts`}>

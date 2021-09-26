@@ -40,6 +40,8 @@
   "account.current": "Current account",
   "account.switch.current": "Switch to this account",
   "account.delete.data.tips": "Confirm deletion of this account information?",
+  "account.address.label": "Account Address",
+  "account.mnemonic.support.type": "Support import of Chinese and English mnemonics",
 
   "dapp.page.tips": "Click on the dapp below to access the third party dapp, which involves unclear signatures, please authorize carefully to protect your assets",
   "dapp.network.main_chain": "Main Network",
@@ -80,6 +82,7 @@
   "rules.dapp.url": "Please enter the website address!" ,
   "rules.dapp.network": "Please select a type",
   "rules.ledger.account.select": "Please select at least one account",
+  "rules.mnemonic.error":"Incomplete mnemonic or wrong word",
 
   "message.save": "Saving..." ,
   "message.success.add": "Added successfully"

@@ -15,6 +15,7 @@ import {
   nodeController,
   commonController,
   ledgerController,
+  mnemonicController,
 } from '../../main/controller/index';
 
 const makeResponseData = async (dataP: Promise<any>) => {
@@ -91,6 +92,20 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(ledgerController.checkTransport());
     case 'getAddressInfo':
       return makeResponseData(ledgerController.getAddressInfo(params));
+    case 'generateMnemonic':
+      return makeResponseData(mnemonicController.generateMnemonic());
+    case 'generateMnemonicChinese':
+      return makeResponseData(
+        mnemonicController.generateMnemonicChinese(params)
+      );
+    case 'validateMnemonic':
+      return makeResponseData(mnemonicController.validateMnemonic(params));
+    case 'validateMnemonicChinese':
+      return makeResponseData(
+        mnemonicController.validateMnemonicChinese(params)
+      );
+    case 'batchGenerateAccount':
+      return makeResponseData(mnemonicController.batchGenerateAccount(params));
     default:
       return null;
   }

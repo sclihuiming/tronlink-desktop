@@ -10,6 +10,7 @@ export * as transactionController from './transactionController';
 export * as systemController from './systemController';
 export * as commonController from './commonController';
 export * as ledgerController from './ledgerController';
+export * as mnemonicController from './mnemonicController';
 
 export async function getInitParams(): Promise<InjectData> {
   const accountInfo = await getSelectedAccountInfo();

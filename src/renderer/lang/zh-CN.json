@@ -40,6 +40,8 @@
   "account.current":"当前账户",
   "account.switch.current":"切换到该账户",
   "account.delete.data.tips": "确认删除此账户信息?",
+  "account.address.label": "账户地址",
+  "account.mnemonic.support.type": "支持中文和英文助记词的导入",
 
   "dapp.page.tips":"点击下方的dapp可以进入第三方dapp, 涉及到不清楚的签名, 请谨慎授权, 保护资产安全",
   "dapp.network.main_chain": "主网",
@@ -80,6 +82,7 @@
   "rules.dapp.url":"请输入网站地址!",
   "rules.dapp.network":"请选择一个类型",
   "rules.ledger.account.select":"请至少选择一个账户",
+  "rules.mnemonic.error":"助记词不完整或者单词错误",
 
   "message.save":"正在保存...",
   "message.success.add": "添加成功"

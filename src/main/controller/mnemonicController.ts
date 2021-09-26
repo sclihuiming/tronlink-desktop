@@ -1,7 +1,8 @@
-import bip32 from 'tiny-bip32';
-import bip39 from 'bip39';
+import * as bip32 from 'tiny-bip32';
+import * as bip39 from 'bip39';
 import TronWeb from 'tronweb';
 import { pick } from 'lodash';
+import { checkIsChinese } from '../../utils';
 
 function getWordListByLanguage(language: string) {
   return bip39.wordlists[language] || bip39.wordlists.english;
@@ -11,7 +12,7 @@ export async function generateMnemonic(strength = 128, wordList?: string[]) {
   return bip39.generateMnemonic(strength, undefined, wordList);
 }
 
-export async function generateMnemonicChinese(strength: number) {
+export async function generateMnemonicChinese(strength = 128) {
   const wordList = getWordListByLanguage('chinese_simplified');
   return generateMnemonic(strength, wordList);
 }
@@ -42,13 +43,18 @@ export async function validateMnemonicChinese(mnemonic: string) {
   return validateMnemonic(mnemonic, wordList);
 }
 
-export async function batchGenerateAccount(
-  mnemonic: string,
-  page = 0,
-  size = 5
-) {
-  const start = page * size;
-  const end = page * (size + 1);
+export async function batchGenerateAccount(params: any) {
+  const { mnemonic, page = 0, pageSize = 5 } = params;
+  const isChinese = checkIsChinese(mnemonic);
+  const valid = isChinese
+    ? await validateMnemonicChinese(mnemonic)
+    : await validateMnemonic(mnemonic);
+  if (!valid) {
+    return Promise.reject(new Error('Incomplete mnemonic or wrong word'));
+  }
+
+  const start = page * pageSize;
+  const end = page * pageSize + pageSize;
   const promiseArr = [];
   for (let i = start; i < end; i += 1) {
     promiseArr.push(getAccountAtIndex(mnemonic, i));

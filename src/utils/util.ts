@@ -54,3 +54,8 @@ export function decrypt(data: string, key: string) {
 export function sleep(delay = 100) {
   return new Promise((resolve) => setTimeout(resolve, delay));
 }
+
+export function checkIsChinese(text: string) {
+  const reg = /^[\u4e00-\u9fa5\s]+$/;
+  return reg.test(text);
+}
