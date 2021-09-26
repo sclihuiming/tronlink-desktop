@@ -288,8 +288,8 @@ function Home(props: any) {
         <Layout>
           <Content style={{ margin: '10px' }}>
             <div
-              className="site-layout-background"
-              style={{ padding: 24, minHeight: 360 }}
+              className="site-layout-background scroll"
+              style={{ padding: 24, minHeight: 360, maxHeight: '80vh' }}
             >
               <Switch>
                 <Route path={`${match.path}/overview`} component={Overview} />

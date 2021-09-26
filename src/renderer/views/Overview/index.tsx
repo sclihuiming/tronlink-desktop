@@ -15,7 +15,7 @@ import {
 } from 'antd';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { UsbTwoTone, DeleteOutlined } from '@ant-design/icons';
+import { UsbTwoTone, DeleteOutlined, FileWordTwoTone } from '@ant-design/icons';
 import { AccountData } from 'types';
 import './Overview.global.scss';
 import {
@@ -67,7 +67,14 @@ function RenderAccount(props: any) {
           <div className="titleWrap">
             {importType === 'ledger' && (
               <Tooltip title="ledger">
-                <UsbTwoTone />
+                <UsbTwoTone twoToneColor="#52c41a" />
+              </Tooltip>
+            )}
+            {importType === 'mnemonic' && (
+              <Tooltip
+                title={intl.formatMessage({ id: 'account.add.type.mnemonic' })}
+              >
+                <FileWordTwoTone twoToneColor="#d2a07c" />
               </Tooltip>
             )}
             <div className="title">{name}</div>
@@ -127,7 +134,7 @@ function Overview(props: any) {
   }, [propsAccounts]);
 
   return (
-    <div className="overview">
+    <div className="overview scroll">
       {size(accounts) > 0 && (
         <div className="accountsWrap">
           {/* {accounts.map((item) => renderAccount(item, selectedAddress))}{' '} */}

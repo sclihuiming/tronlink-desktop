@@ -24,6 +24,7 @@ type AddAccountParams = {
     privateKey?: string;
     mnemonic?: string;
     ledgerAccounts?: any[];
+    mnemonicIndexes?: number[];
   };
 };
 

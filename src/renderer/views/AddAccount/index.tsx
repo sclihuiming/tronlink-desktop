@@ -28,6 +28,7 @@ const AddAccount = (props: any) => {
   const [type, setImportType] = useState<string>('privateKey');
   const [accountList, setAccountList] = useState([]);
   const [btnLoading, setBtnLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [page, setPage] = useState(0);
   const pageSize = 5;
 
@@ -51,19 +52,27 @@ const AddAccount = (props: any) => {
 
   const key = 'updatable';
   const onFinish = async (values: AddAccountParams) => {
+    setSubmitLoading(true);
     message.loading({
       content: intl.formatMessage({ id: 'message.save' }),
       key,
     });
+    if (values.importType === 'mnemonic') {
+      const mnemonicIndexes = get(values, 'user.mnemonicIndexes', []);
+      values.user.mnemonicIndexes = mnemonicIndexes;
+    }
     const res = await renderApi.addAccount(values);
     if (res.code === 200) {
       setTimeout(() => {
         message.success({ content: res.data, key, duration: 2 });
         form.resetFields();
+        setAccountList([]);
+        setSubmitLoading(false);
       }, 1000);
     } else {
       setTimeout(() => {
         message.error({ content: res.msg || '...', key, duration: 2 });
+        setSubmitLoading(false);
       }, 1000);
     }
   };
@@ -199,7 +208,7 @@ const AddAccount = (props: any) => {
           </Form.Item>
           <Form.Item
             wrapperCol={{ span: 12 }}
-            name={['user', 'accountSeq']}
+            name={['user', 'mnemonicIndexes']}
             label={intl.formatMessage({ id: 'account.address.label' })}
             required
             rules={[
@@ -215,7 +224,7 @@ const AddAccount = (props: any) => {
               {accountList.map((item: any) => {
                 return (
                   <Checkbox
-                    value={item.address}
+                    value={item.index}
                     key={item.address}
                     disabled={size(accountInfos[item.address]) > 0}
                   >
@@ -240,7 +249,7 @@ const AddAccount = (props: any) => {
       )}
 
       <Form.Item wrapperCol={{ offset: 6 }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={submitLoading}>
           <FormattedMessage id="button.add" />
         </Button>
       </Form.Item>

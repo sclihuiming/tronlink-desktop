@@ -13,6 +13,7 @@ import {
 } from '../service/cacheService';
 import { getDBInstance } from '../store/index';
 import { getTronwebInstance } from './nodeController';
+import { getAccountAtIndex } from './mnemonicController';
 
 export async function getSelectedAddress(): Promise<string> {
   const dbInstance = await getDBInstance();
@@ -53,7 +54,7 @@ export async function refreshAccountsData(isLoadByNetwork: boolean) {
     }
   }
 
-  dbInstance.set('accounts', accounts).write();
+  dbInstance.get('accounts').assign(accounts).write();
   setAccountsCache(accounts);
   mainApi.setAccounts(accounts);
   dbInstance.write();
@@ -119,11 +120,47 @@ async function addAccountByPrivatekey(
 async function addAccountByMnemonic(
   importType: string,
   name: string,
-  mnemonic: string
+  mnemonic: string,
+  mnemonicIndexes: number[]
 ): Promise<any> {
   const dbInstance = await getDBInstance();
+  const accounts = dbInstance.get('accounts', []).value();
+  const accountInfos = keyBy(accounts, 'address');
+
+  const authKey = getAuthentication();
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const index of mnemonicIndexes) {
+    const { address, privateKey } = await getAccountAtIndex(mnemonic, index);
+    if (size(accountInfos[address]) === 0 && privateKey) {
+      const encodePrivateInfo = cryptoUtil.encryptSync(
+        privateKey,
+        <string>authKey
+      );
+      const encodeMnemonicInfo = cryptoUtil.encryptSync(
+        mnemonic,
+        <string>authKey
+      );
+      dbInstance
+        .get('certificate', {})
+        .assign({
+          [address]: {
+            privateKey: JSON.stringify(encodePrivateInfo),
+            mnemonic: JSON.stringify(encodeMnemonicInfo),
+          },
+        })
+        .write();
+
+      const formatAddressInfo = {
+        importType,
+        address,
+        index,
+        name: `${name} #${index}`,
+      };
+      dbInstance.get('accounts').push(formatAddressInfo).write();
+    }
+  }
   mainApi.setAccounts(dbInstance.get('accounts', []).value());
-  return Promise.reject(new Error('not support type'));
+  return '成功保存';
 }
 
 async function addLedgerAccounts(
@@ -163,7 +200,8 @@ export async function addAccount(params: AddAccountParams): Promise<any> {
     return addAccountByMnemonic(
       importType,
       params.user.name,
-      params.user.mnemonic as string
+      params.user.mnemonic as string,
+      params.user.mnemonicIndexes as number[]
     );
   }
   if (importType === 'ledger') {
