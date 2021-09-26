@@ -14,6 +14,9 @@
   "button.account.loadMore": "加载更多地址",
   "button.account.import": "导入账户",
 
+  "result.success": "成功",
+  "result.failed": "失败",
+
   "menu.home":"主页",
   "menu.accountManager.manager":"账户管理",
   "menu.accountManager.add":"增加账户",
@@ -35,6 +38,7 @@
   "account.add.tips.mnemonic":"请保护好你的助记词,随意粘贴传播容易造成资产损失",
   "account.current":"当前账户",
   "account.switch.current":"切换到该账户",
+  "account.delete.data.tips": "确认删除此账户信息?",
 
   "dapp.page.tips":"点击下方的dapp可以进入第三方dapp, 涉及到不清楚的签名, 请谨慎授权, 保护资产安全",
   "dapp.network.main_chain": "主网",

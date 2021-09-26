@@ -2,16 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { RootState } from 'renderer/store';
 import { get, size } from 'lodash';
-import { List, Card, Badge, Typography, Tooltip, Button } from 'antd';
+import {
+  List,
+  Card,
+  Badge,
+  Typography,
+  Tooltip,
+  Button,
+  Popconfirm,
+  message,
+} from 'antd';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { UsbTwoTone } from '@ant-design/icons';
+import { UsbTwoTone, DeleteOutlined } from '@ant-design/icons';
 import { AccountData } from 'types';
 import './Overview.global.scss';
-import { setSelectedAddress } from '../../../MessageDuplex/handlers/renderApi';
+import {
+  removeAccount,
+  setSelectedAddress,
+} from '../../../MessageDuplex/handlers/renderApi';
 
 const { Meta } = Card;
 const { Paragraph } = Typography;
+const key = 'updatable';
 
 function renderAccount(accountItem: AccountData, selectedAddress: string) {
   const name = get(accountItem, 'name', '');
@@ -25,6 +38,16 @@ function renderAccount(accountItem: AccountData, selectedAddress: string) {
   const handleClick = () => {
     setSelectedAddress(address);
   };
+
+  const removeAccountData = async (_address: string) => {
+    const res = await removeAccount(_address);
+    if (res.code === 200) {
+      message.success({ content: res.data, key, duration: 2 });
+    } else {
+      message.error({ content: res.msg || '...', key, duration: 2 });
+    }
+  };
+
   return (
     <Card className="accountItem">
       <Meta
@@ -36,6 +59,18 @@ function renderAccount(accountItem: AccountData, selectedAddress: string) {
               </Tooltip>
             )}
             <div className="title">{name}</div>
+            {address !== selectedAddress && (
+              <Popconfirm
+                title={<FormattedMessage id="account.delete.data.tips" />}
+                onConfirm={() => {
+                  removeAccountData(address);
+                }}
+                okText={<FormattedMessage id="button.delete" />}
+                cancelText={<FormattedMessage id="button.cancel" />}
+              >
+                <Button type="dashed" size="small" icon={<DeleteOutlined />} />
+              </Popconfirm>
+            )}
           </div>
         }
         description={

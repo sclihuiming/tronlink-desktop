@@ -14,6 +14,9 @@
   "button.account.loadMore": "Load more addresses",
   "button.account.import": "Import Account",
 
+  "result.success": "Success",
+  "result.failed": "Failed",
+
   "menu.home": "Home",
   "menu.accountManager.manager": "Account Manager",
   "menu.accountManager.add": "Add Account",
@@ -35,6 +38,7 @@
   "account.add.tips.mnemonic": "Please protect your mnemonic, it is easy to spread it by pasting it at will and cause loss of assets",
   "account.current": "Current account",
   "account.switch.current": "Switch to this account",
+  "account.delete.data.tips": "Confirm deletion of this account information?",
 
   "dapp.page.tips": "Click on the dapp below to access the third party dapp, which involves unclear signatures, please authorize carefully to protect your assets",
   "dapp.network.main_chain": "Main Network",
