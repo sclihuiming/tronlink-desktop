@@ -5,6 +5,7 @@ import { get, size } from 'lodash';
 import { List, Card, Badge, Typography, Tooltip, Button } from 'antd';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { UsbTwoTone } from '@ant-design/icons';
 import { AccountData } from 'types';
 import './Overview.global.scss';
 import { setSelectedAddress } from '../../../MessageDuplex/handlers/renderApi';
@@ -16,6 +17,7 @@ function renderAccount(accountItem: AccountData, selectedAddress: string) {
   const name = get(accountItem, 'name', '');
   const address = get(accountItem, 'address', '');
   const balance = get(accountItem, 'balance', 0);
+  const importType = get(accountItem, 'importType', '');
   const formatAddress = `${address.substring(0, 8)}...${address.substring(
     address.length - 8
   )}`;
@@ -26,7 +28,16 @@ function renderAccount(accountItem: AccountData, selectedAddress: string) {
   return (
     <Card className="accountItem">
       <Meta
-        title={name}
+        title={
+          <div className="titleWrap">
+            {importType === 'ledger' && (
+              <Tooltip title="ledger">
+                <UsbTwoTone />
+              </Tooltip>
+            )}
+            <div className="title">{name}</div>
+          </div>
+        }
         description={
           <div className="accountDetail">
             <Paragraph copyable={{ text: address }} className="address">

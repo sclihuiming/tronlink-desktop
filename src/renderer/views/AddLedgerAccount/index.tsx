@@ -2,14 +2,27 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Steps, Radio, Button, Checkbox, Divider, Form, Input } from 'antd';
+import {
+  Steps,
+  Radio,
+  Button,
+  Checkbox,
+  Divider,
+  Form,
+  Input,
+  message,
+} from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get, keyBy, size } from 'lodash';
+import { AddAccountParams } from 'types';
 
 import './LedgerAccount.global.scss';
 import LedgerConnect from '../../components/LedgerConnect';
-import { getAddressInfo } from '../../../MessageDuplex/handlers/renderApi';
+import {
+  getAddressInfo,
+  addAccount,
+} from '../../../MessageDuplex/handlers/renderApi';
 import { RootState } from '../../store';
 
 const { Step } = Steps;
@@ -63,11 +76,40 @@ function RenderStepTwo(props: any) {
   const { accountList = [], setAccountList, accounts } = props;
   const [btnLoading, setBtnLoading] = useState(false);
 
+  const [form] = Form.useForm();
   const accountInfos = keyBy(accounts, 'address');
 
   const intl = useIntl();
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
+  const key = 'updatable';
+
+  const onFinish = async (params: any) => {
+    const { accountName, selectAccounts } = params;
+    const accountListInfos = keyBy(accountList, 'address');
+    const ledgerAccounts: any[] = [];
+    const accountParams = {
+      importType: 'ledger',
+      user: {
+        ledgerAccounts,
+        name: accountName,
+      },
+    };
+    selectAccounts.forEach((address: any) => {
+      const accountItem = accountListInfos[address];
+      if (accountItem) {
+        accountParams.user.ledgerAccounts.push(accountItem);
+      }
+    });
+    const res = await addAccount(accountParams as AddAccountParams);
+    if (res.code === 200) {
+      setTimeout(() => {
+        message.success({ content: res.data, key, duration: 2 });
+        form.resetFields();
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        message.error({ content: res.msg || '...', key, duration: 2 });
+      }, 1000);
+    }
   };
 
   const getAddressInfos = async () => {
@@ -91,6 +133,7 @@ function RenderStepTwo(props: any) {
   return (
     <div className="ledgerAccounts">
       <Form
+        form={form}
         name="ledgerAccount"
         onFinish={onFinish}
         labelCol={{ span: 6 }}

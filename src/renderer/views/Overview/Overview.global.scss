@@ -7,6 +7,15 @@
     .accountItem {
       position: relative;
 
+      .titleWrap {
+        display: flex;
+        align-items: center;
+
+        .title {
+          margin-left: 5px;
+        }
+      }
+
       .accountDetail {
         .address {
           color: rgba(0, 0, 0, 0.45);
