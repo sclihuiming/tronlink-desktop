@@ -4,12 +4,14 @@
 
 - [x] 登陆
 - [x] 账户管理
-- [ ] 节点管理
+- [x] 节点选择
 - [x] Page Hook 注入
 - [ ] 签名模态框
-- [ ] webview 事件通知
-- [ ] ledger 支持
+- [x] webview 事件通知
+- [x] ledger 账户导入
+- [ ] ledger 账户签名
 - [x] kdf(scrypt)加密
+- [ ] 界面优化
 
 ## To Use
 
