@@ -26,7 +26,8 @@ const { Meta } = Card;
 const { Paragraph } = Typography;
 const key = 'updatable';
 
-function renderAccount(accountItem: AccountData, selectedAddress: string) {
+function RenderAccount(props: any) {
+  const { accountItem, selectedAddress } = props;
   const name = get(accountItem, 'name', '');
   const address = get(accountItem, 'address', '');
   const balance = get(accountItem, 'balance', 0);
@@ -35,6 +36,8 @@ function renderAccount(accountItem: AccountData, selectedAddress: string) {
     address.length - 8
   )}`;
 
+  const intl = useIntl();
+
   const handleClick = () => {
     setSelectedAddress(address);
   };
@@ -42,9 +45,17 @@ function renderAccount(accountItem: AccountData, selectedAddress: string) {
   const removeAccountData = async (_address: string) => {
     const res = await removeAccount(_address);
     if (res.code === 200) {
-      message.success({ content: res.data, key, duration: 2 });
+      message.success({
+        content: intl.formatMessage({ id: 'result.success' }),
+        key,
+        duration: 2,
+      });
     } else {
-      message.error({ content: res.msg || '...', key, duration: 2 });
+      message.error({
+        content: intl.formatMessage({ id: 'result.failed' }),
+        key,
+        duration: 2,
+      });
     }
   };
 
@@ -137,10 +148,16 @@ function Overview(props: any) {
                     <Badge.Ribbon
                       text={intl.formatMessage({ id: 'account.current' })}
                     >
-                      {renderAccount(item, selectedAddress)}
+                      <RenderAccount
+                        accountItem={item}
+                        selectedAddress={selectedAddress}
+                      />
                     </Badge.Ribbon>
                   ) : (
-                    renderAccount(item, selectedAddress)
+                    <RenderAccount
+                      accountItem={item}
+                      selectedAddress={selectedAddress}
+                    />
                   )}
                 </List.Item>
               );
