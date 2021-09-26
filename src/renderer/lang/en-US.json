@@ -12,6 +12,7 @@
   "button.sign": "Sign",
   "button.ledger.connect": "Start connect ledger",
   "button.account.loadMore": "Load more addresses",
+  "button.account.import": "Import Account",
 
   "menu.home": "Home",
   "menu.accountManager.manager": "Account Manager",

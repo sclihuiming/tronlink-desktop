@@ -32,7 +32,6 @@ export default function LedgerConnect(props: any) {
         index -= 1;
       }
     }
-    // TODO:  return props
     console.log('load account finish:', addressInfos);
     setAccountList && setAccountList(addressInfos);
     gotoNext && gotoNext();

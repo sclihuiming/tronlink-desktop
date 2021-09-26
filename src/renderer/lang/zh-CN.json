@@ -12,6 +12,7 @@
   "button.sign": "签名",
   "button.ledger.connect": "开始连接ledger",
   "button.account.loadMore": "加载更多地址",
+  "button.account.import": "导入账户",
 
   "menu.home":"主页",
   "menu.accountManager.manager":"账户管理",

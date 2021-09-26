@@ -1,11 +1,15 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Steps, Radio, Button, Checkbox, Divider, Form, Input } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { get, size } from 'lodash';
 
 import './LedgerAccount.global.scss';
 import LedgerConnect from '../../components/LedgerConnect';
+import { getAddressInfo } from '../../../MessageDuplex/handlers/renderApi';
 
 const { Step } = Steps;
 
@@ -55,11 +59,32 @@ function RenderStepOne(props: any) {
 }
 
 function RenderStepTwo(props: any) {
-  const { accountList = [] } = props;
+  const { accountList = [], setAccountList } = props;
+  const [btnLoading, setBtnLoading] = useState(false);
+
   const intl = useIntl();
   const onFinish = (values: any) => {
     console.log('Success:', values);
   };
+
+  const getAddressInfos = async () => {
+    setBtnLoading(true);
+    const startIndex =
+      get(accountList, `${size(accountList) - 1}.index`, 0) + 1;
+    const addressInfos = [];
+    for (let index = startIndex; index < startIndex + 5; index += 1) {
+      const res = await getAddressInfo(index);
+      if (res.code === 200 && res.data.success) {
+        addressInfos.push(res.data);
+      } else {
+        index -= 1;
+      }
+    }
+    console.log('load account finish:', addressInfos);
+    setAccountList && setAccountList(accountList.concat(addressInfos));
+    setBtnLoading(false);
+  };
+
   return (
     <div className="ledgerAccounts">
       <Form
@@ -94,7 +119,7 @@ function RenderStepTwo(props: any) {
           ]}
           wrapperCol={{ span: 14, offset: 6 }}
         >
-          <Checkbox.Group className="checkboxGroup">
+          <Checkbox.Group className="checkboxGroup scroll">
             {accountList.map((item: any) => {
               return (
                 <Checkbox value={item.address} key={item.address}>
@@ -105,12 +130,16 @@ function RenderStepTwo(props: any) {
           </Checkbox.Group>
         </Form.Item>
         <Form.Item wrapperCol={{ span: 14, offset: 6 }}>
-          <Button type="dashed">
+          <Button type="dashed" loading={btnLoading} onClick={getAddressInfos}>
             <FormattedMessage id="button.account.loadMore" />
           </Button>
         </Form.Item>
+        <Form.Item wrapperCol={{ offset: 6, span: 14 }}>
+          <Button type="primary" htmlType="submit">
+            <FormattedMessage id="button.account.import" />
+          </Button>
+        </Form.Item>
       </Form>
-      <Divider />
     </div>
   );
 }
@@ -148,6 +177,7 @@ function LedgerAccount() {
             gotoNext={gotoNext}
             gotoPrev={gotoPrev}
             accountList={accountList}
+            setAccountList={setAccountList}
           />
         )}
       </div>
