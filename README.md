@@ -8,7 +8,8 @@
 - [x] Page Hook 注入
 - [ ] 签名模态框
 - [x] webview 事件通知
-- [x] ledger 账户导入
+- [x] 通过 usb 连接 ledger
+- [ ] 通过蓝牙连接 ledger
 - [ ] ledger 账户签名
 - [x] kdf(scrypt)加密
 - [ ] 界面优化
