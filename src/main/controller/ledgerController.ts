@@ -1,6 +1,7 @@
 import Transport from '@ledgerhq/hw-transport-node-hid-singleton';
 import BluetoothTransport from '@ledgerhq/hw-transport-node-ble';
 import AppTrx from '@ledgerhq/hw-app-trx';
+import { getTronwebInstance } from './nodeController';
 
 function getPath(index = 0) {
   return `44'/195'/${index}'/0/0`;
@@ -58,10 +59,43 @@ async function isCorrectAddress(fromAddress: string, index = 0) {
   return targetAddress === fromAddress;
 }
 
-export async function signTransaction(params: any) {
+async function signPersonalMessage(transaction: any, index = 0) {
   let transport;
   try {
-    const { fromAddress, index, transaction } = params;
+    transport = await Transport.create();
+    const trx = new AppTrx(transport);
+    const path = getPath(index);
+
+    const signTransaction = await trx.signPersonalMessage(path, transaction);
+    return {
+      success: true,
+      signTransaction,
+    };
+  } catch (error) {
+    return {
+      success: false,
+    };
+  } finally {
+    if (transport) {
+      transport.close();
+    }
+  }
+}
+
+async function buildTransactionSigner(transaction: any, accountIndex = 0) {
+  if (typeof transaction === 'string') {
+    return signPersonalMessage(transaction, accountIndex);
+  }
+  return true;
+}
+
+export async function signTransactionByLedger(
+  fromAddress: string,
+  index: number,
+  transaction: any
+) {
+  let transport;
+  try {
     const { address: targetAddress } = await getAccount(index);
     if (fromAddress !== targetAddress) {
       return await Promise.reject(
@@ -71,6 +105,8 @@ export async function signTransaction(params: any) {
     if (transaction === undefined) {
       return await Promise.reject(new Error('invalid transaction'));
     }
+    // const tronWebInstance = getTronwebInstance();
+
     transport = await Transport.create();
     // TODO: 签名
 
