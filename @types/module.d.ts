@@ -1,3 +1,3 @@
 declare module 'tronweb';
-declare module '@tronscan/client/src/utils/tronWeb';
-declare module '@tronscan/client/src/utils/bytes';
+declare module 'tron-util/src/utils/tronWeb';
+declare module 'tron-util/src/utils/bytes';

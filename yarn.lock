@@ -2034,27 +2034,6 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@tronscan/client@^0.2.77":
-  version "0.2.77"
-  resolved "https://registry.yarnpkg.com/@tronscan/client/-/client-0.2.77.tgz#72e40e91eeca878a9319a7d0b91f022350bce042"
-  integrity sha512-0ucCUQL8vXGHdK137G9sLSpg9/HN+bL2nkqCnAlGLfFb6tL8H6GXJx+nYnfHmayG8pi8sflKdC2zqcEciQxEsg==
-  dependencies:
-    axios "^0.18.0"
-    babel-plugin-transform-class-properties "^6.24.1"
-    babel-plugin-transform-object-rest-spread "^6.26.0"
-    babel-preset-env "^1.7.0"
-    babel-preset-es2015 "^6.24.1"
-    base-58 "^0.0.1"
-    btoa "^1.2.1"
-    chai "^4.1.2"
-    crypto-js "^3.1.9-1"
-    elliptic "^6.4.0"
-    google-protobuf "^3.5.0"
-    js-sha3 "^0.7.0"
-    mocha "^5.1.0"
-    nano-time "^1.0.0"
-    qs "^6.5.1"
-
 "@trysound/sax@0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.1.1.tgz#3348564048e7a2d7398c935d466c0414ebb6a669"
@@ -12933,6 +12912,27 @@ tree-kill@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.2.tgz#4ca09a9092c88b73a7cdc5e8a01b507b0790a0cc"
   integrity sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==
+
+tron-util@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/tron-util/-/tron-util-1.0.2.tgz#d87d2679dcfb7e67806e071b84349b9a16555f68"
+  integrity sha512-VYQ0FyrqmPZicuBmpDUgagz7zqUrtByZrwC2/CPj1WVu9kZJB4G9TtpquLDYnPCtiIudRoJxVZLaVsdUOXaysA==
+  dependencies:
+    axios "^0.18.0"
+    babel-plugin-transform-class-properties "^6.24.1"
+    babel-plugin-transform-object-rest-spread "^6.26.0"
+    babel-preset-env "^1.7.0"
+    babel-preset-es2015 "^6.24.1"
+    base-58 "^0.0.1"
+    btoa "^1.2.1"
+    chai "^4.1.2"
+    crypto-js "^3.1.9-1"
+    elliptic "^6.4.0"
+    google-protobuf "^3.5.0"
+    js-sha3 "^0.7.0"
+    mocha "^5.1.0"
+    nano-time "^1.0.0"
+    qs "^6.5.1"
 
 tronweb@^4.0.0:
   version "4.0.0"

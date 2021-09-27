@@ -1,8 +1,8 @@
 import Transport from '@ledgerhq/hw-transport-node-hid-singleton';
 // import BluetoothTransport from '@ledgerhq/hw-transport-node-ble';
 import AppTrx from '@ledgerhq/hw-app-trx';
-import { transactionJsonToProtoBuf } from '@tronscan/client/src/utils/tronWeb';
-import { byteArray2hexStr } from '@tronscan/client/src/utils/bytes';
+import { transactionJsonToProtoBuf } from 'tron-util/src/utils/tronWeb';
+import { byteArray2hexStr } from 'tron-util/src/utils/bytes';
 
 const retryTime = 3;
 

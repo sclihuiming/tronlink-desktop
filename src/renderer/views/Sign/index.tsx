@@ -51,8 +51,7 @@ function Sign() {
 
   const acceptFunc = async () => {
     setAcceptLoading(true);
-    const res = await acceptConfirmation(messageID);
-
+    await acceptConfirmation(messageID);
     setAcceptLoading(false);
   };
 

@@ -22,6 +22,7 @@
     "*.{css,sass,scss}.d.ts": true
   },
   "cSpell.words": [
+    "antd",
     "ledgerhq",
     "Popconfirm",
     "tronscan"
