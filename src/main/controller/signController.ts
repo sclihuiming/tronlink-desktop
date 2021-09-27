@@ -11,7 +11,7 @@ const decryptAuthKey = async () => {
   return cryptoUtil.decryptSync(encryptKey, password);
 };
 
-export async function authTransaction(transaction: any) {
+export async function authTransaction(transaction: any, input: any) {
   try {
     const tronWebInstance = getTronwebInstance();
 

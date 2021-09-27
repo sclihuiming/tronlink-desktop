@@ -93,7 +93,7 @@ async function addAccountByPrivatekey(
 
   const existAccount = dbInstance
     .get('accounts', [])
-    .find((item: JSON) => item.address === address)
+    .find((item: AccountData) => item.address === address)
     .value();
   if (size(existAccount) > 0) {
     return Promise.reject(new Error('账户已经存在'));
@@ -226,7 +226,7 @@ export async function removeAccount(address: string) {
   const dbInstance = await getDBInstance();
   const accountInfo = dbInstance
     .get('accounts', [])
-    .find((item: JSON) => item.address === address)
+    .find((item: AccountData) => item.address === address)
     .value();
   if (size(accountInfo) === 0) {
     return Promise.reject(new Error('Account does not exist'));

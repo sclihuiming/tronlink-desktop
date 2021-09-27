@@ -22,7 +22,9 @@
     "*.{css,sass,scss}.d.ts": true
   },
   "cSpell.words": [
-    "Popconfirm"
+    "ledgerhq",
+    "Popconfirm",
+    "tronscan"
   ],
   "i18n-ally.localesPaths": [
     "src/renderer/lang"

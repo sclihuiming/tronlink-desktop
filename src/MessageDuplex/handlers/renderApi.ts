@@ -42,6 +42,10 @@ export function removeAccount(address: string) {
   return sendOrInvoke('removeAccount', address, true);
 }
 
+export function getSelectedAccountInfo() {
+  return sendOrInvoke('getSelectedAccountInfo', null, true);
+}
+
 export function ipcExample(ping: string) {
   return sendOrInvoke('ipc-example', ping, false);
 }

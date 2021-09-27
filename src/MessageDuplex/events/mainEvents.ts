@@ -24,7 +24,7 @@ const makeResponseData = async (dataP: Promise<any>) => {
   let code = 200;
   try {
     data = await dataP;
-  } catch (error) {
+  } catch (error: any) {
     msg = error.message;
     code = 1000;
   }
@@ -52,6 +52,8 @@ function dispatchInvokeEvent(event: any, args: any) {
       return makeResponseData(accountController.getSelectedAddress());
     case 'removeAccount':
       return makeResponseData(accountController.removeAccount(params));
+    case 'getSelectedAccountInfo':
+      return makeResponseData(accountController.getSelectedAccountInfo());
     case 'getDappList':
       return makeResponseData(dappController.getDappList());
     case 'addDappData':

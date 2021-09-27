@@ -10,6 +10,9 @@ import {
 import { getAbiCode, getTronwebInstance } from './nodeController';
 import { decodeParams } from '../../utils';
 import { authTransaction } from './signController';
+import { AccountData } from '../../types';
+import { getSelectedAccountInfo } from './accountController';
+import { signTransactionByLedger } from './ledgerController';
 
 const requestMap = new Map();
 const transactionQueue: {
@@ -138,14 +141,40 @@ export async function acceptConfirmation(messageID: string) {
     targetTransaction,
     'data.transaction.transaction'
   );
+  const input = get(targetTransaction, 'data.transaction.input');
 
-  const signedTransaction = await authTransaction(transactionBody);
+  // check account
+  const {
+    address: fromAddress,
+    index = 0,
+    importType,
+  } = <AccountData>await getSelectedAccountInfo();
 
-  resolve({
-    success: true,
-    data: signedTransaction,
-    messageID,
-  });
+  let signedTransaction;
+  try {
+    if (importType === 'ledger') {
+      signedTransaction = await signTransactionByLedger(
+        fromAddress,
+        index,
+        transactionBody,
+        input
+      );
+    } else {
+      signedTransaction = await authTransaction(transactionBody, input);
+    }
+    resolve({
+      success: true,
+      data: signedTransaction,
+      messageID,
+    });
+  } catch (error) {
+    console.warn(error);
+    resolve({
+      success: false,
+      data: signedTransaction,
+      messageID,
+    });
+  }
 
   // 删除目标交易 关闭模态框
   deleteTargetTransaction(messageID);

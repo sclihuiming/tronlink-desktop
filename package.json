@@ -240,6 +240,7 @@
   "dependencies": {
     "@ledgerhq/hw-app-trx": "^6.7.0",
     "@reduxjs/toolkit": "^1.6.1",
+    "@tronscan/client": "^0.2.77",
     "antd": "^4.16.13",
     "axios": "^0.21.4",
     "bignumber.js": "^9.0.1",

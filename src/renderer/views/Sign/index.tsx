@@ -8,6 +8,7 @@ import {
   getTransactions,
   acceptConfirmation,
   rejectConfirmation,
+  getSelectedAccountInfo,
 } from '../../../MessageDuplex/handlers/renderApi';
 
 import './Sign.global.scss';
@@ -17,6 +18,7 @@ function Sign() {
   const [loading, setLoading] = useState(false);
   const [rejectLoading, setRejectLoading] = useState(false);
   const [acceptLoading, setAcceptLoading] = useState(false);
+  const [isLedgerAccount, setIsLedgerAccount] = useState(false);
 
   const intl = useIntl();
 
@@ -27,6 +29,10 @@ function Sign() {
 
       setTransaction(get(res, 'data'));
       setLoading(false);
+      const selectedAccountInfo = await getSelectedAccountInfo();
+      setIsLedgerAccount(
+        get(selectedAccountInfo, 'data.importType') === 'ledger'
+      );
     }
     fetchData();
   }, []);
