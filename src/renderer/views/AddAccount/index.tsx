@@ -134,7 +134,7 @@ const AddAccount = (props: any) => {
       </Form.Item>
       {type === 'privateKey' && (
         <Form.Item
-          wrapperCol={{ span: 18 }}
+          wrapperCol={{ span: 14 }}
           name={['user', 'privateKey']}
           label={intl.formatMessage({ id: 'account.add.type.privatekey' })}
           required
