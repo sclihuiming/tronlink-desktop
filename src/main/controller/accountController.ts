@@ -32,33 +32,43 @@ export async function refreshAccountsData(isLoadByNetwork: boolean) {
   const dbInstance = await getDBInstance();
   const tronwebInstance = getTronwebInstance();
   await dbInstance.read();
-  const accounts: AccountData[] = dbInstance
-    .get('accounts', [])
-    .map((item: JSON) => omit(item, 'privateKey'))
-    .value();
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const account of accounts) {
-    const address = get(account, 'address');
-    if (isLoadByNetwork) {
+  const balanceInfo: { [propName: string]: string } = {};
+  if (isLoadByNetwork) {
+    const accounts: AccountData[] = dbInstance
+      .get('accounts', [])
+      .map((item: JSON) => omit(item, 'privateKey'))
+      .value();
+    // eslint-disable-next-line no-restricted-syntax
+    for (const account of accounts) {
+      const address = get(account, 'address');
       try {
         // eslint-disable-next-line no-await-in-loop
         const res = await tronwebInstance.trx.getUnconfirmedAccount(address);
         const balance = new BigNumber(get(res, 'balance', 0))
           .shiftedBy(-6)
           .toFixed();
-        account.balance = balance;
+        balanceInfo[address] = balance;
+        // account.balance = balance;
       } catch (e) {
         console.error(e);
       }
     }
+    dbInstance
+      .get('accounts')
+      .forEach((item: AccountData) => {
+        const address = get(item, 'address');
+        if (Object.prototype.hasOwnProperty.call(balanceInfo, address)) {
+          item.balance = balanceInfo[address] || item.balance || '0';
+        }
+      })
+      .write();
   }
 
-  dbInstance.get('accounts').assign(accounts).write();
-  setAccountsCache(accounts);
-  mainApi.setAccounts(accounts);
+  setAccountsCache(dbInstance.get('accounts').value());
+  mainApi.setAccounts(dbInstance.get('accounts').value());
   dbInstance.write();
-  return accounts;
+  return dbInstance.get('accounts').value();
 }
 
 export async function getAccounts(): Promise<AccountData[]> {
