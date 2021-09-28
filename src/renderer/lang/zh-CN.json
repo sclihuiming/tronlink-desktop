@@ -18,6 +18,8 @@
   "result.failed": "失败",
   "result.no_data": "暂无数据",
 
+  "setting.about.description": "由于chrome91之后通过u2f的协议不能直接连接ledger了,如果浏览器扩展需要使用ledger,则必须使用ledger live这个软件来作为桥,然后才能使用ledger的相关功能. 故这里为了方便自己使用ledger, 写了一个桌面级软件, 跳出浏览器限制, 直接使用usb或者蓝牙(需要ledger设备支持)来使用ledger",
+
   "menu.home":"主页",
   "menu.accountManager.manager":"账户管理",
   "menu.accountManager.add":"增加账户",

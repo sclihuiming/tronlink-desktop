@@ -18,6 +18,8 @@
   "result.failed": "Failed",
   "result.no_data": "No data available",
 
+  "setting.about.description": "Since chrome91 can not directly connect to ledger through the u2f protocol, if the browser extension needs to use ledger, you must use ledger live software as a bridge, and then you can use the ledger related functions. So here in order to facilitate their own use of ledger, wrote a desktop-level software, out of the browser restrictions, direct use of usb or bluetooth (need ledger device support) to use ledger",
+
   "menu.home": "Home",
   "menu.accountManager.manager": "Account Manager",
   "menu.accountManager.add": "Add Account",

@@ -7,8 +7,8 @@ import {
   useRouteMatch,
   useHistory,
 } from 'react-router-dom';
-import { Layout, Menu, Select, Spin, Button, Modal } from 'antd';
-import { get, find, size, add } from 'lodash';
+import { Layout, Menu, Select, Spin, Button, Modal, Typography } from 'antd';
+import { get, find, size } from 'lodash';
 import {
   UserOutlined,
   PieChartOutlined,
@@ -30,10 +30,13 @@ import Overview from '../Overview';
 import AddAccount from '../AddAccount';
 import Dapp from '../Dapp';
 import AddLedgerAccount from '../AddLedgerAccount';
+import About from '../About';
+import { donateAddress } from '../../../constants';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
 const { Option } = Select;
+const { Paragraph } = Typography;
 
 type RouterData = {
   title: string;
@@ -306,12 +309,16 @@ function Home(props: any) {
                   path={`${match.path}/add-ledger-accounts`}
                   component={AddLedgerAccount}
                 />
+                <Route path={`${match.path}/about`} component={About} />
                 <Route path={`${match.path}`} component={Overview} />
               </Switch>
             </div>
           </Content>
           <Footer className="customFooter">
-            TronLink Desktop ©2021 sclihuiming@163.com
+            TronLink Desktop ©2021 &nbsp;&nbsp;
+            <Paragraph copyable={{ text: donateAddress }} className="address">
+              {donateAddress}
+            </Paragraph>
             <div className="lang">
               <SwitchLang />
             </div>

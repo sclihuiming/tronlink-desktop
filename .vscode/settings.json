@@ -25,6 +25,8 @@
     "antd",
     "ledgerhq",
     "Popconfirm",
+    "qrcode",
+    "Sider",
     "tronscan"
   ],
   "i18n-ally.localesPaths": [

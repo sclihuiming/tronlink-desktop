@@ -240,6 +240,7 @@
   "dependencies": {
     "@ledgerhq/hw-app-trx": "^6.7.0",
     "@reduxjs/toolkit": "^1.6.1",
+    "@types/qrcode.react": "^1.0.2",
     "antd": "^4.16.13",
     "axios": "^0.21.4",
     "bignumber.js": "^9.0.1",
@@ -253,6 +254,7 @@
     "lowdb": "1.0.0",
     "nanoid": "^3.1.25",
     "node-cache": "^5.1.2",
+    "qrcode.react": "^1.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-intl": "^5.20.10",

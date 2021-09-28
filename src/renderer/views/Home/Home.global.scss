@@ -50,6 +50,14 @@
   position: relative;
   text-align: center;
   padding: 0 50px 10px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .address {
+    margin: 0;
+    color: #ff7875c7;
+  }
 
   .lang {
     position: absolute;
