@@ -27,6 +27,9 @@ export const systemTag = 'pc_tronLink_hamlin';
 export const ZH_CN = 'zh-CN';
 export const EN_US = 'en-US';
 
+export const ledgerConnectUSB = 'usb';
+export const ledgerConnectBlueTooth = 'bluetooth';
+
 export const donateAddress = 'TV2n9gtqfExP5dHzxmsLELLbHfp2QBQwF4';
 
 export const REFER_ABI = [

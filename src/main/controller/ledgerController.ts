@@ -1,27 +1,67 @@
 import Transport from '@ledgerhq/hw-transport-node-hid-singleton';
-// import BluetoothTransport from '@ledgerhq/hw-transport-node-ble';
+import BluetoothTransport from '@ledgerhq/hw-transport-node-ble';
 import AppTrx from '@ledgerhq/hw-app-trx';
+import { size } from 'lodash';
 import { transactionJsonToProtoBuf } from 'tron-util/src/utils/tronWeb';
 import { byteArray2hexStr } from 'tron-util/src/utils/bytes';
 
-const retryTime = 3;
+const retryTime = 4;
+const openTimeout = 3000;
+const listenTimeout = 15000;
 
 function getPath(index = 0) {
   return `44'/195'/${index}'/0/0`;
 }
 
-export async function checkTransport() {
-  let transport;
+async function createTransport(bluetooth = false) {
+  if (bluetooth) {
+    return BluetoothTransport.create(openTimeout, listenTimeout);
+  }
+  return Transport.create(openTimeout, listenTimeout);
+}
+
+async function createTransportRetry(
+  bluetooth = false,
+  _retryTime = 0
+): Promise<any> {
   try {
-    transport = await Transport.create();
+    let transport;
+    if (bluetooth) {
+      transport = await BluetoothTransport.create(openTimeout, listenTimeout);
+    } else {
+      transport = await Transport.create(openTimeout, listenTimeout);
+    }
+    return transport;
+  } catch (error) {
+    if (_retryTime < retryTime) {
+      const nowRetry = _retryTime + 1;
+      return createTransportRetry(bluetooth, nowRetry);
+    }
+    return await Promise.reject(error);
+  }
+}
+
+export async function checkTransport(bluetooth = false) {
+  let transport;
+  let deviceModel;
+  try {
+    transport = await createTransport(bluetooth);
+    deviceModel = transport.deviceModel;
     const trx = new AppTrx(transport);
     await trx.getAddress(getPath(0), false);
     return {
       success: true,
     };
   } catch (error) {
+    if (size(deviceModel) > 0) {
+      return {
+        success: false,
+        status: -1, // connect but error
+      };
+    }
     return {
       success: false,
+      status: -2, // not connect
     };
   } finally {
     if (transport) {
@@ -30,10 +70,11 @@ export async function checkTransport() {
   }
 }
 
-async function getAccount(index = 0, boolDisplay = false) {
+async function getAccount(index = 0, boolDisplay = false, bluetooth?: boolean) {
   let transport;
   try {
-    transport = await Transport.create();
+    // transport = await Transport.create();
+    transport = await createTransportRetry(bluetooth, 0);
     const trx = new AppTrx(transport);
     const path = getPath(index);
     const { address } = await trx.getAddress(path, boolDisplay);
@@ -43,6 +84,7 @@ async function getAccount(index = 0, boolDisplay = false) {
       index,
     };
   } catch (error) {
+    console.log('error:', error);
     return {
       success: false,
     };
@@ -54,7 +96,7 @@ async function getAccount(index = 0, boolDisplay = false) {
 }
 
 export async function getAddressInfo(params: any) {
-  return getAccount(params.index, params.boolDisplay);
+  return getAccount(params.index, params.boolDisplay, params.useBlueTooth);
 }
 
 export async function isCorrectAddress(fromAddress: string, index = 0) {
@@ -62,10 +104,15 @@ export async function isCorrectAddress(fromAddress: string, index = 0) {
   return targetAddress === fromAddress;
 }
 
-async function signPersonalMessage(transaction: any, index = 0) {
+async function signPersonalMessage(
+  transaction: any,
+  index = 0,
+  bluetooth?: boolean
+) {
   let transport;
   try {
-    transport = await Transport.create();
+    // transport = await Transport.create();
+    transport = await createTransportRetry(bluetooth);
     const trx = new AppTrx(transport);
     const path = getPath(index);
 
@@ -80,10 +127,15 @@ async function signPersonalMessage(transaction: any, index = 0) {
   }
 }
 
-async function signTransactionTool(transaction: any, index = 0) {
+async function signTransactionTool(
+  transaction: any,
+  index = 0,
+  bluetooth?: boolean
+) {
   let transport;
   try {
-    transport = await Transport.create();
+    // transport = await Transport.create();
+    transport = await createTransportRetry(bluetooth);
     const trx = new AppTrx(transport);
     const path = getPath(index);
 
@@ -105,11 +157,12 @@ async function signTransactionTool(transaction: any, index = 0) {
 async function buildTransactionSigner(
   transaction: any,
   input: any,
-  accountIndex = 0
+  accountIndex = 0,
+  bluetooth?: boolean
 ) {
   try {
     if (typeof input === 'string' && typeof transaction === 'string') {
-      return await signPersonalMessage(transaction, accountIndex);
+      return await signPersonalMessage(transaction, accountIndex, bluetooth);
     }
     const transactionObj = transactionJsonToProtoBuf(transaction);
     const rawDataHex = byteArray2hexStr(
@@ -122,7 +175,8 @@ async function buildTransactionSigner(
         hex: transaction.raw_data_hex || rawDataHex,
         info: tokenInfo,
       },
-      accountIndex
+      accountIndex,
+      bluetooth
     );
 
     // transaction.signature = [signedResponse];
@@ -143,30 +197,18 @@ export async function signTransactionByLedger(
   index: number,
   transaction: any,
   input: any,
-  retry = 0
+  bluetooth?: boolean
 ): Promise<any> {
   try {
     const { address: targetAddress } = await getAccount(index);
     if (fromAddress !== targetAddress) {
-      return await Promise.reject(
-        new Error(`Expect to get ${fromAddress} but get ${targetAddress}`)
-      );
+      throw new Error(`Expect to get ${fromAddress} but get ${targetAddress}`);
     }
     if (transaction === undefined) {
       return await Promise.reject(new Error('invalid transaction'));
     }
-    return await buildTransactionSigner(transaction, input, index);
+    return await buildTransactionSigner(transaction, input, index, bluetooth);
   } catch (error) {
-    if (retry < retryTime) {
-      const nowRetry = retry + 1;
-      return signTransactionByLedger(
-        fromAddress,
-        index,
-        transaction,
-        input,
-        nowRetry
-      );
-    }
     return await Promise.reject(error);
   }
 }

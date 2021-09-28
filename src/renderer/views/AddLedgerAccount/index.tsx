@@ -24,15 +24,20 @@ import {
   addAccount,
 } from '../../../MessageDuplex/handlers/renderApi';
 import { RootState } from '../../store';
+import { ledgerConnectBlueTooth, ledgerConnectUSB } from '../../../constants';
 
 const { Step } = Steps;
 
 function RenderStepOne(props: any) {
-  const { gotoNext, setAccountList, gotoPrev } = props;
+  const { gotoNext, setAccountList, gotoPrev, setConnectType, connectType } =
+    props;
   const [btnDisable, setBtnDisable] = useState(false);
 
   const onChange = (e: any) => {
     console.log(e.target.value);
+    if ([ledgerConnectBlueTooth, ledgerConnectUSB].includes(e.target.value)) {
+      setConnectType(e.target.value);
+    }
   };
 
   const connectLedger = () => {
@@ -41,11 +46,15 @@ function RenderStepOne(props: any) {
 
   return (
     <div className="ledgerConnect">
-      <Radio.Group onChange={onChange} defaultValue="usb" disabled={btnDisable}>
-        <Radio.Button value="usb">
+      <Radio.Group
+        onChange={onChange}
+        defaultValue={connectType}
+        disabled={btnDisable}
+      >
+        <Radio.Button value={ledgerConnectUSB}>
           <FormattedMessage id="ledger.connect.usb" />
         </Radio.Button>
-        <Radio.Button value="bluetooth" disabled>
+        <Radio.Button value={ledgerConnectBlueTooth}>
           <FormattedMessage id="ledger.connect.bluetooth" />
         </Radio.Button>
       </Radio.Group>
@@ -62,6 +71,7 @@ function RenderStepOne(props: any) {
       {btnDisable && (
         <div className="loadingWrap">
           <LedgerConnect
+            connectType={connectType}
             gotoNext={gotoNext}
             setAccountList={setAccountList}
             gotoPrev={gotoPrev}
@@ -118,7 +128,7 @@ function RenderStepTwo(props: any) {
       get(accountList, `${size(accountList) - 1}.index`, 0) + 1;
     const addressInfos = [];
     for (let index = startIndex; index < startIndex + 5; index += 1) {
-      const res = await getAddressInfo(index);
+      const res = await getAddressInfo(index, false);
       if (res.code === 200 && res.data.success) {
         addressInfos.push(res.data);
       } else {
@@ -203,6 +213,7 @@ const RenderStepTwos = connect((state: RootState, ownProps) => {
 function LedgerAccount() {
   const [current, setCurrent] = useState(0);
   const [accountList, setAccountList] = useState([]);
+  const [connectType, setConnectType] = useState(ledgerConnectUSB);
 
   const intl = useIntl();
 
@@ -226,6 +237,8 @@ function LedgerAccount() {
             gotoNext={gotoNext}
             gotoPrev={gotoPrev}
             setAccountList={setAccountList}
+            connectType={connectType}
+            setConnectType={setConnectType}
           />
         )}
         {current === 1 && (
@@ -234,6 +247,7 @@ function LedgerAccount() {
             gotoPrev={gotoPrev}
             accountList={accountList}
             setAccountList={setAccountList}
+            connectType={connectType}
           />
         )}
       </div>

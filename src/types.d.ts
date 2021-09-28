@@ -35,6 +35,7 @@ type AccountData = {
   balance?: string | number;
   type?: number;
   index?: number;
+  ledgerConnectType?: string;
 };
 
 type DappData = {

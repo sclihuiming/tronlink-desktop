@@ -2,23 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { RootState } from 'renderer/store';
 import { get, size } from 'lodash';
-import { Spin, Button } from 'antd';
+import { Spin, Button, message } from 'antd';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
   getTransactions,
   acceptConfirmation,
   rejectConfirmation,
   getSelectedAccountInfo,
+  checkTransport,
 } from '../../../MessageDuplex/handlers/renderApi';
 
 import './Sign.global.scss';
+import { ledgerConnectBlueTooth } from '../../../constants';
+
+const limit = 120;
 
 function Sign() {
   const [transaction, setTransaction] = useState();
   const [loading, setLoading] = useState(false);
   const [rejectLoading, setRejectLoading] = useState(false);
   const [acceptLoading, setAcceptLoading] = useState(false);
-  const [isLedgerAccount, setIsLedgerAccount] = useState(false);
+  const [selectAccount, setSelectAccount] = useState({});
 
   const intl = useIntl();
 
@@ -30,9 +34,7 @@ function Sign() {
       setTransaction(get(res, 'data'));
       setLoading(false);
       const selectedAccountInfo = await getSelectedAccountInfo();
-      setIsLedgerAccount(
-        get(selectedAccountInfo, 'data.importType') === 'ledger'
-      );
+      setSelectAccount(get(selectedAccountInfo, 'data', {}));
     }
     fetchData();
   }, []);
@@ -49,8 +51,51 @@ function Sign() {
     );
   }
 
+  let amount = 0;
+  let timer: number;
+
+  async function checkConnectStatus(
+    useBlueTooth = false,
+    resolve: any,
+    reject: any
+  ) {
+    const res = await checkTransport(useBlueTooth);
+    if (res.code === 200 && res.data.success) {
+      resolve();
+    } else {
+      // const dataStatus = get(res, 'data.status', -1);
+      if (timer) {
+        window.clearTimeout(timer);
+      }
+      amount += 1;
+      if (amount > limit) {
+        message.error(intl.formatMessage({ id: 'ledger.stepTip.failed' }));
+        reject(intl.formatMessage({ id: 'ledger.stepTip.failed' }));
+      } else {
+        timer = window.setTimeout(
+          () => checkConnectStatus(useBlueTooth, resolve, reject),
+          1000
+        );
+      }
+    }
+  }
+
+  async function waitLedgerConnect(useBlueTooth = false) {
+    return new Promise((resolve, reject) => {
+      checkConnectStatus(useBlueTooth, resolve, reject);
+    });
+  }
+
   const acceptFunc = async () => {
     setAcceptLoading(true);
+    if (get(selectAccount, 'importType') === 'ledger') {
+      const useBlueTooth =
+        get(selectAccount, 'ledgerConnectType') === ledgerConnectBlueTooth;
+      await waitLedgerConnect(useBlueTooth).catch((error) => {
+        setAcceptLoading(false);
+        console.warn(error);
+      });
+    }
     await acceptConfirmation(messageID);
     setAcceptLoading(false);
   };

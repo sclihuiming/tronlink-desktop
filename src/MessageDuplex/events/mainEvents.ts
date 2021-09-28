@@ -91,7 +91,7 @@ function dispatchInvokeEvent(event: any, args: any) {
     case 'changeNode':
       return makeResponseData(commonController.changeNode(params));
     case 'checkTransport':
-      return makeResponseData(ledgerController.checkTransport());
+      return makeResponseData(ledgerController.checkTransport(params));
     case 'getAddressInfo':
       return makeResponseData(ledgerController.getAddressInfo(params));
     case 'generateMnemonic':

@@ -130,12 +130,20 @@ export function setLanguage(lang: string) {
   return sendOrInvoke('setLanguage', lang, true);
 }
 
-export function checkTransport() {
-  return sendOrInvoke('checkTransport', null, true);
+export function checkTransport(useBlueTooth: boolean) {
+  return sendOrInvoke('checkTransport', useBlueTooth, true);
 }
 
-export function getAddressInfo(index: number, boolDisplay = false) {
-  return sendOrInvoke('getAddressInfo', { index, boolDisplay }, true);
+export function getAddressInfo(
+  index: number,
+  boolDisplay = false,
+  useBlueTooth = false
+) {
+  return sendOrInvoke(
+    'getAddressInfo',
+    { index, boolDisplay, useBlueTooth },
+    true
+  );
 }
 
 export function generateMnemonic() {

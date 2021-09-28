@@ -4,17 +4,19 @@ import React, { useEffect, useState } from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { message } from 'antd';
+import { get } from 'lodash';
 
 import './LedgerConnect.global.scss';
 import {
   checkTransport,
   getAddressInfo,
 } from '../../../MessageDuplex/handlers/renderApi';
+import { ledgerConnectBlueTooth } from '../../../constants';
 
 const limit = 120;
 
 export default function LedgerConnect(props: any) {
-  const { gotoNext, setAccountList, gotoPrev } = props;
+  const { gotoNext, setAccountList, gotoPrev, connectType } = props;
   const [status, setStatus] = useState(0);
 
   const intl = useIntl();
@@ -25,20 +27,23 @@ export default function LedgerConnect(props: any) {
   async function getAddressInfos() {
     const addressInfos = [];
     for (let index = 0; index < 5; index += 1) {
-      const res = await getAddressInfo(index);
+      const res = await getAddressInfo(
+        index,
+        false,
+        connectType === ledgerConnectBlueTooth
+      );
       if (res.code === 200 && res.data.success) {
         addressInfos.push(res.data);
       } else {
         index -= 1;
       }
     }
-    console.log('load account finish:', addressInfos);
     setAccountList && setAccountList(addressInfos);
     gotoNext && gotoNext();
   }
 
   async function checkConnectStatus() {
-    const res = await checkTransport();
+    const res = await checkTransport(connectType === ledgerConnectBlueTooth);
     console.log('res', res);
     if (res.code === 200 && res.data.success) {
       try {
@@ -49,17 +54,16 @@ export default function LedgerConnect(props: any) {
         timer = setTimeout(checkConnectStatus, 1000);
       }
     } else {
-      setStatus(1);
+      const dataStatus = get(res, 'data.status', -1);
+      setStatus(dataStatus === -1 ? 1 : 0);
       amount += 1;
       if (timer) {
         clearTimeout(timer);
       }
-      console.log('amount:', amount);
       if (amount > limit) {
         gotoPrev && gotoPrev();
         message.error(intl.formatMessage({ id: 'ledger.stepTip.failed' }));
       } else {
-        console.log('324234234-----');
         timer = setTimeout(checkConnectStatus, 1000);
       }
     }
