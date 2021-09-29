@@ -2,6 +2,8 @@
 /* eslint-disable no-console */
 import { get, omit, size } from 'lodash';
 import { nanoid } from 'nanoid';
+import log from 'electron-log';
+
 import { REFER_ABI, simplexMessageEntryType } from '../../constants';
 import {
   closeSignModalWindow,
@@ -63,14 +65,14 @@ export async function signTransaction(event: any, data: any) {
   transactionQueue.push({
     resolve: (res: any) => {
       if (!requestMap.get(messageID))
-        return console.warn(`Message ${messageID} expired`);
+        return log.warn(`Message ${messageID} expired`);
 
       requestMap.get(messageID)({ error: false, ...res });
       requestMap.delete(messageID);
     },
     reject: (res: any) => {
       if (!requestMap.get(messageID))
-        return console.warn(`Message ${messageID} expired`);
+        return log.warn(`Message ${messageID} expired`);
 
       requestMap.get(messageID)({ error: true, ...res });
       requestMap.delete(messageID);
@@ -121,7 +123,7 @@ export async function getTransactions() {
       'transaction.transaction.raw_data.contract.0.type'
     );
   } catch (error) {
-    console.error('getTransactions error:', error);
+    log.error('getTransactions error:', error);
   }
   return transaction;
 }
@@ -168,7 +170,7 @@ export async function acceptConfirmation(messageID: string) {
       messageID,
     });
   } catch (error) {
-    console.warn(error);
+    log.warn('accept confirmation', error);
     resolve({
       success: false,
       data: signedTransaction,

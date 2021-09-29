@@ -20,7 +20,7 @@ const installExtensions = async () => {
       extensions.map((name) => installer[name]),
       forceDownload
     )
-    .catch(console.log);
+    .catch(log.error);
 };
 
 export default class AppUpdater {

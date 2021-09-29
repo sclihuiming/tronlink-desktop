@@ -13,7 +13,7 @@
   optionalDependencies:
     usb "^1.6.3"
 
-"@abandonware/noble@1.9.2-14":
+"@abandonware/noble@1.9.2-14", "@abandonware/noble@^1.9.2-14":
   version "1.9.2-14"
   resolved "https://registry.yarnpkg.com/@abandonware/noble/-/noble-1.9.2-14.tgz#304d5dc824a1c67b5c4a6e69ce1f5620722d118a"
   integrity sha512-zSHu2gHs6TpCS3QRzvOpOsKkiGW7MZzhjtmScTj1EjaK2DMpSkfZrmGdSB1z34nOZuVeo+2XnYzyHbcg0tb1Cg==

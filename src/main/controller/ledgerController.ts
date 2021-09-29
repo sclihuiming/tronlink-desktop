@@ -4,6 +4,7 @@ import AppTrx from '@ledgerhq/hw-app-trx';
 import { size } from 'lodash';
 import { transactionJsonToProtoBuf } from 'tron-util/src/utils/tronWeb';
 import { byteArray2hexStr } from 'tron-util/src/utils/bytes';
+import log from 'electron-log';
 
 const retryTime = 4;
 const openTimeout = 3000;
@@ -45,6 +46,7 @@ export async function checkTransport(bluetooth = false) {
   let transport;
   let deviceModel;
   try {
+    log.info('start:', bluetooth);
     transport = await createTransport(bluetooth);
     deviceModel = transport.deviceModel;
     const trx = new AppTrx(transport);
@@ -53,6 +55,8 @@ export async function checkTransport(bluetooth = false) {
       success: true,
     };
   } catch (error) {
+    log.info('error:', error);
+
     if (size(deviceModel) > 0) {
       return {
         success: false,
@@ -84,7 +88,7 @@ async function getAccount(index = 0, boolDisplay = false, bluetooth?: boolean) {
       index,
     };
   } catch (error) {
-    console.log('error:', error);
+    log.error('getAccount error:', error);
     return {
       success: false,
     };

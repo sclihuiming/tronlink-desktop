@@ -1,4 +1,6 @@
 import { get, size } from 'lodash';
+import log from 'electron-log';
+
 import { getTronwebInstance } from './nodeController';
 import { getSelectedAuthKey } from './accountController';
 import { decrypt, cryptoUtil } from '../../utils';
@@ -23,7 +25,7 @@ export async function authTransaction(transaction: any, input: any) {
 
     return signedTransaction;
   } catch (error) {
-    console.error('authTransaction error', error);
+    log.error('authTransaction error', error);
   }
   return false;
 }

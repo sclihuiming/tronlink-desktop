@@ -2,6 +2,8 @@ import { AccountData, AddAccountParams } from 'types';
 import { find, get, keyBy, omit, size } from 'lodash';
 import TronWeb from 'tronweb';
 import { BigNumber } from 'bignumber.js';
+import log from 'electron-log';
+
 import * as mainApi from '../../MessageDuplex/handlers/mainApi';
 import { encrypt, cryptoUtil } from '../../utils';
 import {
@@ -50,8 +52,8 @@ export async function refreshAccountsData(isLoadByNetwork: boolean) {
           .toFixed();
         balanceInfo[address] = balance;
         // account.balance = balance;
-      } catch (e) {
-        console.error(e);
+      } catch (e: any) {
+        log.error('update account balance error:', e.message);
       }
     }
     dbInstance

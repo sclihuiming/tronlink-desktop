@@ -1,6 +1,8 @@
 import { size } from 'lodash';
 import { RegisterData } from 'types';
 import { app } from 'electron';
+import log from 'electron-log';
+
 import { getDBInstance } from '../store/index';
 import { EN_US, systemTag, ZH_CN } from '../../constants';
 import { decrypt, encrypt, cryptoUtil } from '../../utils';
@@ -46,7 +48,7 @@ export async function login(password: string) {
     setAuthentication(password);
     return true;
   } catch (error) {
-    console.error('error:', error);
+    log.error('login error:', error);
     return Promise.reject(error);
   }
 }
