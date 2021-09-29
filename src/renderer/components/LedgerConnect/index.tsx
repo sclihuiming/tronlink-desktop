@@ -22,7 +22,7 @@ export default function LedgerConnect(props: any) {
   const intl = useIntl();
 
   let amount = 0;
-  let timer: NodeJS.Timeout;
+  let timer: number;
 
   async function getAddressInfos() {
     const addressInfos = [];
@@ -51,20 +51,20 @@ export default function LedgerConnect(props: any) {
         await getAddressInfos();
       } catch (error) {
         setStatus(1);
-        timer = setTimeout(checkConnectStatus, 1000);
+        timer = window.setTimeout(checkConnectStatus, 1000);
       }
     } else {
       const dataStatus = get(res, 'data.status', -1);
       setStatus(dataStatus === -1 ? 1 : 0);
       amount += 1;
       if (timer) {
-        clearTimeout(timer);
+        window.clearTimeout(timer);
       }
       if (amount > limit) {
         gotoPrev && gotoPrev();
         message.error(intl.formatMessage({ id: 'ledger.stepTip.failed' }));
       } else {
-        timer = setTimeout(checkConnectStatus, 1000);
+        timer = window.setTimeout(checkConnectStatus, 1000);
       }
     }
   }
