@@ -1,7 +1,7 @@
 {
   "name": "tronlink-desktop",
   "version": "1.0.0",
-  "description": "Tronlink pc client application",
+  "description": "TronLink pc client application",
   "scripts": {
     "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
@@ -31,8 +31,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "TronLink",
+    "appId": "org.erb.TronLink",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -89,15 +89,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron/electron-quick-start"
+    "url": "git+https://github.com/sclihuiming/tronlink-desktop.git"
   },
   "author": {
-    "name": "Hamlin.LI",
+    "name": "Hamlin.li",
     "email": "sclihuiming@gmail.com"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/electron/electron-quick-start/issues"
+    "url": "https://github.com/sclihuiming/tronlink-desktop/issues"
   },
   "keywords": [
     "electron",
@@ -110,7 +110,7 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/electron/electron-quick-start#readme",
+  "homepage": "https://github.com/sclihuiming/tronlink-desktop#readme",
   "jest": {
     "testURL": "http://localhost/",
     "moduleNameMapper": {
