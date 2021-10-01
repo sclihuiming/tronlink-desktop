@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { RootState } from 'renderer/store';
 import { get, size } from 'lodash';
-import { Spin, Button, message } from 'antd';
+import { Spin, Button, message, Typography, Tooltip } from 'antd';
 import { FormattedMessage, useIntl } from 'react-intl';
+import TronWeb from 'tronweb';
 import {
   getTransactions,
   acceptConfirmation,
@@ -14,6 +15,8 @@ import {
 
 import './Sign.global.scss';
 import { ledgerConnectBlueTooth } from '../../../constants';
+
+const { Paragraph } = Typography;
 
 const limit = 120;
 
@@ -31,6 +34,7 @@ function Sign() {
       setLoading(true);
       const res = await getTransactions();
 
+      console.log(res.data);
       setTransaction(get(res, 'data'));
       setLoading(false);
       const selectedAccountInfo = await getSelectedAccountInfo();
@@ -39,16 +43,20 @@ function Sign() {
     fetchData();
   }, []);
 
-  const input = get(transaction, 'transaction.input');
+  const input = get(transaction, 'transaction.input', '');
   const functionName = get(transaction, 'functionName');
   const args = get(transaction, 'args', []);
   const messageID = get(transaction, 'messageID', '');
+  const contractType: string = get(transaction, 'contractType', 'SignMessage');
   let rawDataHex = get(transaction, 'transaction.transaction.raw_data_hex', '');
+  let fromAddress = '';
   if (typeof input === 'string') {
-    rawDataHex = get(transaction, 'transaction.transaction', '').replace(
-      '0x',
-      ''
-    );
+    rawDataHex = input.replace('0x', '');
+  } else {
+    const ownerAddress = get(input, 'owner_address');
+    if (ownerAddress) {
+      fromAddress = TronWeb.address.fromHex(ownerAddress);
+    }
   }
 
   let amount = 0;
@@ -117,33 +125,78 @@ function Sign() {
             <div className="item">
               <div className="titleWrap">
                 <div className="partOne">
-                  <FormattedMessage id="sign.contract.function" />
+                  <FormattedMessage id="sign.contract.type" />
                 </div>
                 <div className="partTwo">
-                  {functionName ||
-                    intl.formatMessage({
-                      id: 'sign.contract.function.unknown',
-                    })}
-                </div>
-              </div>
-              {size(args) > 0 ? (
-                <div className="valueWrap">
-                  {args.map(({ name, value }) => {
-                    return (
-                      <div key={name}>
-                        <div className="name">{name}:</div>
-                        <div className="value">{value}</div>
-                      </div>
-                    );
+                  {intl.formatMessage({
+                    id: `sign.contract.${contractType}`,
                   })}
                 </div>
-              ) : (
-                <div className="separator" style={{ margin: '8px 0' }} />
-              )}
+              </div>
+              <div className="separator" style={{ margin: '8px 0' }} />
             </div>
+            {size(fromAddress) > 0 && (
+              <div className="item">
+                <div className="titleWrap">
+                  <div className="partOne">
+                    <FormattedMessage id="sign.contract.fromAddress" />
+                  </div>
+                  <div className="partTwo">
+                    <Paragraph
+                      copyable={{ text: fromAddress }}
+                      className="address"
+                    >
+                      <Tooltip
+                        placement="topLeft"
+                        title={fromAddress}
+                        mouseEnterDelay={0.3}
+                      >
+                        {`${fromAddress.substring(
+                          0,
+                          8
+                        )}...${fromAddress.substring(fromAddress.length - 8)}`}
+                      </Tooltip>
+                    </Paragraph>
+                  </div>
+                </div>
+                <div className="separator" style={{ margin: '8px 0' }} />
+              </div>
+            )}
+            {contractType === 'TriggerSmartContract' && (
+              <div className="item">
+                <div className="titleWrap">
+                  <div className="partOne">
+                    <FormattedMessage id="sign.contract.function" />
+                  </div>
+                  <div className="partTwo">
+                    {functionName ||
+                      intl.formatMessage({
+                        id: 'sign.contract.function.unknown',
+                      })}
+                  </div>
+                </div>
+                {size(args) > 0 ? (
+                  <div className="valueWrap">
+                    {args.map(({ name, value }) => {
+                      return (
+                        <div key={name}>
+                          <div className="name">{name}:</div>
+                          <div className="value">{value}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="separator" style={{ margin: '8px 0' }} />
+                )}
+              </div>
+            )}
+
             <div className="item">
               <div className="titleWrap">
-                <div className="partOne">rawDataHex</div>
+                <div className="partOne">
+                  <FormattedMessage id="sign.contract.meta.data" />
+                </div>
                 <div className="partTwo">&nbsp;</div>
               </div>
               <div className="valueWrap">{rawDataHex}</div>

@@ -45,6 +45,13 @@ body {
             color: #515060;
             word-break: break-all;
             text-align: right;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            .address {
+              margin: 0;
+            }
           }
         }
 
