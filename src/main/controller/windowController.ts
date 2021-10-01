@@ -143,7 +143,7 @@ export async function createMainWindow() {
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
-  new AppUpdater();
+  // new AppUpdater();
 }
 
 export function activateWindow() {
