@@ -23,6 +23,7 @@ const limit = 120;
 function Sign() {
   const [transaction, setTransaction] = useState();
   const [loading, setLoading] = useState(false);
+  const [tip, setTip] = useState('');
   const [rejectLoading, setRejectLoading] = useState(false);
   const [acceptLoading, setAcceptLoading] = useState(false);
   const [selectAccount, setSelectAccount] = useState({});
@@ -34,7 +35,6 @@ function Sign() {
       setLoading(true);
       const res = await getTransactions();
 
-      console.log(res.data);
       setTransaction(get(res, 'data'));
       setLoading(false);
       const selectedAccountInfo = await getSelectedAccountInfo();
@@ -75,6 +75,14 @@ function Sign() {
       if (timer) {
         window.clearTimeout(timer);
       }
+      const dataStatus = get(res, 'data.status', -1);
+      const preId = useBlueTooth ? 'sign.tip.bluetooth' : 'sign.tip.usb';
+      setTip(
+        intl.formatMessage({
+          id: dataStatus === -1 ? 'sign.tip.open.tron' : preId,
+        })
+      );
+
       amount += 1;
       if (amount > limit) {
         message.error(intl.formatMessage({ id: 'ledger.stepTip.failed' }));
@@ -96,16 +104,26 @@ function Sign() {
 
   const acceptFunc = async () => {
     setAcceptLoading(true);
+    setLoading(true);
     if (get(selectAccount, 'importType') === 'ledger') {
       const useBlueTooth =
         get(selectAccount, 'ledgerConnectType') === ledgerConnectBlueTooth;
+      setTip(
+        intl.formatMessage({
+          id: useBlueTooth ? 'sign.tip.bluetooth' : 'sign.tip.usb',
+        })
+      );
       await waitLedgerConnect(useBlueTooth).catch((error) => {
         setAcceptLoading(false);
+        setLoading(false);
+        setTip('');
         console.warn(error);
       });
     }
+    setTip(intl.formatMessage({ id: 'sign.tip.wait.sign' }));
     await acceptConfirmation(messageID);
     setAcceptLoading(false);
+    setLoading(false);
   };
 
   const rejectFunc = async () => {
@@ -119,7 +137,7 @@ function Sign() {
         <div className="hostname">{get(transaction, 'hostname', '')}</div>
         <FormattedMessage id="sign.transaction.request.tips" />
       </div>
-      <Spin spinning={loading}>
+      <Spin spinning={loading} tip={tip} wrapperClassName="customSpin">
         <div className="greyWrap">
           <div className="tradeData scroll">
             <div className="item">

@@ -66,6 +66,10 @@
   "sign.contract.type":"Transaction Type",
   "sign.contract.meta.data":"Metadata",
   "sign.contract.fromAddress":"From Address",
+  "sign.tip.bluetooth": "TPlease turn on the Bluetooth of the ledger or plug the ledger into the usb of your computer",
+  "sign.tip.usb": "The ledger should be plugged into the usb port of the computer",
+  "sign.tip.open.tron": "Please open the tron app on the ledger to sign",
+  "sign.tip.wait.sign": "Waiting for signature",
 
   "sign.contract.SignMessage": "Sign a message",
   "sign.contract.AccountCreateContract": "Account Create",

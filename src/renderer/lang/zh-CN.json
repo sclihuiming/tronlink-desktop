@@ -66,6 +66,10 @@
   "sign.contract.type":"交易类型",
   "sign.contract.meta.data":"元数据",
   "sign.contract.fromAddress":"发起地址",
+  "sign.tip.bluetooth":"请打开ledger的蓝牙或者将ledger插入到电脑的usb",
+  "sign.tip.usb":"该将ledger插入到电脑的usb接口上",
+  "sign.tip.open.tron":"请在ledger上打开tron app进行签名",
+  "sign.tip.wait.sign":"等待签名",
 
   "sign.contract.SignMessage": "签名",
   "sign.contract.AccountCreateContract": "激活账户",
