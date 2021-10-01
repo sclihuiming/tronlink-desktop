@@ -28,59 +28,59 @@ const SIDE_CHAIN_ID = '41E209E4DE650F0150788E8EC5CAFA240A23EB8EB7';
 const priKey =
   '0c6e219d4c53649a14c2613c3a123a7b084d7c8caf67325ed8e2fb137fbcc943';
 
-let tronWebLocal;
+// let tronWebLocal;
 
-function createTronWeb() {
-  const serverAddress = 'https://api.nileex.io';
-  const eventServer = 'https://event.nileex.io';
-  const tronWebIns = new TronWeb(
-    serverAddress,
-    serverAddress,
-    eventServer,
-    priKey
-  );
-  tronWebIns.defaultPrivateKey = false;
-  return tronWebIns;
-}
+// function createTronWeb() {
+//   const serverAddress = 'https://api.nileex.io';
+//   const eventServer = 'https://event.nileex.io';
+//   const tronWebIns = new TronWeb(
+//     serverAddress,
+//     serverAddress,
+//     eventServer,
+//     priKey
+//   );
+//   tronWebIns.defaultPrivateKey = false;
+//   return tronWebIns;
+// }
 
-function sign(
-  transaction,
-  privateKey = priKey,
-  useTronHeader = true,
-  callback
-) {
-  if (Object.prototype.toString.call(privateKey).slice(8, -1) === 'Function') {
-    callback = privateKey;
-    privateKey = priKey;
-  }
+// function sign(
+//   transaction,
+//   privateKey = priKey,
+//   useTronHeader = true,
+//   callback
+// ) {
+//   if (Object.prototype.toString.call(privateKey).slice(8, -1) === 'Function') {
+//     callback = privateKey;
+//     privateKey = priKey;
+//   }
 
-  if (
-    Object.prototype.toString.call(useTronHeader).slice(8, -1) === 'Function'
-  ) {
-    callback = useTronHeader;
-    useTronHeader = true;
-  }
+//   if (
+//     Object.prototype.toString.call(useTronHeader).slice(8, -1) === 'Function'
+//   ) {
+//     callback = useTronHeader;
+//     useTronHeader = true;
+//   }
 
-  const tronWebIns = createTronWeb();
-  return tronWebIns.trx.sign(transaction, privateKey, useTronHeader, callback);
-}
+//   const tronWebIns = createTronWeb();
+//   return tronWebIns.trx.sign(transaction, privateKey, useTronHeader, callback);
+// }
 
-function createTronWebInstance() {
-  if (!(tronWebLocal instanceof TronWeb)) {
-    tronWebLocal = createTronWeb();
+// function createTronWebInstance() {
+//   if (!(tronWebLocal instanceof TronWeb)) {
+//     tronWebLocal = createTronWeb();
 
-    tronWebLocal.ready = true;
-    tronWebLocal.defaultAddress.name = 'test';
-    tronWebLocal.defaultAddress.type = 1;
-    tronWebLocal.defaultPrivateKey = false;
-  }
+//     tronWebLocal.ready = true;
+//     tronWebLocal.defaultAddress.name = 'test';
+//     tronWebLocal.defaultAddress.type = 1;
+//     tronWebLocal.defaultPrivateKey = false;
+//   }
 
-  tronWebLocal.trx.sign = (...args) => {
-    return sign(...args);
-  };
+//   tronWebLocal.trx.sign = (...args) => {
+//     return sign(...args);
+//   };
 
-  return tronWebLocal;
-}
+//   return tronWebLocal;
+// }
 
 function setHeaderInternal(args, tronWeb) {
   const [headers = {}] = args;
@@ -297,6 +297,6 @@ async function injectTronWebPropertyToWindow() {
 }
 
 module.exports = {
-  createTronWebInstance,
+  // createTronWebInstance,
   injectTronWebPropertyToWindow,
 };
