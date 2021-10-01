@@ -88,11 +88,15 @@ export async function createMainWindow() {
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
+    : path.join(__dirname, '../../../assets');
 
   const getAssetPath = (...paths: string[]): string => {
     return path.join(RESOURCES_PATH, ...paths);
   };
+
+  // if (process.platform === 'darwin') {
+  //   app.dock.setIcon(getAssetPath('icon.png'));
+  // }
 
   mainWindow = new BrowserWindow({
     show: false,

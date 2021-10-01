@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="65px" height="65px" viewBox="0 0 65 65" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 51.1 (57501) - http://www.bohemiancoding.com/sketch -->
-    <title>Group 7</title>
-    <desc>Created with Sketch.</desc>
+    <title>logo2</title>
+    <desc></desc>
     <defs>
         <linearGradient x1="8.26742761%" y1="4.09366846%" x2="96.0734561%" y2="100.681258%" id="linearGradient-1">
-            <stop stop-color="#6D72CC" offset="0%"></stop>
-            <stop stop-color="#565BA7" offset="100%"></stop>
+            <stop stop-color="#9c6aaf" offset="0%"></stop>
+            <stop stop-color="#1547a5" offset="100%"></stop>
         </linearGradient>
         <path d="M7.3072126,0 C3.2713192,0 0,3.59885994 0,8.03838669 L0,56.9616133 C0,61.4011401 3.2713192,65 7.3072126,65 L57.6927874,65 C61.7283416,65 65,61.4011401 65,56.9616133 L65,8.03838669 C65,3.59885994 61.7283416,0 57.6927874,0 L7.3072126,0 Z" id="path-2"></path>
     </defs>

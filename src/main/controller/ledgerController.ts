@@ -6,7 +6,7 @@ import { transactionJsonToProtoBuf } from 'tron-util/src/utils/tronWeb';
 import { byteArray2hexStr } from 'tron-util/src/utils/bytes';
 import log from 'electron-log';
 
-const retryTime = 4;
+const retryTime = 2;
 const openTimeout = 3000;
 const listenTimeout = 15000;
 
@@ -55,7 +55,7 @@ export async function checkTransport(bluetooth = false) {
       success: true,
     };
   } catch (error) {
-    log.info('error:', error);
+    log.error('error:', error);
 
     if (size(deviceModel) > 0) {
       return {
