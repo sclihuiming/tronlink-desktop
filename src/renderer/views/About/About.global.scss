@@ -1,0 +1,24 @@
+.aboutWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    width: 80vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .address {
+      color: #ff7875c7;
+      font-size: 18px;
+    }
+
+    .description {
+      font-size: 16px;
+      line-height: 28px;
+      color: #0000008a;
+    }
+  }
+}

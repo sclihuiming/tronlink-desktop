@@ -1,0 +1,43 @@
+.dappContainer {
+  .listItem {
+    position: relative;
+
+    .nameWrap {
+      display: flex;
+      align-items: center;
+      .btnWrap {
+        margin-left: 10px;
+      }
+    }
+  }
+  .customAlert {
+    margin-bottom: 10px;
+  }
+
+  .addNew {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.webviewContainer {
+  margin: -24px -10px 0 -10px;
+  background: #fff;
+
+  .navigationBar {
+    display: flex;
+    padding: 10px;
+
+    .url {
+      width: 95vw;
+      margin-left: 10px;
+    }
+  }
+
+  .webviewWrap {
+    webview {
+      height: 75vh;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+.ledgerConnect {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  flex-direction: column;
+
+  .loading {
+  }
+
+  .stepTip {
+    margin-top: 15px;
+    color: #ff7875;
+  }
+}

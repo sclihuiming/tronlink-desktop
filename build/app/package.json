@@ -1,0 +1,23 @@
+{
+  "name": "tronlink",
+  "productName": "TronLink",
+  "version": "1.0.0",
+  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "main": "./dist/main/main.js",
+  "author": {
+    "name": "Hamlin.li",
+    "email": "sclihuiming@gmail.com",
+    "url": "https://github.com/sclihuiming/tronlink-desktop"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r ../../.erb/scripts/babel-register.js ../../.erb/scripts/electron-rebuild.js",
+    "link-modules": "node -r ../../.erb/scripts/babel-register.js ../../.erb/scripts/link-modules.js",
+    "postinstall": "yarn electron-rebuild && yarn link-modules"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@abandonware/noble": "^1.9.2-14",
+    "@ledgerhq/hw-transport-node-ble": "^6.7.0",
+    "@ledgerhq/hw-transport-node-hid-singleton": "^6.7.0"
+  }
+}

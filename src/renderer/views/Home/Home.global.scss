@@ -1,0 +1,75 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+
+  .partOne {
+    display: flex;
+    .logo {
+      width: 160px;
+      height: 28px;
+      margin: 16px 24px 16px 25px;
+      background-image: url('../../assets/images/logo.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
+
+      &.collapsed {
+        background-image: url('../../assets/images/logo2.svg');
+        width: 40px;
+        // height: 31px;
+        border-radius: 10px;
+      }
+    }
+  }
+
+  .partTwo {
+    color: #fff;
+    display: flex;
+    padding-right: 10px;
+
+    .accountSelect {
+      color: #82a4bd;
+      background-color: #3b6b2f26;
+      margin-left: 10px;
+
+      .ant-select-arrow {
+        color: #fff;
+      }
+    }
+
+    .btnWrap {
+      margin-left: 10px;
+      .customLink {
+        color: #967575;
+      }
+    }
+  }
+}
+
+.customFooter {
+  position: relative;
+  text-align: center;
+  padding: 0 50px 10px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .address {
+    margin: 0;
+    color: #ff7875c7;
+  }
+
+  .lang {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+}
+
+.ant-layout-content {
+  background: #fff;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
