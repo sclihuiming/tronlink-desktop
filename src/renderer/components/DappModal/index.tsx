@@ -80,9 +80,21 @@ export default function DappModal(props: any) {
         }}
       >
         <Form.Item
+          name="url"
+          label="dapp url"
+          tooltip={intl.formatMessage({ id: 'dapp.add.modal.tips.name' })}
+          rules={[
+            {
+              required: true,
+              message: intl.formatMessage({ id: 'rules.dapp.url' }),
+            },
+          ]}
+        >
+          <Input onBlur={onUrlChange} />
+        </Form.Item>
+        <Form.Item
           name="name"
           label={intl.formatMessage({ id: 'dapp.add.modal.label.name' })}
-          tooltip={intl.formatMessage({ id: 'dapp.add.modal.tips.name' })}
           rules={[
             {
               required: true,
@@ -92,18 +104,6 @@ export default function DappModal(props: any) {
           ]}
         >
           <Input />
-        </Form.Item>
-        <Form.Item
-          name="url"
-          label="url"
-          rules={[
-            {
-              required: true,
-              message: intl.formatMessage({ id: 'rules.dapp.url' }),
-            },
-          ]}
-        >
-          <Input onBlur={onUrlChange} />
         </Form.Item>
         <Form.Item
           name="logo"

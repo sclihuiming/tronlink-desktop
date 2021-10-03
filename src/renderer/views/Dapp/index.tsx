@@ -108,7 +108,7 @@ function Dapp(props: any) {
         });
       }
       setTimeout(() => {
-        const webviewAgain = document.getElementById('dappWebView');
+        const webviewAgain: any = document.getElementById('dappWebView');
         if (webviewAgain && webviewAgain.isLoading()) {
           webviewInitial(webviewAgain);
         }
