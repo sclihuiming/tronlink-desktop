@@ -252,7 +252,7 @@
     "js-sha3": "^0.8.0",
     "lodash": "^4.17.21",
     "lowdb": "1.0.0",
-    "nanoid": "^3.1.25",
+    "nanoid": "^3.1.28",
     "node-cache": "^5.1.2",
     "qrcode.react": "^1.0.1",
     "react": "^17.0.2",
