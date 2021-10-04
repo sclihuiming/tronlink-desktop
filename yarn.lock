@@ -4056,10 +4056,10 @@ browser-stdout@1.3.1:
   resolved "https://registry.yarnpkg.com/browser-stdout/-/browser-stdout-1.3.1.tgz#baa559ee14ced73452229bad7326467c61fabd60"
   integrity sha512-qhAVI1+Av2X7qelOfAIYwXONood6XlZE/fXaBSmW/T5SzLAmCgzi+eiWE7fUvbHaeNBQH13UftjpXxsfLkMpgw==
 
-browserslist-config-erb@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/browserslist-config-erb/-/browserslist-config-erb-0.0.1.tgz#0a93648bbe11fac5b9fe555bf061f31980db64db"
-  integrity sha512-QQQzCXrYVVdSWxO0UuV+f2HGBt7xdGRRvgr49W1lcwoyXNpRQFVi5cTz8+B/rLHyBkWd4JbRFeTIKHAw7BpCBg==
+browserslist-config-erb@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/browserslist-config-erb/-/browserslist-config-erb-0.0.3.tgz#db7f06fe5b1ce2ab9f09e78ac4d5a9f572e188a4"
+  integrity sha512-y47DryCY92lxkKyRVMlaZvXAolIY7U33q9e4CS0MdWeJkoAht7OzsrkfdZFCBOP3H5q1EVUxS0L7VVsKM6gZCQ==
 
 browserslist@^3.2.6:
   version "3.2.8"
