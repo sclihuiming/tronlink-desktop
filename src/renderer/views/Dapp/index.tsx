@@ -1,4 +1,4 @@
-import { get, debounce } from 'lodash';
+import { get } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -20,6 +20,7 @@ import {
   HomeOutlined,
   DeleteOutlined,
   PlusOutlined,
+  FrownOutlined,
 } from '@ant-design/icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -274,7 +275,9 @@ function Dapp(props: any) {
                         </div>
                       }
                       description={item.url}
-                      avatar={<Avatar src={item.logo} />}
+                      avatar={
+                        <Avatar src={item.logo} icon={<FrownOutlined />} />
+                      }
                     />
                   </Card>
                 </Badge.Ribbon>

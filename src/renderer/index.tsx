@@ -42,7 +42,6 @@ class Entry {
         renderApi.getNodeId(),
         renderApi.getLanguage(),
       ]);
-    console.log('langRes:', langRes);
 
     this.store.dispatch(setAccounts(get(accountsRes, 'data', [])));
     this.store.dispatch(setSelectedAddress(get(selectedRes, 'data', '')));

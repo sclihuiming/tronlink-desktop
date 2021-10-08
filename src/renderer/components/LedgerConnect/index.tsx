@@ -44,7 +44,7 @@ export default function LedgerConnect(props: any) {
 
   async function checkConnectStatus() {
     const res = await checkTransport(connectType === ledgerConnectBlueTooth);
-    console.log('res', res);
+    // console.log('res', res);
     if (res.code === 200 && res.data.success) {
       try {
         setStatus(2);

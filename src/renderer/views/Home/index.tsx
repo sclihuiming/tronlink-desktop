@@ -8,7 +8,7 @@ import {
   useHistory,
 } from 'react-router-dom';
 import { Layout, Menu, Select, Spin, Button, Modal, Typography } from 'antd';
-import { get, find, size, debounce } from 'lodash';
+import { get, find, size } from 'lodash';
 import {
   UserOutlined,
   PieChartOutlined,
