@@ -8,7 +8,7 @@ import {
   useHistory,
 } from 'react-router-dom';
 import { Layout, Menu, Select, Spin, Button, Modal, Typography } from 'antd';
-import { get, find, size } from 'lodash';
+import { get, find, size, debounce } from 'lodash';
 import {
   UserOutlined,
   PieChartOutlined,
@@ -295,7 +295,7 @@ function Home(props: any) {
               style={{
                 padding: '24px 10px 0 10px',
                 minHeight: 360,
-                maxHeight: '82vh',
+                maxHeight: 'calc(100vh - 120px)',
               }}
             >
               <Switch>

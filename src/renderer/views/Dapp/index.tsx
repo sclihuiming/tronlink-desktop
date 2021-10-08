@@ -1,4 +1,4 @@
-import { get, find } from 'lodash';
+import { get, debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -56,7 +56,20 @@ function Dapp(props: any) {
     './src/preload/preload.webview.js'
   )}`;
 
-  useEffect(() => {}, []);
+  // function reCalculationHeight() {
+  //   const clientHeight =
+  //     document.querySelector('.webviewContainer')?.parentElement?.parentElement
+  //       ?.clientHeight;
+  //   if (clientHeight && webviewRef && webviewRef.current) {
+  //     webviewRef.current.style.height = `${clientHeight - 49}px`;
+  //   }
+  // }
+
+  useEffect(() => {
+    // const debounceResize = debounce(reCalculationHeight, 300);
+    // window.addEventListener('resize', debounceResize);
+    // return () => window.removeEventListener('resize', debounceResize);
+  }, []);
 
   useEffect(() => {
     setDappList(dappListDefault);
@@ -105,6 +118,12 @@ function Dapp(props: any) {
       if (webview) {
         webview.addEventListener('dom-ready', () => {
           webviewInitial(webview);
+          // const clientHeight =
+          //   document.querySelector('.webviewContainer')?.parentElement
+          //     ?.parentElement?.clientHeight;
+          // if (clientHeight) {
+          //   webviewRef.current.style.height = `${clientHeight - 49}px`;
+          // }
         });
       }
       setTimeout(() => {
