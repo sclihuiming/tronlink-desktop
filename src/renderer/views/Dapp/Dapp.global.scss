@@ -37,7 +37,7 @@
 
   .webviewWrap {
     webview {
-      height: 75vh;
+      height: calc(100vh - 165px);
     }
   }
 }

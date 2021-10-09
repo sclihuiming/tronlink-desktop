@@ -1,4 +1,4 @@
-import { get, find } from 'lodash';
+import { get } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -20,9 +20,12 @@ import {
   HomeOutlined,
   DeleteOutlined,
   PlusOutlined,
+  FrownOutlined,
 } from '@ant-design/icons';
 import { FormattedMessage, useIntl } from 'react-intl';
+import log from 'electron-log';
 
+import { resolveRenderPreloadPath } from '../../../utils';
 import { RootState } from '../../store';
 import { DappData } from '../../../types';
 import {
@@ -45,18 +48,17 @@ function Dapp(props: any) {
   const [canGoForward, setGoForwardStatus] = useState(false);
   const [webviewUrl, setWebviewUrl] = useState('');
   const [dappUrl, setDappUrl] = useState('');
+  const [preloadPath, setPreloadPath] = useState('');
 
   // modal
   const [visible, setVisible] = useState(false);
 
   const intl = useIntl();
 
-  // eslint-disable-next-line global-require
-  const preloadPath = `file://${require('path').resolve(
-    './src/preload/preload.webview.js'
-  )}`;
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const tmpPath = resolveRenderPreloadPath('preload.webview.js');
+    setPreloadPath(`file://${tmpPath}`);
+  }, []);
 
   useEffect(() => {
     setDappList(dappListDefault);
@@ -105,6 +107,12 @@ function Dapp(props: any) {
       if (webview) {
         webview.addEventListener('dom-ready', () => {
           webviewInitial(webview);
+          // const clientHeight =
+          //   document.querySelector('.webviewContainer')?.parentElement
+          //     ?.parentElement?.clientHeight;
+          // if (clientHeight) {
+          //   webviewRef.current.style.height = `${clientHeight - 49}px`;
+          // }
         });
       }
       setTimeout(() => {
@@ -255,7 +263,9 @@ function Dapp(props: any) {
                         </div>
                       }
                       description={item.url}
-                      avatar={<Avatar src={item.logo} />}
+                      avatar={
+                        <Avatar src={item.logo} icon={<FrownOutlined />} />
+                      }
                     />
                   </Card>
                 </Badge.Ribbon>

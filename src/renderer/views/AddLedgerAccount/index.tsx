@@ -34,7 +34,6 @@ function RenderStepOne(props: any) {
   const [btnDisable, setBtnDisable] = useState(false);
 
   const onChange = (e: any) => {
-    console.log(e.target.value);
     if ([ledgerConnectBlueTooth, ledgerConnectUSB].includes(e.target.value)) {
       setConnectType(e.target.value);
     }

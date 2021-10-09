@@ -295,7 +295,7 @@ function Home(props: any) {
               style={{
                 padding: '24px 10px 0 10px',
                 minHeight: 360,
-                maxHeight: '82vh',
+                maxHeight: 'calc(100vh - 120px)',
               }}
             >
               <Switch>

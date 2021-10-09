@@ -5,7 +5,7 @@ import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import { addWindow, deleteWindow } from '../store/windowManager';
 import MenuBuilder from '../menu';
-import { resolveHtmlPath } from '../../utils';
+import { resolveHtmlPath, resolvePreloadPath } from '../../utils';
 
 let mainWindow: BrowserWindow | null = null;
 let modalWindow: BrowserWindow | null = null;
@@ -104,7 +104,7 @@ export async function createMainWindow() {
     height: 728,
     icon: getAssetPath('icon.png'),
     webPreferences: {
-      preload: path.join(__dirname, '../../preload/preload.common.js'),
+      preload: resolvePreloadPath('preload.common.js'),
       contextIsolation: false,
       nodeIntegration: true,
       webviewTag: true,
