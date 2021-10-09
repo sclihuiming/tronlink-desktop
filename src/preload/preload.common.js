@@ -1,3 +1,3 @@
-const { injectTronWebPropertyToWindow } = require('./tronWebHook');
+// const { injectTronWebPropertyToWindow } = require('./tronWebHook');
 
 // injectTronWebPropertyToWindow();

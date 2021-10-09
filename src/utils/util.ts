@@ -18,6 +18,8 @@ export function injectPromise(func: any, ...args: any[]): Promise<any> {
 }
 
 export let resolveHtmlPath: (htmlFileName: string) => string;
+export let resolvePreloadPath: (preloadName: string) => string;
+export let resolveRenderPreloadPath: (preloadName: string) => string;
 
 if (process.env.NODE_ENV === 'development') {
   const port = process.env.PORT || 1212;
@@ -26,9 +28,21 @@ if (process.env.NODE_ENV === 'development') {
     url.pathname = htmlFileName;
     return url.href;
   };
+  resolvePreloadPath = (preloadName: string) => {
+    return `${path.resolve('./src/preload/', preloadName)}`;
+  };
+  resolveRenderPreloadPath = (preloadName: string) => {
+    return `${path.resolve('./src/preload/', preloadName)}`;
+  };
 } else {
   resolveHtmlPath = (htmlFileName: string) => {
     return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
+  };
+  resolvePreloadPath = (preloadName: string) => {
+    return `${path.join(__dirname, './preload/', preloadName)}`;
+  };
+  resolveRenderPreloadPath = (preloadName: string) => {
+    return `${path.join(__dirname, '../main/preload/', preloadName)}`;
   };
 }
 

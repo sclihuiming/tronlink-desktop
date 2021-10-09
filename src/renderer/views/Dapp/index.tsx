@@ -23,7 +23,9 @@ import {
   FrownOutlined,
 } from '@ant-design/icons';
 import { FormattedMessage, useIntl } from 'react-intl';
+import log from 'electron-log';
 
+import { resolveRenderPreloadPath } from '../../../utils';
 import { RootState } from '../../store';
 import { DappData } from '../../../types';
 import {
@@ -46,30 +48,16 @@ function Dapp(props: any) {
   const [canGoForward, setGoForwardStatus] = useState(false);
   const [webviewUrl, setWebviewUrl] = useState('');
   const [dappUrl, setDappUrl] = useState('');
+  const [preloadPath, setPreloadPath] = useState('');
 
   // modal
   const [visible, setVisible] = useState(false);
 
   const intl = useIntl();
 
-  // eslint-disable-next-line global-require
-  const preloadPath = `file://${require('path').resolve(
-    './src/preload/preload.webview.js'
-  )}`;
-
-  // function reCalculationHeight() {
-  //   const clientHeight =
-  //     document.querySelector('.webviewContainer')?.parentElement?.parentElement
-  //       ?.clientHeight;
-  //   if (clientHeight && webviewRef && webviewRef.current) {
-  //     webviewRef.current.style.height = `${clientHeight - 49}px`;
-  //   }
-  // }
-
   useEffect(() => {
-    // const debounceResize = debounce(reCalculationHeight, 300);
-    // window.addEventListener('resize', debounceResize);
-    // return () => window.removeEventListener('resize', debounceResize);
+    const tmpPath = resolveRenderPreloadPath('preload.webview.js');
+    setPreloadPath(`file://${tmpPath}`);
   }, []);
 
   useEffect(() => {

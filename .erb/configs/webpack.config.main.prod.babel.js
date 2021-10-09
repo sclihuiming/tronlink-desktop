@@ -31,7 +31,8 @@ export default merge(baseConfig, {
 
   entry: {
     main: path.join(webpackPaths.srcMainPath, 'main.ts'),
-    preload: path.join(webpackPaths.srcMainPath, '../preload/preload.common.js'),
+    '/preload/preload.common': path.join(webpackPaths.srcMainPath, '../preload/preload.common.js'),
+    '/preload/preload.webview': path.join(webpackPaths.srcMainPath, '../preload/preload.webview.js'),
   },
 
   output: {

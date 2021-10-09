@@ -2,6 +2,7 @@ import { size } from 'lodash';
 import { RegisterData } from 'types';
 import { app } from 'electron';
 import log from 'electron-log';
+import path from 'path';
 
 import { getDBInstance } from '../store/index';
 import { EN_US, systemTag, ZH_CN } from '../../constants';
