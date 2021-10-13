@@ -82,7 +82,7 @@ function RenderStepOne(props: any) {
 }
 
 function RenderStepTwo(props: any) {
-  const { accountList = [], setAccountList, accounts } = props;
+  const { accountList = [], setAccountList, accounts, connectType } = props;
   const [btnLoading, setBtnLoading] = useState(false);
 
   const [form] = Form.useForm();
@@ -127,7 +127,11 @@ function RenderStepTwo(props: any) {
       get(accountList, `${size(accountList) - 1}.index`, 0) + 1;
     const addressInfos = [];
     for (let index = startIndex; index < startIndex + 5; index += 1) {
-      const res = await getAddressInfo(index, false);
+      const res = await getAddressInfo(
+        index,
+        false,
+        connectType === ledgerConnectBlueTooth
+      );
       if (res.code === 200 && res.data.success) {
         addressInfos.push(res.data);
       } else {
