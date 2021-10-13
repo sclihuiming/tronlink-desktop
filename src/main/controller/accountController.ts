@@ -191,6 +191,7 @@ async function addLedgerAccounts(
         name: `${name} #${accountInfo.index}`,
         address: accountInfo.address,
         index: accountInfo.index,
+        ledgerConnectType: accountInfo.ledgerConnectType,
       };
       dbInstance.get('accounts', []).push(formatAddressInfo).write();
     }

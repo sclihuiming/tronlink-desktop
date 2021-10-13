@@ -105,6 +105,7 @@ function RenderStepTwo(props: any) {
     selectAccounts.forEach((address: any) => {
       const accountItem = accountListInfos[address];
       if (accountItem) {
+        accountItem.ledgerConnectType = connectType;
         accountParams.user.ledgerAccounts.push(accountItem);
       }
     });
