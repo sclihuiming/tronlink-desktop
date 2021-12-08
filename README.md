@@ -15,10 +15,10 @@
 - [x] 签名模态框
 - [x] webview 事件通知
 - [x] 通过 usb 连接 ledger
-- [ ] 通过蓝牙连接 ledger
+- [x] 通过蓝牙连接 ledger
 - [x] ledger 账户签名
 - [x] kdf(scrypt)加密
-- [ ] 界面优化
+- [x] 界面优化
 
 ## To Use
 
