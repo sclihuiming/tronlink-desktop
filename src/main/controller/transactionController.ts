@@ -4,7 +4,11 @@ import { get, omit, size } from 'lodash';
 import { nanoid } from 'nanoid';
 import log from 'electron-log';
 
-import { REFER_ABI, simplexMessageEntryType } from '../../constants';
+import {
+  ledgerConnectBlueTooth,
+  REFER_ABI,
+  simplexMessageEntryType,
+} from '../../constants';
 import {
   closeSignModalWindow,
   createSignModalWindow,
@@ -150,6 +154,7 @@ export async function acceptConfirmation(messageID: string) {
     address: fromAddress,
     index = 0,
     importType,
+    ledgerConnectType,
   } = <AccountData>await getSelectedAccountInfo();
 
   let signedTransaction;
@@ -159,7 +164,8 @@ export async function acceptConfirmation(messageID: string) {
         fromAddress,
         index,
         transactionBody,
-        input
+        input,
+        ledgerConnectType === ledgerConnectBlueTooth
       );
     } else {
       signedTransaction = await authTransaction(transactionBody, input);
